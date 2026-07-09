@@ -22,9 +22,11 @@
     "make": "npm run build && electron-forge make"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.2",
     "electron-squirrel-startup": "^1.0.1",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "tailwindcss": "^4.3.2"
   },
   "devDependencies": {
     "@babel/core": "^8.0.1",
