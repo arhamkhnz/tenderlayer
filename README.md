@@ -1,4 +1,4 @@
-# Electron Vite Starter
+# TenderLayer
 
 A minimal foundation for building Electron applications with React, TypeScript, and Vite.
 
