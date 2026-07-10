@@ -49,7 +49,7 @@ src/
 
 ## Requirements
 
-- Node.js `^20.19.0 || >=22.12.0`
+- Node.js `>=22.12.0`
 - npm
 
 ## Getting started

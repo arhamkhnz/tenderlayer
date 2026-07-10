@@ -2,6 +2,7 @@ import {
   app,
   BrowserWindow,
   ipcMain,
+  nativeTheme,
   protocol,
   type IpcMainInvokeEvent,
 } from 'electron/main'
@@ -190,12 +191,18 @@ function createWindow() {
   const window = new BrowserWindow({
     width: 1200,
     height: 800,
+    backgroundColor: nativeTheme.shouldUseDarkColors ? '#16171d' : '#ffffff',
+    show: false,
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
       preload: preloadPath,
       sandbox: true,
     },
+  })
+
+  window.once('ready-to-show', () => {
+    window.show()
   })
 
   window.webContents.on('will-navigate', (event, url) => {

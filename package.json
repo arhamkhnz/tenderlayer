@@ -8,7 +8,7 @@
   "type": "module",
   "main": "dist/main/index.js",
   "engines": {
-    "node": "^20.19.0 || >=22.12.0"
+    "node": ">=22.12.0"
   },
   "scripts": {
     "dev": "node scripts/dev.mjs",
