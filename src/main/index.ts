@@ -3,14 +3,14 @@ import {
   BrowserWindow,
   ipcMain,
   nativeTheme,
+  net,
   protocol,
   type IpcMainInvokeEvent,
 } from 'electron/main'
 import { shell } from 'electron'
 import squirrelStartup from 'electron-squirrel-startup'
-import { readFile } from 'node:fs/promises'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 import {
   ipcChannels,
   type IpcContract,
@@ -44,18 +44,6 @@ protocol.registerSchemesAsPrivileged([
 
 type PingResult = IpcContract[typeof ipcChannels.ping]['result']
 
-const mimeTypes = new Map([
-  ['.css', 'text/css; charset=utf-8'],
-  ['.html', 'text/html; charset=utf-8'],
-  ['.ico', 'image/x-icon'],
-  ['.js', 'text/javascript; charset=utf-8'],
-  ['.json', 'application/json; charset=utf-8'],
-  ['.png', 'image/png'],
-  ['.svg', 'image/svg+xml'],
-  ['.webp', 'image/webp'],
-  ['.woff', 'font/woff'],
-  ['.woff2', 'font/woff2'],
-])
 const productionContentSecurityPolicy =
   "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'none'"
 
@@ -167,19 +155,27 @@ function registerRendererProtocol() {
     }
 
     try {
-      const data = await readFile(filePath)
-      const contentType =
-        mimeTypes.get(path.extname(filePath)) ?? 'application/octet-stream'
-      const headers: Record<string, string> = {
-        'Content-Type': contentType,
+      const response = await net.fetch(pathToFileURL(filePath).toString())
+      const isHtml = path.extname(filePath) === '.html'
+
+      if (request.method === 'GET' && !isHtml) {
+        return response
       }
 
-      if (path.extname(filePath) === '.html') {
-        headers['Content-Security-Policy'] = productionContentSecurityPolicy
+      const headers = new Headers(response.headers)
+
+      if (isHtml) {
+        headers.set('Content-Security-Policy', productionContentSecurityPolicy)
       }
 
-      return new Response(request.method === 'HEAD' ? null : data, {
+      if (request.method === 'HEAD') {
+        await response.body?.cancel()
+      }
+
+      return new Response(request.method === 'HEAD' ? null : response.body, {
         headers,
+        status: response.status,
+        statusText: response.statusText,
       })
     } catch {
       return new Response('Not found', { status: 404 })
@@ -201,9 +197,13 @@ function createWindow() {
     },
   })
 
-  window.once('ready-to-show', () => {
-    window.show()
-  })
+  const showWindow = () => {
+    if (!window.isDestroyed()) {
+      window.show()
+    }
+  }
+
+  window.once('ready-to-show', showWindow)
 
   window.webContents.on('will-navigate', (event, url) => {
     if (!isTrustedRendererUrl(url)) {
@@ -221,11 +221,13 @@ function createWindow() {
     return { action: 'deny' }
   })
 
-  if (rendererDevUrl) {
-    void window.loadURL(rendererDevUrl)
-  } else {
-    void window.loadURL(rendererUrl)
-  }
+  const pageUrl = rendererDevUrl ?? rendererUrl
+
+  void window.loadURL(pageUrl).catch((error) => {
+    console.error(`[electron] failed to load renderer at ${pageUrl}`, error)
+    window.removeListener('ready-to-show', showWindow)
+    showWindow()
+  })
 }
 
 app.whenReady().then(() => {
