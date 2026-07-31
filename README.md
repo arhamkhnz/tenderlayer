@@ -49,7 +49,7 @@ src/
 
 ## Requirements
 
-- Node.js `>=22.12.0`
+- Node.js `^22.18.0 || >=24.11.0`
 - npm
 
 ## Getting started
@@ -150,6 +150,6 @@ IPC channel names, arguments, results, and the renderer-facing API are defined c
 
 The starter deliberately excludes application-level libraries and architecture. Separate variants can add tools such as Drizzle without making them requirements for every Electron application.
 
-### Keep React Compiler optional
+### Use React Compiler
 
-React Compiler is not enabled by default. Applications can add it when its optimization benefits justify the additional compilation work.
+React Compiler is enabled for the renderer through the Vite React and Babel plugins. It does not affect the Electron main or preload processes.
