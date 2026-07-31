@@ -15,6 +15,10 @@
     "dev:renderer": "vite",
     "build": "tsc -b && node scripts/build.mjs",
     "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "fix": "npm run lint:fix; npm run format",
     "preview:renderer": "vite preview",
     "start": "electron .",
     "typecheck": "tsc -b",
@@ -47,6 +51,7 @@
     "@vitejs/plugin-react": "^6.0.5",
     "babel-plugin-react-compiler": "^1.0.0",
     "electron": "^43.2.0",
+    "oxfmt": "^0.61.0",
     "oxlint": "^1.76.0",
     "typescript": "~6.0.2",
     "vite": "^8.2.0"

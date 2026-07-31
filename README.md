@@ -74,12 +74,18 @@ This starts the Vite renderer server, watches the main and preload processes, an
 npm run dev               # Start the complete development environment
 npm run dev:renderer      # Start only the renderer in a browser
 npm run typecheck         # Check TypeScript
-npm run lint              # Run Oxlint
+npm run lint              # Check code with Oxlint
+npm run lint:fix          # Apply safe Oxlint fixes
+npm run format            # Format files with Oxfmt
+npm run format:check      # Check formatting without changing files
+npm run fix               # Apply safe lint fixes and format files
 npm run build             # Build main, preload, and renderer
 npm start                 # Run Electron from an existing production build
 npm run package           # Build and create an unpacked application
 npm run make              # Build and create platform distributables
 ```
+
+Oxlint uses the project rules in `oxlint.config.ts`. Oxfmt uses the starter author's preferred defaults in `oxfmt.config.ts`; adapt them to the project's conventions when needed.
 
 Forge writes packaged applications and distributable files to `out/`.
 

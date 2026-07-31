@@ -22,9 +22,5 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": [
-    "src/renderer/src",
-    "src/preload/index.d.ts",
-    "src/shared/**/*.ts"
-  ]
+  "include": ["src/renderer/src", "src/preload/index.d.ts", "src/shared/**/*.ts"]
 }

@@ -21,10 +21,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": [
-    "src/main/**/*.ts",
-    "src/preload/**/*.ts",
-    "src/shared/**/*.ts",
-    "src/types/**/*.d.ts"
-  ]
+  "include": ["src/main/**/*.ts", "src/preload/**/*.ts", "src/shared/**/*.ts", "src/types/**/*.d.ts"]
 }
