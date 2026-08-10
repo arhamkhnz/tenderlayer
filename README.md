@@ -1,161 +1,84 @@
 # TenderLayer
 
-A minimal foundation for building Electron applications with React, TypeScript, and Vite.
+TenderLayer is an open-source, local-first desktop application for managing tender and bid operations. It brings ongoing tenders, upcoming opportunities, application progress, and historical records into one workspace.
 
-The project uses Electron directly. It does not use `electron-vite`, `vite-plugin-electron`, or Electron Forge's Vite plugin. The build and development workflow stays visible in the repository instead of being hidden behind an Electron-specific wrapper.
+> TenderLayer is in early development. The first phase focuses on managing active tenders and contracts.
 
-This starter provides the application infrastructure. It does not prescribe routing, state management, databases, authentication, telemetry, or product architecture.
+## Why I am building it
 
-## Architecture
+My father has run an outsourcing agency since 1999, primarily working on Indian government contracts, especially through the Government e-Marketplace (GeM). Managing more than 500 employees and over 70 active contracts every month has become a tedious task.
 
-Electron's process boundaries are kept explicit:
+We tried paid tools, and I also built a web version during the early days of my career. However, this workflow does not need to depend entirely on a web application. TenderLayer is my attempt to build a focused desktop application that keeps day-to-day tender and contract management simple and local-first.
 
-- `src/main` owns application lifecycle, windows, IPC handlers, and privileged operations.
-- `src/preload` exposes a narrow API to the renderer through `contextBridge`.
-- `src/renderer` contains the React/Vite app.
-- `src/shared` contains IPC contracts and types shared across processes.
+## Development plan
 
-Each process has a separate Vite configuration:
+### Phase 1: Ongoing tenders and contracts
 
-- `vite.config.ts` builds the React renderer.
-- `vite.main.config.ts` builds the Electron main process.
-- `vite.preload.config.ts` builds the preload script.
+The first phase focuses on managing active work after a tender has been awarded:
 
-Build output is written to `dist/`:
+- Tender and contract details
+- Employee records and contract assignments
+- Invoice generation and payment status
+- Tax and GST details
+- Payroll and payslip records
+- Documents, notes, deadlines, and contract history
 
-```text
-dist/
-├── main/
-├── preload/
-└── renderer/
-```
+### Phase 2: Upcoming bids
 
-Source is organized like this:
+The second phase will focus on opportunities the organization is planning to apply for:
 
-```text
-src/
-├── main/
-│   └── index.ts
-├── preload/
-│   ├── index.d.ts
-│   └── index.ts
-├── renderer/
-│   ├── index.html
-│   ├── public/
-│   └── src/
-└── shared/
-    └── ipc.ts
-```
+- Upcoming tender and bid opportunities
+- Eligibility and requirement tracking
+- Go or no-go decisions
+- Bid preparation and submission status
+- Important dates, documents, and reminders
+- Submitted, won, lost, and archived bid history
 
-## Requirements
+## Planned features
+
+- Optional cloud sync
+- Role-based access control (RBAC)
+- Multi-user workspaces and collaboration
+- Automated backups, import, and export
+- Notifications and deadline reminders
+- Reports and operational dashboards
+- Country-specific tax support, including GST, VAT, and other regional tax requirements
+- Optional procurement portal integrations
+- An autonomous bid agent for preparing and submitting tender applications automatically
+
+## Foundation
+
+TenderLayer is built on [Electron Vite Starter](https://github.com/arhamkhnz/electron-vite-starter). Refer to the starter repository for details about the Electron architecture, development workflow, security baseline, and packaging setup.
+
+## Getting started
+
+Requirements:
 
 - Node.js `^22.18.0 || >=24.11.0`
 - npm
 
-## Getting started
-
-Install dependencies:
-
 ```bash
 npm install
-```
-
-Start the development environment:
-
-```bash
 npm run dev
 ```
-
-This starts the Vite renderer server, watches the main and preload processes, and launches Electron. Renderer changes use HMR. Main-process changes restart Electron, while preload changes reload the renderer. Stopping the command also stops its child processes.
 
 ## Commands
 
 ```bash
-npm run dev               # Start the complete development environment
+npm run dev               # Start the desktop development environment
 npm run dev:renderer      # Start only the renderer in a browser
 npm run typecheck         # Check TypeScript
 npm run lint              # Check code with Oxlint
 npm run lint:fix          # Apply safe Oxlint fixes
 npm run format            # Format files with Oxfmt
-npm run format:check      # Check formatting without changing files
+npm run format:check      # Check formatting
 npm run fix               # Apply safe lint fixes and format files
-npm run build             # Build main, preload, and renderer
-npm start                 # Run Electron from an existing production build
-npm run package           # Build and create an unpacked application
-npm run make              # Build and create platform distributables
+npm run build             # Build the application
+npm start                 # Run an existing production build
+npm run package           # Create an unpacked application
+npm run make              # Create platform distributables
 ```
 
-Oxlint uses the project rules in `oxlint.config.ts`. Oxfmt uses the starter author's preferred defaults in `oxfmt.config.ts`; adapt them to the project's conventions when needed.
+## Contributions
 
-Forge writes packaged applications and distributable files to `out/`.
-
-## Packaging
-
-Electron Forge is used only for distribution. It does not control the development server or compile the application source.
-
-The current makers produce:
-
-- Windows: Squirrel installer
-- macOS: ZIP and DMG
-- Linux: deb and RPM packages
-
-Create distributables for the current platform:
-
-```bash
-npm run make
-```
-
-Create macOS distributables explicitly:
-
-```bash
-npm run make -- --platform=darwin
-```
-
-Some distributables require platform-specific tools and should be built on their target operating system. Code signing, macOS notarization, and publishing are not configured yet.
-
-## Security baseline
-
-The current setup includes:
-
-- renderer sandboxing
-- context isolation
-- disabled Node.js integration in the renderer
-- a narrow, typed `contextBridge` API
-- IPC sender and argument validation
-- navigation and new-window restrictions
-- a renderer Content Security Policy
-- a custom production protocol instead of `file://`
-- ASAR packaging
-- restrictive Electron fuses for packaged applications
-
-The renderer does not receive direct access to `ipcRenderer`, Node.js, the filesystem, or other privileged Electron APIs. Add new capabilities through a typed preload API and validate every request in the main process.
-
-## Key decisions
-
-### Use Electron directly
-
-Electron-specific Vite wrappers reduce setup work, but they also own important parts of the development and build workflow. This starter keeps those parts as ordinary scripts and Vite configuration files that can be read, changed, and debugged directly.
-
-### Use Vite for all compilation
-
-Vite builds the renderer, main process, and preload script through separate configurations. The separation keeps their targets and module formats clear without adding another compiler such as esbuild.
-
-### Own development orchestration
-
-`scripts/dev.mjs` coordinates Vite, Electron, rebuilds, restarts, and shutdown. The renderer still uses the normal `vite.config.ts`, with its app root set to `src/renderer`.
-
-### Keep Forge focused on distribution
-
-Forge handles packaging, installers, Electron fuses, and future signing or publishing work. It is not involved in the application development loop.
-
-### Keep IPC narrow and typed
-
-IPC channel names, arguments, results, and the renderer-facing API are defined centrally. The included `ping` method is a small example of the pattern new application APIs should follow.
-
-### Leave product choices to the application
-
-The starter deliberately excludes application-level libraries and architecture. Separate variants can add tools such as Drizzle without making them requirements for every Electron application.
-
-### Use React Compiler
-
-React Compiler is enabled for the renderer through the Vite React and Babel plugins. It does not affect the Electron main or preload processes.
+Contributions are welcome. Feel free to open an issue or reach out to me if you have a specific requirement, use case, or idea for TenderLayer.
