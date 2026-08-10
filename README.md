@@ -6,9 +6,9 @@ TenderLayer is an open-source, local-first desktop application for managing tend
 
 ## Why I am building it
 
-My father has run an outsourcing agency since 1999, primarily working on Indian government contracts, especially through the Government e-Marketplace (GeM). Managing more than 500 employees and over 70 active contracts every month has become a tedious task.
+My father runs an outsourcing agency that primarily handles government and private-sector contracts across India, with many tenders sourced through the Government e-Marketplace (GeM) and state-specific procurement portals. Managing more than 500 employees and over 70 active contracts every month has become a tedious task.
 
-We tried paid tools, and I also built a web version during the early days of my career. However, this workflow does not need to depend entirely on a web application. TenderLayer is my attempt to build a focused desktop application that keeps day-to-day tender and contract management simple and local-first.
+We tried free & paid tools, and I also built a web version during the early days of my career. However, this workflow does not need to depend entirely on a web application. TenderLayer is my attempt to build a focused desktop application that keeps day-to-day tender and contract management simple and local-first.
 
 ## Development plan
 
@@ -36,7 +36,7 @@ The second phase will focus on opportunities the organization is planning to app
 
 ## Planned features
 
-- Optional cloud sync
+- Optional cloud and local network sync
 - Role-based access control (RBAC)
 - Multi-user workspaces and collaboration
 - Automated backups, import, and export
