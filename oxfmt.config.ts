@@ -1,6 +1,7 @@
 import { defineConfig } from "oxfmt";
 
 export default defineConfig({
+  ignorePatterns: ["src/renderer/src/components/ui/**"],
   printWidth: 120,
   tabWidth: 2,
   useTabs: false,
