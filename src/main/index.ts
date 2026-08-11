@@ -1,227 +1,36 @@
-import { app, BrowserWindow, ipcMain, nativeTheme, net, protocol, type IpcMainInvokeEvent } from "electron/main";
-import { shell } from "electron";
+import { app, BrowserWindow } from "electron/main";
 import squirrelStartup from "electron-squirrel-startup";
-import path from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
-import { ipcChannels, type IpcContract } from "../shared/ipc.js";
+import { closeDatabase, initializeDatabase } from "./core/database/client.js";
+import { createMainWindow } from "./core/main-window.js";
+import { registerRendererProtocol, registerRendererScheme } from "./core/renderer-protocol.js";
+import { registerIpcHandlers } from "./modules/index.js";
 
 if (squirrelStartup) {
   app.quit();
 }
 
-const rendererProtocol = "app";
-const rendererHost = "renderer";
-const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
-const preloadPath = path.join(currentDirectory, "../preload/index.cjs");
-const rendererPath = path.join(currentDirectory, "../renderer/index.html");
-const rendererDirectory = path.dirname(rendererPath);
-const rendererUrl = `${rendererProtocol}://${rendererHost}/index.html`;
-const rendererDevUrl = app.isPackaged ? undefined : process.env.VITE_DEV_SERVER_URL;
+registerRendererScheme();
 
-protocol.registerSchemesAsPrivileged([
-  {
-    scheme: rendererProtocol,
-    privileges: {
-      standard: true,
-      secure: true,
-      supportFetchAPI: true,
-    },
-  },
-]);
+app
+  .whenReady()
+  .then(() => {
+    initializeDatabase();
+    registerRendererProtocol();
+    registerIpcHandlers();
+    createMainWindow();
 
-type PingResult = IpcContract[typeof ipcChannels.ping]["result"];
-
-const productionContentSecurityPolicy =
-  "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'none'";
-
-function parseUrl(url: string) {
-  try {
-    return new URL(url);
-  } catch {
-    return undefined;
-  }
-}
-
-function decodePathname(pathname: string) {
-  try {
-    return decodeURIComponent(pathname);
-  } catch {
-    return undefined;
-  }
-}
-
-function getRendererFilePath(url: string) {
-  const parsedUrl = parseUrl(url);
-
-  if (!parsedUrl || parsedUrl.protocol !== `${rendererProtocol}:` || parsedUrl.hostname !== rendererHost) {
-    return undefined;
-  }
-
-  const pathname = decodePathname(parsedUrl.pathname);
-
-  if (pathname === undefined) {
-    return undefined;
-  }
-
-  const filePath = path.normalize(path.join(rendererDirectory, pathname));
-  const relativePath = path.relative(rendererDirectory, filePath);
-
-  if (relativePath.startsWith("..") || path.isAbsolute(relativePath)) {
-    return undefined;
-  }
-
-  return filePath;
-}
-
-function isTrustedRendererUrl(url: string) {
-  const parsedUrl = parseUrl(url);
-
-  if (!parsedUrl) {
-    return false;
-  }
-
-  if (rendererDevUrl) {
-    return parsedUrl.origin === new URL(rendererDevUrl).origin;
-  }
-
-  parsedUrl.hash = "";
-  parsedUrl.search = "";
-
-  return parsedUrl.href === rendererUrl;
-}
-
-function isSafeExternalUrl(url: string) {
-  return parseUrl(url)?.protocol === "https:";
-}
-
-function isTrustedSender(event: IpcMainInvokeEvent) {
-  const senderFrame = event.senderFrame;
-
-  if (!senderFrame || senderFrame !== event.sender.mainFrame) {
-    return false;
-  }
-
-  return isTrustedRendererUrl(senderFrame.url);
-}
-
-function registerIpcHandlers() {
-  ipcMain.handle(ipcChannels.ping, (event, ...args): PingResult => {
-    if (!isTrustedSender(event)) {
-      throw new Error("Blocked IPC request from an untrusted sender");
-    }
-
-    if (args.length !== 0) {
-      throw new TypeError(`Invalid arguments for ${ipcChannels.ping}`);
-    }
-
-    return "pong";
-  });
-}
-
-function registerRendererProtocol() {
-  protocol.handle(rendererProtocol, async (request) => {
-    if (request.method !== "GET" && request.method !== "HEAD") {
-      return new Response("Method not allowed", {
-        headers: {
-          Allow: "GET, HEAD",
-        },
-        status: 405,
-      });
-    }
-
-    const filePath = getRendererFilePath(request.url);
-
-    if (!filePath) {
-      return new Response("Not found", { status: 404 });
-    }
-
-    try {
-      const response = await net.fetch(pathToFileURL(filePath).toString());
-      const isHtml = path.extname(filePath) === ".html";
-
-      if (request.method === "GET" && !isHtml) {
-        return response;
+    app.on("activate", () => {
+      if (BrowserWindow.getAllWindows().length === 0) {
+        createMainWindow();
       }
-
-      const headers = new Headers(response.headers);
-
-      if (isHtml) {
-        headers.set("Content-Security-Policy", productionContentSecurityPolicy);
-      }
-
-      if (request.method === "HEAD") {
-        await response.body?.cancel();
-      }
-
-      return new Response(request.method === "HEAD" ? null : response.body, {
-        headers,
-        status: response.status,
-        statusText: response.statusText,
-      });
-    } catch {
-      return new Response("Not found", { status: 404 });
-    }
-  });
-}
-
-function createWindow() {
-  const window = new BrowserWindow({
-    width: 1200,
-    height: 800,
-    backgroundColor: nativeTheme.shouldUseDarkColors ? "#16171d" : "#ffffff",
-    show: false,
-    webPreferences: {
-      contextIsolation: true,
-      nodeIntegration: false,
-      preload: preloadPath,
-      sandbox: true,
-    },
+    });
+  })
+  .catch((error) => {
+    console.error("[electron] failed to initialize the application", error);
+    app.exit(1);
   });
 
-  const showWindow = () => {
-    if (!window.isDestroyed()) {
-      window.show();
-    }
-  };
-
-  window.once("ready-to-show", showWindow);
-
-  window.webContents.on("will-navigate", (event, url) => {
-    if (!isTrustedRendererUrl(url)) {
-      event.preventDefault();
-    }
-  });
-
-  window.webContents.setWindowOpenHandler(({ url }) => {
-    if (isSafeExternalUrl(url)) {
-      void shell.openExternal(url).catch((error) => {
-        console.error("[electron] failed to open external URL", error);
-      });
-    }
-
-    return { action: "deny" };
-  });
-
-  const pageUrl = rendererDevUrl ?? rendererUrl;
-
-  void window.loadURL(pageUrl).catch((error) => {
-    console.error(`[electron] failed to load renderer at ${pageUrl}`, error);
-    window.removeListener("ready-to-show", showWindow);
-    showWindow();
-  });
-}
-
-app.whenReady().then(() => {
-  registerRendererProtocol();
-  registerIpcHandlers();
-  createWindow();
-
-  app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
-    }
-  });
-});
+app.on("will-quit", closeDatabase);
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {

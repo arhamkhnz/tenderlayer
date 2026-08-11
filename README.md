@@ -67,6 +67,9 @@ npm run dev
 ```bash
 npm run dev               # Start the desktop development environment
 npm run dev:renderer      # Start only the renderer in a browser
+npm run db:generate       # Generate SQLite migrations from the Drizzle schema
+npm run db:studio         # Open Drizzle Studio with the local development database
+npm run rebuild:native    # Rebuild native dependencies for Electron
 npm run typecheck         # Check TypeScript
 npm run lint              # Check code with Oxlint
 npm run lint:fix          # Apply safe Oxlint fixes

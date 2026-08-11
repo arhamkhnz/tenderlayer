@@ -1,5 +1,6 @@
-import { contextBridge, ipcRenderer } from "electron/renderer";
-import { ipcChannels, type ElectronApi, type IpcContract } from "../shared/ipc.js";
+import { contextBridge } from "electron/renderer";
+import type { ElectronApi } from "../shared/electron-api.js";
+import { organizationsApi } from "./organizations.js";
 
 const electronApi = {
   versions: {
@@ -7,7 +8,7 @@ const electronApi = {
     electron: process.versions.electron,
     node: process.versions.node,
   },
-  ping: () => ipcRenderer.invoke(ipcChannels.ping) as Promise<IpcContract[typeof ipcChannels.ping]["result"]>,
+  organizations: organizationsApi,
 } satisfies ElectronApi;
 
 contextBridge.exposeInMainWorld("electronAPI", electronApi);

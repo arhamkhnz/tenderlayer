@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1786439807903,
+      "tag": "0000_cooing_bastion",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1786445378101,
+      "tag": "0001_brief_the_liberteens",
+      "breakpoints": true
+    }
+  ]
+}

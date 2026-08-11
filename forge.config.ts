@@ -5,8 +5,9 @@ const config = {
   packagerConfig: {
     asar: true,
     ignore: [
+      /^\/\.data(?:\/|$)/,
       /^\/(?:src|scripts)(?:\/|$)/,
-      /^\/(?:README\.md|forge\.config\.ts)$/,
+      /^\/(?:README\.md|drizzle\.config\.ts|forge\.config\.ts)$/,
       /^\/tsconfig(?:\..+)?\.json$/,
       /^\/vite(?:\..+)?\.config\.ts$/,
     ],
