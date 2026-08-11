@@ -1,4 +1,5 @@
 import { fileURLToPath } from "node:url";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import { defineConfig } from "vite";
 import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import babel from "@rolldown/plugin-babel";
@@ -12,6 +13,12 @@ export default defineConfig({
     },
   },
   plugins: [
+    tanstackRouter({
+      target: "react",
+      autoCodeSplitting: true,
+      routesDirectory: "./src/routes",
+      generatedRouteTree: "./src/routeTree.gen.ts",
+    }),
     react(),
     babel({
       presets: [reactCompilerPreset()],
