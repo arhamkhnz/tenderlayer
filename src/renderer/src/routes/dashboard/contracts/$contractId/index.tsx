@@ -17,7 +17,7 @@ function ContractPage() {
   ] as const;
 
   return (
-    <main className="grid min-h-screen place-items-center px-6">
+    <div className="grid min-h-screen place-items-center px-6">
       <div className="flex max-w-sm flex-col items-center gap-6 text-center">
         <h1 className="text-2xl font-semibold">Contract details</h1>
         <nav className="grid w-full grid-cols-2 gap-2">
@@ -34,6 +34,6 @@ function ContractPage() {
         </nav>
         <Link to="/dashboard/contracts" className={buttonVariants({ variant: "ghost" })}>Back</Link>
       </div>
-    </main>
+    </div>
   );
 }
