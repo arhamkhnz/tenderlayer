@@ -61,11 +61,7 @@ export function AppSidebar() {
       <SidebarHeader style={{ paddingTop: "calc(env(titlebar-area-height, 0px) + 0.5rem)" }}>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              size="lg"
-              tooltip="TenderLayer"
-              render={<Link to="/dashboard" />}
-            >
+            <SidebarMenuButton size="lg" tooltip="TenderLayer" render={<Link to="/dashboard" />}>
               <HugeiconsIcon icon={Building03Icon} strokeWidth={2} />
               <span className="font-semibold tracking-tight">TenderLayer</span>
             </SidebarMenuButton>
@@ -80,17 +76,14 @@ export function AppSidebar() {
             <SidebarGroupContent>
               <SidebarMenu>
                 {group.items.map((item) => {
-                  const isActive = "exact" in item
-                    ? pathname === item.to || pathname === `${item.to}/`
-                    : pathname === item.to || pathname.startsWith(`${item.to}/`);
+                  const isActive =
+                    "exact" in item
+                      ? pathname === item.to || pathname === `${item.to}/`
+                      : pathname === item.to || pathname.startsWith(`${item.to}/`);
 
                   return (
                     <SidebarMenuItem key={item.to}>
-                      <SidebarMenuButton
-                        isActive={isActive}
-                        tooltip={item.label}
-                        render={<Link to={item.to} />}
-                      >
+                      <SidebarMenuButton isActive={isActive} tooltip={item.label} render={<Link to={item.to} />}>
                         <HugeiconsIcon icon={item.icon} strokeWidth={2} />
                         <span>{item.label}</span>
                       </SidebarMenuButton>

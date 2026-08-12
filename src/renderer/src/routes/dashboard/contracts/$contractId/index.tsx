@@ -32,7 +32,9 @@ function ContractPage() {
             </Link>
           ))}
         </nav>
-        <Link to="/dashboard/contracts" className={buttonVariants({ variant: "ghost" })}>Back</Link>
+        <Link to="/dashboard/contracts" className={buttonVariants({ variant: "ghost" })}>
+          Back
+        </Link>
       </div>
     </div>
   );

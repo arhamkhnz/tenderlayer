@@ -3,13 +3,7 @@ import { useState } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 
 import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field";
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import {
@@ -62,10 +56,7 @@ function CreateOrganizationPage() {
     <main className="grid min-h-screen place-items-center bg-background px-5 py-12">
       <section aria-labelledby="organization-title" className="w-full max-w-md text-foreground">
         <header>
-          <h1
-            id="organization-title"
-            className="text-3xl leading-tight font-medium tracking-tight"
-          >
+          <h1 id="organization-title" className="text-3xl leading-tight font-medium tracking-tight">
             Create organization
           </h1>
           <p className="mt-3 text-[0.9375rem] leading-6 text-muted-foreground">

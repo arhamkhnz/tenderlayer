@@ -10,7 +10,9 @@ function NewContractPage() {
     <div className="grid min-h-screen place-items-center px-6">
       <div className="flex flex-col items-center gap-6 text-center">
         <h1 className="text-2xl font-semibold">New contract</h1>
-        <Link to="/dashboard/contracts" className={buttonVariants({ variant: "outline" })}>Back</Link>
+        <Link to="/dashboard/contracts" className={buttonVariants({ variant: "outline" })}>
+          Back
+        </Link>
       </div>
     </div>
   );

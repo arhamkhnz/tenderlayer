@@ -22,14 +22,11 @@ function WelcomePage() {
         <div className="mt-8 border-t pt-6">
           <h2 className="text-sm font-medium">Create your organization</h2>
           <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
-            Your organization keeps contracts, employees, invoices, payroll, documents, and
-            deadlines together. You can update its details later.
+            Your organization keeps contracts, employees, invoices, payroll, documents, and deadlines together. You can
+            update its details later.
           </p>
 
-          <Link
-            to="/create-organization"
-            className={buttonVariants({ className: "mt-6 w-full", size: "lg" })}
-          >
+          <Link to="/create-organization" className={buttonVariants({ className: "mt-6 w-full", size: "lg" })}>
             Create organization
           </Link>
 
