@@ -11,9 +11,13 @@ function isSafeExternalUrl(url: string) {
 }
 
 export function createMainWindow() {
+  const isMac = process.platform === "darwin";
+
   const window = new BrowserWindow({
     width: 1200,
     height: 800,
+    titleBarStyle: isMac ? "hiddenInset" : "default",
+    titleBarOverlay: isMac,
     backgroundColor: nativeTheme.shouldUseDarkColors ? "#16171d" : "#ffffff",
     show: false,
     webPreferences: {
