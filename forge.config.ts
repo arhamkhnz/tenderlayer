@@ -4,7 +4,7 @@ import { FuseV1Options, FuseVersion } from "@electron/fuses";
 const config = {
   packagerConfig: {
     asar: true,
-    icon: "assets/tenderlayer.icon",
+    icon: "assets/tenderlayer",
     ignore: [
       /^\/\.data(?:\/|$)/,
       /^\/(?:src|scripts)(?:\/|$)/,
@@ -17,7 +17,9 @@ const config = {
   makers: [
     {
       name: "@electron-forge/maker-squirrel",
-      config: {},
+      config: {
+        setupIcon: "assets/tenderlayer.ico",
+      },
     },
     {
       name: "@electron-forge/maker-zip",

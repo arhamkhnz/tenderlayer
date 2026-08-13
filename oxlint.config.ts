@@ -1,7 +1,7 @@
 import { defineConfig } from "oxlint";
 
 export default defineConfig({
-  ignorePatterns: ["drizzle/**", "src/renderer/src/components/ui/**", "src/renderer/src/routeTree.gen.ts"],
+  ignorePatterns: ["assets/**", "drizzle/**", "src/renderer/src/components/ui/**", "src/renderer/src/routeTree.gen.ts"],
   plugins: ["react", "typescript", "oxc"],
   rules: {
     "react/rules-of-hooks": "error",
