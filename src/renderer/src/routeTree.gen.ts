@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as CreateOrganizationRouteImport } from './routes/create-organization'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
@@ -44,11 +43,6 @@ import { Route as DashboardContractsContractIdPayrollRouteImport } from './route
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CreateOrganizationRoute = CreateOrganizationRouteImport.update({
-  id: '/create-organization',
-  path: '/create-organization',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
@@ -213,7 +207,6 @@ const DashboardContractsContractIdPayrollRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
-  '/create-organization': typeof CreateOrganizationRoute
   '/welcome': typeof WelcomeRoute
   '/dashboard/contracts': typeof DashboardContractsRouteRouteWithChildren
   '/dashboard/employees': typeof DashboardEmployeesRouteRouteWithChildren
@@ -245,7 +238,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/create-organization': typeof CreateOrganizationRoute
   '/welcome': typeof WelcomeRoute
   '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
   '/dashboard': typeof DashboardIndexRoute
@@ -274,7 +266,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
-  '/create-organization': typeof CreateOrganizationRoute
   '/welcome': typeof WelcomeRoute
   '/dashboard/contracts': typeof DashboardContractsRouteRouteWithChildren
   '/dashboard/employees': typeof DashboardEmployeesRouteRouteWithChildren
@@ -309,7 +300,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
-    | '/create-organization'
     | '/welcome'
     | '/dashboard/contracts'
     | '/dashboard/employees'
@@ -341,7 +331,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/create-organization'
     | '/welcome'
     | '/dashboard/settings'
     | '/dashboard'
@@ -369,7 +358,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/dashboard'
-    | '/create-organization'
     | '/welcome'
     | '/dashboard/contracts'
     | '/dashboard/employees'
@@ -403,7 +391,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
-  CreateOrganizationRoute: typeof CreateOrganizationRoute
   WelcomeRoute: typeof WelcomeRoute
 }
 
@@ -414,13 +401,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/create-organization': {
-      id: '/create-organization'
-      path: '/create-organization'
-      fullPath: '/create-organization'
-      preLoaderRoute: typeof CreateOrganizationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -776,7 +756,6 @@ const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
-  CreateOrganizationRoute: CreateOrganizationRoute,
   WelcomeRoute: WelcomeRoute,
 }
 export const routeTree = rootRouteImport

@@ -13,7 +13,7 @@ export const organizations = sqliteTable(
   (table) => [
     check(
       "organizations_name_check",
-      sql`length(${table.name}) between 2 and 120 and ${table.name} = trim(${table.name})`,
+      sql`length(${table.name}) between 3 and 120 and ${table.name} = trim(${table.name})`,
     ),
     check(
       "organizations_slug_check",

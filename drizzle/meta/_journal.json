@@ -15,6 +15,13 @@
       "when": 1786445378101,
       "tag": "0001_brief_the_liberteens",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1786821868222,
+      "tag": "0002_curious_korvac",
+      "breakpoints": true
     }
   ]
 }
