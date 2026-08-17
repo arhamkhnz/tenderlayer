@@ -5,6 +5,6 @@ export default defineConfig({
   schema: "./src/main/core/database/schema/index.ts",
   out: "./drizzle",
   dbCredentials: {
-    url: "./.data/tenderlayer.dev.db",
+    url: process.env.TENDERLAYER_DB_PATH ?? "./.data/tenderlayer.dev.db",
   },
 });

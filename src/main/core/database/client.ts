@@ -15,7 +15,8 @@ export function initializeDatabase(): DatabaseClient {
     return databaseClient;
   }
 
-  const databasePath = path.join(app.getPath("userData"), "tenderlayer.db");
+  const databasePath =
+    process.env.TENDERLAYER_DB_PATH ?? path.join(app.getPath("userData"), "tenderlayer.db");
   const sqlite = new Database(databasePath, { timeout: 5_000 });
 
   try {

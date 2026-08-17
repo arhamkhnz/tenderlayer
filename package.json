@@ -15,7 +15,7 @@
     "dev:renderer": "vite",
     "build": "tsc -b && node scripts/build.mjs",
     "db:generate": "drizzle-kit generate",
-    "db:studio": "drizzle-kit studio",
+    "db:studio": "electron scripts/db-studio.mjs",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "format": "oxfmt",
