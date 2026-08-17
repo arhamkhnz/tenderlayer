@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
+import welcomeImage from "@/assets/images/welcome.png";
 import { Button } from "@/components/ui/button";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -56,8 +57,14 @@ function WelcomePage() {
   }
 
   return (
-    <main className="grid min-h-screen place-items-center p-5">
-      <section aria-labelledby="welcome-title" className="flex w-full max-w-md flex-col gap-8 text-foreground">
+    <main className="relative grid min-h-screen place-items-center overflow-hidden p-5">
+      <img
+        src={welcomeImage}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute right-0 -bottom-72 w-150 -scale-x-100 select-none"
+      />
+      <section aria-labelledby="welcome-title" className="relative flex w-full max-w-md flex-col gap-8 text-foreground">
         <header className="flex flex-col gap-6">
           <h1 id="welcome-title" className="flex flex-col items-start gap-1">
             <span className="leading-5 text-sm text-muted-foreground">Welcome to</span>
