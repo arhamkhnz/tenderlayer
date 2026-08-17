@@ -57,7 +57,7 @@ function WelcomePage() {
   }
 
   return (
-    <main className="relative grid min-h-screen place-items-center overflow-hidden p-5">
+    <main className="relative grid min-h-screen place-items-center overflow-hidden p-4">
       <img
         src={welcomeImage}
         alt=""

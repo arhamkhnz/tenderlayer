@@ -7,7 +7,7 @@ export const Route = createFileRoute("/dashboard/contracts/")({
 
 function ContractsPage() {
   return (
-    <div className="grid min-h-screen place-items-center px-6">
+    <div className="grid min-h-screen place-items-center">
       <div className="flex max-w-sm flex-col items-center gap-6 text-center">
         <h1 className="text-2xl font-semibold">Contracts</h1>
         <div className="flex gap-2">

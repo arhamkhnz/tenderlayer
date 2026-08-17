@@ -1,5 +1,6 @@
 import { BrowserWindow, nativeTheme } from "electron/main";
 import { shell } from "electron";
+import { windowIpcChannels } from "../../shared/electron-api.js";
 import { isTrustedRendererUrl, preloadPath, rendererPageUrl } from "./renderer-protocol.js";
 
 function isSafeExternalUrl(url: string) {
@@ -13,11 +14,19 @@ function isSafeExternalUrl(url: string) {
 export function createMainWindow() {
   const isMac = process.platform === "darwin";
 
-  const window = new BrowserWindow({
+  const mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     titleBarStyle: isMac ? "hiddenInset" : "default",
     titleBarOverlay: isMac,
+    ...(isMac
+      ? {
+          trafficLightPosition: {
+            x: 16,
+            y: 16,
+          },
+        }
+      : {}),
     backgroundColor: nativeTheme.shouldUseDarkColors ? "#16171d" : "#ffffff",
     show: false,
     webPreferences: {
@@ -29,20 +38,28 @@ export function createMainWindow() {
   });
 
   const showWindow = () => {
-    if (!window.isDestroyed()) {
-      window.show();
+    if (!mainWindow.isDestroyed()) {
+      mainWindow.show();
     }
   };
 
-  window.once("ready-to-show", showWindow);
+  mainWindow.once("ready-to-show", showWindow);
 
-  window.webContents.on("will-navigate", (event, url) => {
+  const sendFullScreenState = () => {
+    mainWindow.webContents.send(windowIpcChannels.fullScreenChanged, mainWindow.isFullScreen());
+  };
+
+  mainWindow.on("enter-full-screen", sendFullScreenState);
+  mainWindow.on("leave-full-screen", sendFullScreenState);
+  mainWindow.webContents.on("did-finish-load", sendFullScreenState);
+
+  mainWindow.webContents.on("will-navigate", (event, url) => {
     if (!isTrustedRendererUrl(url)) {
       event.preventDefault();
     }
   });
 
-  window.webContents.setWindowOpenHandler(({ url }) => {
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     if (isSafeExternalUrl(url)) {
       void shell.openExternal(url).catch((error) => {
         console.error("[electron] failed to open external URL", error);
@@ -52,9 +69,9 @@ export function createMainWindow() {
     return { action: "deny" };
   });
 
-  void window.loadURL(rendererPageUrl).catch((error) => {
+  void mainWindow.loadURL(rendererPageUrl).catch((error) => {
     console.error(`[electron] failed to load renderer at ${rendererPageUrl}`, error);
-    window.removeListener("ready-to-show", showWindow);
+    mainWindow.removeListener("ready-to-show", showWindow);
     showWindow();
   });
 }

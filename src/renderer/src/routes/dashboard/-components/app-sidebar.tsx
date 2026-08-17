@@ -1,8 +1,8 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
-  Building03Icon,
   DashboardSquare01Icon,
   File02Icon,
+  Home01Icon,
   Invoice01Icon,
   MoneyBag02Icon,
   Settings01Icon,
@@ -14,14 +14,13 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
-  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
 } from "@/components/ui/sidebar";
 
 const navigationGroups = [
@@ -55,21 +54,18 @@ const navigationGroups = [
 
 export function AppSidebar() {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const isMac = window.electronAPI.platform === "darwin";
 
   return (
-    <Sidebar collapsible="offcanvas">
-      <SidebarHeader style={{ paddingTop: "calc(env(titlebar-area-height, 0px) + 0.5rem)" }}>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" tooltip="TenderLayer" render={<Link to="/dashboard" />}>
-              <HugeiconsIcon icon={Building03Icon} strokeWidth={2} />
-              <span className="font-semibold tracking-tight">TenderLayer</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-
-      <SidebarContent>
+    <Sidebar collapsible="offcanvas" className={isMac ? "border-r-0!" : undefined}>
+      {isMac ? (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute right-0 bottom-0 w-px bg-sidebar-border"
+          style={{ top: "env(titlebar-area-height, 3rem)" }}
+        />
+      ) : null}
+      <SidebarContent style={{ paddingTop: "calc(env(titlebar-area-height, 3rem) + 0.5rem)" }}>
         {navigationGroups.map((group) => (
           <SidebarGroup key={group.label}>
             <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
@@ -96,7 +92,16 @@ export function AppSidebar() {
         ))}
       </SidebarContent>
 
-      <SidebarRail />
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton isActive={pathname === "/welcome"} tooltip="Welcome" render={<Link to="/welcome" />}>
+              <HugeiconsIcon icon={Home01Icon} strokeWidth={2} />
+              <span>Welcome</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }

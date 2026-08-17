@@ -7,7 +7,7 @@ export const Route = createFileRoute("/dashboard/contracts/new")({
 
 function NewContractPage() {
   return (
-    <div className="grid min-h-screen place-items-center px-6">
+    <div className="grid min-h-screen place-items-center">
       <div className="flex flex-col items-center gap-6 text-center">
         <h1 className="text-2xl font-semibold">New contract</h1>
         <Link to="/dashboard/contracts" className={buttonVariants({ variant: "outline" })}>
