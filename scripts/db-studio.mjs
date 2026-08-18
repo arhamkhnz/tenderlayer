@@ -13,8 +13,7 @@ app.setName("tenderlayer");
 app
   .whenReady()
   .then(() => {
-    const databasePath =
-      process.env.TENDERLAYER_DB_PATH ?? path.join(app.getPath("userData"), "tenderlayer.db");
+    const databasePath = process.env.TENDERLAYER_DB_PATH ?? path.join(app.getPath("userData"), "tenderlayer.db");
     const nodeExecutable = process.env.npm_node_execpath ?? process.execPath;
     const studio = spawn(nodeExecutable, [drizzleKitEntry, "studio"], {
       cwd: root,

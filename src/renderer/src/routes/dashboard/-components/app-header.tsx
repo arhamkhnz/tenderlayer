@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  ArrowLeft01Icon,
-  ArrowRight01Icon,
-  LayoutAlignLeftIcon,
-  PanelLeftIcon,
-} from "@hugeicons/core-free-icons";
+import { ArrowLeft01Icon, ArrowRight01Icon, LayoutAlignLeftIcon, PanelLeftIcon } from "@hugeicons/core-free-icons";
 import { router } from "@/app/router";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/components/ui/sidebar";
