@@ -57,6 +57,11 @@ function WelcomePage() {
 
   return (
     <main className="relative grid min-h-screen place-items-center overflow-hidden p-4">
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 z-50 [app-region:drag] [-webkit-app-region:drag]"
+        style={{ height: "env(titlebar-area-height, 3rem)" }}
+      />
       <section aria-labelledby="welcome-title" className="relative flex w-full max-w-md flex-col gap-8 text-foreground">
         <header className="flex flex-col gap-6">
           <h1 id="welcome-title" className="flex flex-col items-start gap-1">
