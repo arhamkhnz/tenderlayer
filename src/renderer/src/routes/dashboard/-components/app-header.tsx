@@ -26,7 +26,7 @@ export function AppHeader() {
           aria-label={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
           aria-pressed={isSidebarOpen}
           onClick={toggleSidebar}
-          className="text-muted-foreground"
+          className="-ml-2 text-muted-foreground"
         >
           {isSidebarOpen ? <SidebarIcon weight="fill" /> : <SidebarSimpleIcon weight="fill" />}
         </Button>

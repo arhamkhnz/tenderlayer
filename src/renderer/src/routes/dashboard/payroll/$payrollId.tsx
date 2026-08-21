@@ -1,19 +1,12 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
-import { buttonVariants } from "@/components/ui/button";
+import { createFileRoute } from "@tanstack/react-router";
+
+import { PayrollDetailsScreen } from "./-screens";
 
 export const Route = createFileRoute("/dashboard/payroll/$payrollId")({
   component: PayrollDetailsPage,
 });
 
 function PayrollDetailsPage() {
-  return (
-    <div className="grid min-h-screen place-items-center">
-      <div className="flex flex-col items-center gap-6">
-        <h1 className="text-2xl font-semibold">Payroll details</h1>
-        <Link to="/dashboard/payroll" className={buttonVariants({ variant: "outline" })}>
-          Back
-        </Link>
-      </div>
-    </div>
-  );
+  const { payrollId } = Route.useParams();
+  return <PayrollDetailsScreen payrollId={payrollId} />;
 }

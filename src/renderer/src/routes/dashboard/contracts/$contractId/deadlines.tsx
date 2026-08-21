@@ -1,5 +1,6 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
-import { buttonVariants } from "@/components/ui/button";
+import { createFileRoute } from "@tanstack/react-router";
+
+import { ContractDeadlinesScreen } from "../-screens";
 
 export const Route = createFileRoute("/dashboard/contracts/$contractId/deadlines")({
   component: ContractDeadlinesPage,
@@ -7,18 +8,5 @@ export const Route = createFileRoute("/dashboard/contracts/$contractId/deadlines
 
 function ContractDeadlinesPage() {
   const { contractId } = Route.useParams();
-  return (
-    <div className="grid min-h-screen place-items-center">
-      <div className="flex flex-col items-center gap-6">
-        <h1 className="text-2xl font-semibold">Contract deadlines</h1>
-        <Link
-          to="/dashboard/contracts/$contractId"
-          params={{ contractId }}
-          className={buttonVariants({ variant: "outline" })}
-        >
-          Back
-        </Link>
-      </div>
-    </div>
-  );
+  return <ContractDeadlinesScreen contractId={contractId} />;
 }

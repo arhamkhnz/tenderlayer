@@ -67,7 +67,7 @@ export function AppSidebar() {
       <SidebarContent style={{ paddingTop: "calc(env(titlebar-area-height, 3rem) + 0.5rem)" }}>
         {navigationGroups.map((group) => (
           <SidebarGroup key={group.label}>
-            <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
+            {group.label === "Workspace" ? null : <SidebarGroupLabel>{group.label}</SidebarGroupLabel>}
             <SidebarGroupContent>
               <SidebarMenu>
                 {group.items.map((item) => {
