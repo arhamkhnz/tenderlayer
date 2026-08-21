@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ArrowLeft01Icon, ArrowRight01Icon, LayoutAlignLeftIcon, PanelLeftIcon } from "@hugeicons/core-free-icons";
@@ -8,20 +7,17 @@ import { useSidebar } from "@/components/ui/sidebar";
 
 export function AppHeader() {
   const isMac = window.electronAPI.platform === "darwin";
-  const [isFullScreen, setIsFullScreen] = useState(false);
   const { isMobile, open, openMobile, toggleSidebar } = useSidebar();
   const isSidebarOpen = isMobile ? openMobile : open;
   const canGoBack = useRouterState({
     select: () => router.history.canGoBack(),
   });
-  useEffect(() => window.electronAPI.onFullScreenChange(setIsFullScreen), []);
-
   return (
     <header
       className="absolute inset-x-0 top-0 z-50 flex items-center border-b px-4 [app-region:drag]"
       style={{
         height: "env(titlebar-area-height, 3rem)",
-        paddingLeft: isMac && !isFullScreen ? "env(titlebar-area-x, 72px)" : undefined,
+        paddingLeft: isMac ? "max(1rem, env(titlebar-area-x, 0px))" : undefined,
       }}
     >
       <div className="flex h-full items-center gap-1.5 [app-region:no-drag] [-webkit-app-region:no-drag]">

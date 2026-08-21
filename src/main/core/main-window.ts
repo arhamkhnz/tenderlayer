@@ -1,6 +1,5 @@
 import { BrowserWindow, nativeTheme } from "electron/main";
 import { shell } from "electron";
-import { windowIpcChannels } from "../../shared/electron-api.js";
 import { isTrustedRendererUrl, preloadPath, rendererPageUrl } from "./renderer-protocol.js";
 
 function isSafeExternalUrl(url: string) {
@@ -44,14 +43,6 @@ export function createMainWindow() {
   };
 
   mainWindow.once("ready-to-show", showWindow);
-
-  const sendFullScreenState = () => {
-    mainWindow.webContents.send(windowIpcChannels.fullScreenChanged, mainWindow.isFullScreen());
-  };
-
-  mainWindow.on("enter-full-screen", sendFullScreenState);
-  mainWindow.on("leave-full-screen", sendFullScreenState);
-  mainWindow.webContents.on("did-finish-load", sendFullScreenState);
 
   mainWindow.webContents.on("will-navigate", (event, url) => {
     if (!isTrustedRendererUrl(url)) {
