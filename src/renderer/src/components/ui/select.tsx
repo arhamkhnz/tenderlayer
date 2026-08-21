@@ -165,7 +165,8 @@ function SelectScrollUpButton({
       )}
       {...props}
     >
-      <CaretUpIcon />
+      <CaretUpIcon
+      />
     </SelectPrimitive.ScrollUpArrow>
   )
 }
@@ -183,7 +184,8 @@ function SelectScrollDownButton({
       )}
       {...props}
     >
-      <CaretDownIcon />
+      <CaretDownIcon
+      />
     </SelectPrimitive.ScrollDownArrow>
   )
 }
