@@ -14,7 +14,6 @@ import {
   DataCard,
   KeyValueGrid,
   MetricStrip,
-  PageBody,
   PageHeader,
   StaticStatus,
   StaticTable,
@@ -70,7 +69,7 @@ const contracts = [
 
 export function ContractsScreen() {
   return (
-    <PageBody>
+    <>
       <PageHeader
         title="Contracts"
         description="Track awarded work, delivery periods, assigned teams, and commercial records."
@@ -128,13 +127,13 @@ export function ContractsScreen() {
           ]}
         />
       </DataCard>
-    </PageBody>
+    </>
   );
 }
 
 export function NewContractScreen() {
   return (
-    <PageBody className="max-w-4xl">
+    <>
       <PageHeader
         title="New contract"
         description="Record the awarded contract and its delivery period."
@@ -210,7 +209,7 @@ export function NewContractScreen() {
         </Link>
         <Button type="button">Create contract</Button>
       </div>
-    </PageBody>
+    </>
   );
 }
 
@@ -236,7 +235,7 @@ function ContractShell({
   ] as const;
 
   return (
-    <PageBody>
+    <>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex min-w-0 flex-col gap-1">
           <Link
@@ -275,7 +274,7 @@ function ContractShell({
       </nav>
 
       {children}
-    </PageBody>
+    </>
   );
 }
 

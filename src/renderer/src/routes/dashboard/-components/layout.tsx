@@ -13,12 +13,10 @@ export function DashboardLayout() {
         <AppHeader />
         <AppSidebar />
         <main
-          className="relative flex min-w-0 w-full flex-1 flex-col bg-background"
+          className="relative min-w-0 w-full bg-background"
           style={{ paddingTop: "env(titlebar-area-height, 3rem)" }}
         >
-          <div className="min-w-0 flex-1 p-4">
-            <Outlet />
-          </div>
+          <Outlet />
         </main>
       </SidebarProvider>
     </TooltipProvider>

@@ -12,7 +12,6 @@ import {
   DataCard,
   KeyValueGrid,
   MetricStrip,
-  PageBody,
   PageHeader,
   StaticStatus,
   StaticTable,
@@ -59,7 +58,7 @@ const payrollRuns = [
 
 export function PayrollScreen() {
   return (
-    <PageBody>
+    <>
       <PageHeader
         title="Payroll"
         description="Review monthly employee pay across active contracts."
@@ -107,13 +106,13 @@ export function PayrollScreen() {
           ]}
         />
       </DataCard>
-    </PageBody>
+    </>
   );
 }
 
 export function NewPayrollScreen() {
   return (
-    <PageBody className="max-w-5xl">
+    <>
       <PageHeader
         title="New payroll run"
         description="Prepare payroll for a selected period and contract set."
@@ -248,7 +247,7 @@ export function NewPayrollScreen() {
         </Link>
         <Button type="button">Create payroll run</Button>
       </div>
-    </PageBody>
+    </>
   );
 }
 
@@ -292,7 +291,7 @@ export function PayrollDetailsScreen({ payrollId: _payrollId }: { payrollId: str
     },
   ];
   return (
-    <PageBody>
+    <>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <Link
@@ -348,6 +347,6 @@ export function PayrollDetailsScreen({ payrollId: _payrollId }: { payrollId: str
           ]}
         />
       </DataCard>
-    </PageBody>
+    </>
   );
 }

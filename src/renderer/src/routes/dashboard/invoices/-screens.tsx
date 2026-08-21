@@ -14,7 +14,6 @@ import {
   DataCard,
   KeyValueGrid,
   MetricStrip,
-  PageBody,
   PageHeader,
   StaticStatus,
   StaticTable,
@@ -70,7 +69,7 @@ const invoices = [
 
 export function InvoicesScreen() {
   return (
-    <PageBody>
+    <>
       <PageHeader
         title="Invoices"
         description="Prepare and track invoices raised against awarded contracts."
@@ -124,13 +123,13 @@ export function InvoicesScreen() {
           ]}
         />
       </DataCard>
-    </PageBody>
+    </>
   );
 }
 
 export function NewInvoiceScreen() {
   return (
-    <PageBody className="max-w-5xl">
+    <>
       <PageHeader
         title="New invoice"
         description="Prepare an invoice for completed work under a contract."
@@ -275,13 +274,13 @@ export function NewInvoiceScreen() {
         </Button>
         <Button type="button">Create invoice</Button>
       </div>
-    </PageBody>
+    </>
   );
 }
 
 export function InvoiceDetailsScreen({ invoiceId: _invoiceId }: { invoiceId: string }) {
   return (
-    <PageBody className="max-w-5xl">
+    <>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <Link
@@ -360,6 +359,6 @@ export function InvoiceDetailsScreen({ invoiceId: _invoiceId }: { invoiceId: str
           </CardContent>
         </Card>
       </div>
-    </PageBody>
+    </>
   );
 }

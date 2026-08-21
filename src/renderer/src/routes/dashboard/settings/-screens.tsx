@@ -5,11 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-import { PageBody, PageHeader } from "../-components/screen";
+import { PageHeader } from "../-components/screen";
 
 export function OrganizationSettingsScreen() {
   return (
-    <PageBody className="max-w-4xl">
+    <>
       <PageHeader
         title="Organization"
         description="Company identity and contact details used across contracts and invoices."
@@ -104,13 +104,13 @@ export function OrganizationSettingsScreen() {
       <div className="flex justify-end">
         <Button type="button">Save changes</Button>
       </div>
-    </PageBody>
+    </>
   );
 }
 
 export function TaxSettingsScreen() {
   return (
-    <PageBody className="max-w-4xl">
+    <>
       <PageHeader
         title="Tax settings"
         description="GST registration and default tax treatment for invoices and payroll records."
@@ -239,6 +239,6 @@ export function TaxSettingsScreen() {
       <div className="flex justify-end">
         <Button type="button">Save tax settings</Button>
       </div>
-    </PageBody>
+    </>
   );
 }

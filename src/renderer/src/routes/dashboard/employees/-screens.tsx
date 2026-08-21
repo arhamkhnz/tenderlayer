@@ -1,4 +1,20 @@
-import { ArrowLeftIcon, MagnifyingGlassIcon, UserPlusIcon } from "@phosphor-icons/react";
+import {
+  ArrowLeftIcon,
+  ArrowsDownUpIcon,
+  BriefcaseIcon,
+  CalendarBlankIcon,
+  ColumnsIcon,
+  CurrencyInrIcon,
+  FloppyDiskIcon,
+  FunnelSimpleIcon,
+  GearSixIcon,
+  IdentificationBadgeIcon,
+  ListBulletsIcon,
+  PlusIcon,
+  UserIcon,
+  UserPlusIcon,
+  UsersThreeIcon,
+} from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -8,13 +24,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
 
 import {
   DataCard,
   KeyValueGrid,
-  MetricStrip,
-  PageBody,
   PageHeader,
   StaticStatus,
   StaticTable,
@@ -29,6 +44,8 @@ const employees = [
     contract: "Railway signaling maintenance",
     location: "Delhi",
     status: "Active",
+    monthlyPay: "₹68,000",
+    joiningDate: "12 Aug 2024",
   },
   {
     id: "vikram-singh",
@@ -38,6 +55,8 @@ const employees = [
     contract: "Railway signaling maintenance",
     location: "Lucknow",
     status: "Active",
+    monthlyPay: "₹48,000",
+    joiningDate: "03 Feb 2025",
   },
   {
     id: "meera-joshi",
@@ -47,6 +66,8 @@ const employees = [
     contract: "Railway signaling maintenance",
     location: "Pune",
     status: "On leave",
+    monthlyPay: "₹62,000",
+    joiningDate: "18 Nov 2024",
   },
   {
     id: "kabir-verma",
@@ -56,6 +77,8 @@ const employees = [
     contract: "Regional IT support services",
     location: "Jaipur",
     status: "Active",
+    monthlyPay: "₹55,000",
+    joiningDate: "08 Jan 2026",
   },
   {
     id: "sana-khan",
@@ -65,76 +88,145 @@ const employees = [
     contract: "Airport facility staffing",
     location: "Mumbai",
     status: "Active",
+    monthlyPay: "₹52,000",
+    joiningDate: "22 Jul 2025",
   },
 ];
 
 export function EmployeesScreen() {
   return (
-    <PageBody>
-      <PageHeader
-        title="Employees"
-        description="Manage employee records and contract assignments."
-        action={
-          <Link to="/dashboard/employees/new" className={buttonVariants()}>
-            <UserPlusIcon data-icon="inline-start" />
-            New employee
-          </Link>
-        }
-      />
-      <MetricStrip
-        items={[
-          { label: "Total employees", value: "42", detail: "38 currently active" },
-          { label: "Assigned", value: "35", detail: "Across 12 contracts" },
-          { label: "Unassigned", value: "3", detail: "Available for allocation" },
-          { label: "Documents expiring", value: "4", detail: "Within 30 days" },
-        ]}
-      />
-      <DataCard
-        title="Employee directory"
-        description="Static workforce records for this organization."
-        action={
-          <div className="relative w-52">
-            <MagnifyingGlassIcon className="pointer-events-none absolute top-1/2 left-2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-            <Input className="pl-7" placeholder="Search employees" />
-          </div>
-        }
-        contentClassName="px-0"
-      >
-        <StaticTable
-          rows={employees}
-          columns={[
-            {
-              key: "name",
-              label: "Employee",
-              render: (value, row) => (
-                <div className="flex items-center gap-2.5">
-                  <Avatar size="sm">
-                    <AvatarFallback>{row.initials}</AvatarFallback>
-                  </Avatar>
-                  <Link
-                    to="/dashboard/employees/$employeeId"
-                    params={{ employeeId: row.id }}
-                    className="font-medium hover:underline"
-                  >
-                    {String(value)}
-                  </Link>
-                </div>
-              ),
-            },
-            { key: "role", label: "Role" },
-            { key: "contract", label: "Current contract" },
-            { key: "location", label: "Location" },
-            { key: "status", label: "Status", render: (value) => <StaticStatus>{String(value)}</StaticStatus> },
-          ]}
-        />
-      </DataCard>
-    </PageBody>
+    <section
+      className="flex min-h-0 flex-col overflow-hidden bg-background"
+      style={{ height: "calc(100vh - env(titlebar-area-height, 3rem))" }}
+    >
+      <header className="flex min-h-14 items-center justify-between gap-4 border-b px-4">
+        <div className="flex items-center gap-2">
+          <UsersThreeIcon className="size-5 text-muted-foreground" aria-hidden="true" />
+          <h1 className="text-base font-medium">Employees</h1>
+        </div>
+        <Link to="/dashboard/employees/new" className={buttonVariants({ variant: "ghost" })}>
+          <PlusIcon data-icon="inline-start" />
+          Employee
+        </Link>
+      </header>
+
+      <div className="flex min-h-12 flex-wrap items-center justify-between gap-2 border-b px-2 py-2">
+        <div className="flex items-center gap-1">
+          <Button type="button" variant="ghost">
+            <FunnelSimpleIcon data-icon="inline-start" />
+            Filter (0)
+          </Button>
+          <Button type="button" variant="ghost" size="icon" aria-label="Add filter">
+            <PlusIcon />
+          </Button>
+        </div>
+        <div className="flex flex-wrap items-center justify-end gap-1">
+          <Button type="button" variant="ghost">
+            <ColumnsIcon data-icon="inline-start" />
+            Layout
+          </Button>
+          <Button type="button" variant="ghost">
+            <ArrowsDownUpIcon data-icon="inline-start" />
+            Sort
+          </Button>
+          <Button type="button" variant="ghost">
+            <GearSixIcon data-icon="inline-start" />
+            View settings
+          </Button>
+          <Button type="button" variant="ghost" size="icon" aria-label="Save view">
+            <FloppyDiskIcon />
+          </Button>
+        </div>
+      </div>
+
+      <div className="min-h-0 flex-1 [&>[data-slot=table-container]]:h-full">
+        <Table className="h-full min-w-[64rem] text-sm">
+          <TableHeader>
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="h-12 w-1/5 border-r px-4">
+                <span className="flex items-center gap-2">
+                  <UserIcon className="size-4 text-muted-foreground" aria-hidden="true" />
+                  Employee
+                </span>
+              </TableHead>
+              <TableHead className="h-12 w-1/5 border-r px-4">
+                <span className="flex items-center gap-2">
+                  <IdentificationBadgeIcon className="size-4 text-muted-foreground" aria-hidden="true" />
+                  Role
+                </span>
+              </TableHead>
+              <TableHead className="h-12 w-1/5 border-r px-4">
+                <span className="flex items-center gap-2">
+                  <BriefcaseIcon className="size-4 text-muted-foreground" aria-hidden="true" />
+                  Contract
+                </span>
+              </TableHead>
+              <TableHead className="h-12 w-1/5 border-r px-4">
+                <span className="flex items-center gap-2">
+                  <CurrencyInrIcon className="size-4 text-muted-foreground" aria-hidden="true" />
+                  Monthly pay
+                </span>
+              </TableHead>
+              <TableHead className="h-12 w-1/5 px-4">
+                <span className="flex items-center gap-2">
+                  <CalendarBlankIcon className="size-4 text-muted-foreground" aria-hidden="true" />
+                  Joining date
+                </span>
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {employees.map((employee) => (
+              <TableRow key={employee.id}>
+                <TableCell className="h-14 border-r px-4">
+                  <div className="flex items-center gap-2.5">
+                    <Avatar size="sm">
+                      <AvatarFallback>{employee.initials}</AvatarFallback>
+                    </Avatar>
+                    <Link
+                      to="/dashboard/employees/$employeeId"
+                      params={{ employeeId: employee.id }}
+                      className="font-medium hover:underline"
+                    >
+                      {employee.name}
+                    </Link>
+                  </div>
+                </TableCell>
+                <TableCell className="h-14 border-r px-4">{employee.role}</TableCell>
+                <TableCell className="h-14 max-w-72 truncate border-r px-4">{employee.contract}</TableCell>
+                <TableCell className="h-14 border-r px-4 font-mono tabular-nums">{employee.monthlyPay}</TableCell>
+                <TableCell className="h-14 px-4 tabular-nums">{employee.joiningDate}</TableCell>
+              </TableRow>
+            ))}
+            <TableRow aria-hidden="true" className="h-full hover:bg-transparent">
+              <TableCell colSpan={5} className="p-0" />
+            </TableRow>
+          </TableBody>
+          <TableFooter className="sticky bottom-0">
+            <TableRow className="hover:bg-transparent">
+              <TableCell className="h-12 border-r px-4">
+                <span className="flex items-center gap-2 text-muted-foreground">
+                  <ListBulletsIcon className="size-4" aria-hidden="true" />
+                  Total: 42 employees
+                </span>
+              </TableCell>
+              <TableCell className="h-12 border-r px-4 text-muted-foreground">5 roles</TableCell>
+              <TableCell className="h-12 border-r px-4 text-muted-foreground">12 contracts</TableCell>
+              <TableCell className="h-12 border-r px-4 font-mono text-muted-foreground tabular-nums">
+                ₹23.8L monthly
+              </TableCell>
+              <TableCell className="h-12 px-4 text-muted-foreground">5 records shown</TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </div>
+    </section>
   );
 }
 
 export function NewEmployeeScreen() {
   return (
-    <PageBody className="max-w-4xl">
+    <>
       <PageHeader
         title="New employee"
         description="Create a workforce record before assigning the employee to a contract."
@@ -210,13 +302,13 @@ export function NewEmployeeScreen() {
         </Link>
         <Button type="button">Create employee</Button>
       </div>
-    </PageBody>
+    </>
   );
 }
 
 export function EmployeeDetailsScreen({ employeeId: _employeeId }: { employeeId: string }) {
   return (
-    <PageBody>
+    <>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex min-w-0 items-start gap-3">
           <Avatar size="lg">
@@ -314,6 +406,6 @@ export function EmployeeDetailsScreen({ employeeId: _employeeId }: { employeeId:
           </DataCard>
         </div>
       </div>
-    </PageBody>
+    </>
   );
 }

@@ -1,6 +1,8 @@
+import type { Icon } from "@phosphor-icons/react";
 import type { ReactNode } from "react";
 
-import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 
@@ -22,11 +24,46 @@ export function PageHeader({ title, description, action }: PageHeaderProps) {
   );
 }
 
-export function PageBody({ children, className }: { children: ReactNode; className?: string }) {
-  return <div className={cn("mx-auto flex w-full max-w-7xl flex-col gap-4", className)}>{children}</div>;
-}
+type MetricItem = {
+  label: string;
+  value: string;
+  detail?: string;
+  icon?: Icon;
+};
 
-export function MetricStrip({ items }: { items: Array<{ label: string; value: string; detail?: string }> }) {
+export function MetricStrip({ items, variant = "strip" }: { items: MetricItem[]; variant?: "strip" | "cards" }) {
+  if (variant === "cards") {
+    return (
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {items.map((item) => {
+          const ItemIcon = item.icon;
+
+          return (
+            <Card key={item.label} size="sm" className="gap-0 py-0">
+              <CardHeader className="gap-1 rounded-b-none bg-muted/50 py-3">
+                <CardDescription className="flex items-center gap-2">
+                  {ItemIcon ? (
+                    <span className="flex size-5 items-center justify-center rounded-sm bg-background ring-1 ring-foreground/10 [&_svg]:size-3">
+                      <ItemIcon weight="fill" aria-hidden="true" />
+                    </span>
+                  ) : null}
+                  {item.label}
+                </CardDescription>
+                <CardTitle className="text-xl font-medium tracking-tight tabular-nums">{item.value}</CardTitle>
+              </CardHeader>
+              {item.detail ? (
+                <>
+                  <Separator />
+                  <CardFooter className="py-2 text-muted-foreground">{item.detail}</CardFooter>
+                </>
+              ) : null}
+            </Card>
+          );
+        })}
+      </div>
+    );
+  }
+
   return (
     <Card>
       <CardContent className="grid p-0 sm:grid-cols-2 xl:grid-cols-4">
