@@ -1,8 +1,6 @@
 import { ArrowLeftIcon, FilePlusIcon, MagnifyingGlassIcon, PlusIcon } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
-import type { ReactNode } from "react";
 
-import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
@@ -17,7 +15,7 @@ import {
   PageHeader,
   StaticStatus,
   StaticTable,
-} from "../-components/screen";
+} from "../../-components/screen";
 
 const contracts = [
   {
@@ -213,74 +211,9 @@ export function NewContractScreen() {
   );
 }
 
-type ContractTab = "overview" | "employees" | "invoices" | "payroll" | "documents" | "activity" | "deadlines";
-
-function ContractShell({
-  contractId,
-  active,
-  children,
-}: {
-  contractId: string;
-  active: ContractTab;
-  children: ReactNode;
-}) {
-  const tabs = [
-    { id: "overview", label: "Overview", to: "/dashboard/contracts/$contractId" },
-    { id: "employees", label: "Employees", to: "/dashboard/contracts/$contractId/employees" },
-    { id: "invoices", label: "Invoices", to: "/dashboard/contracts/$contractId/invoices" },
-    { id: "payroll", label: "Payroll", to: "/dashboard/contracts/$contractId/payroll" },
-    { id: "documents", label: "Documents", to: "/dashboard/contracts/$contractId/documents" },
-    { id: "activity", label: "Activity", to: "/dashboard/contracts/$contractId/activity" },
-    { id: "deadlines", label: "Deadlines", to: "/dashboard/contracts/$contractId/deadlines" },
-  ] as const;
-
+export function ContractOverviewScreen() {
   return (
     <>
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div className="flex min-w-0 flex-col gap-1">
-          <Link
-            to="/dashboard/contracts"
-            className="mb-1 flex w-fit items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeftIcon />
-            Contracts
-          </Link>
-          <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-2xl font-semibold tracking-tight">Railway signaling maintenance</h1>
-            <Badge variant="outline">Active</Badge>
-          </div>
-          <p className="text-sm text-muted-foreground">GEM/2026/B/4412081 · Indian Railways</p>
-        </div>
-        <Button type="button" variant="outline">
-          Edit contract
-        </Button>
-      </div>
-
-      <nav className="scrollbar-none flex overflow-x-auto border-b" aria-label="Contract sections">
-        {tabs.map((tab) => (
-          <Link
-            key={tab.id}
-            to={tab.to}
-            params={{ contractId }}
-            className={
-              active === tab.id
-                ? "shrink-0 border-b-2 border-foreground px-3 py-2 text-xs font-medium text-foreground"
-                : "shrink-0 border-b-2 border-transparent px-3 py-2 text-xs text-muted-foreground hover:text-foreground"
-            }
-          >
-            {tab.label}
-          </Link>
-        ))}
-      </nav>
-
-      {children}
-    </>
-  );
-}
-
-export function ContractOverviewScreen({ contractId }: { contractId: string }) {
-  return (
-    <ContractShell contractId={contractId} active="overview">
       <MetricStrip
         items={[
           { label: "Awarded value", value: "₹48.6L", detail: "Excluding taxes" },
@@ -317,7 +250,7 @@ export function ContractOverviewScreen({ contractId }: { contractId: string }) {
           </div>
         </DataCard>
       </div>
-    </ContractShell>
+    </>
   );
 }
 
@@ -328,35 +261,33 @@ const contractEmployees = [
   { id: "emp-004", name: "Meera Joshi", role: "Documentation lead", start: "12 Jan 2026", status: "On leave" },
 ];
 
-export function ContractEmployeesScreen({ contractId }: { contractId: string }) {
+export function ContractEmployeesScreen() {
   return (
-    <ContractShell contractId={contractId} active="employees">
-      <DataCard
-        title="Assigned employees"
-        description="People currently allocated to this contract."
-        action={
-          <Button type="button" size="sm">
-            <PlusIcon data-icon="inline-start" />
-            Assign employee
-          </Button>
-        }
-        contentClassName="px-0"
-      >
-        <StaticTable
-          rows={contractEmployees}
-          columns={[
-            { key: "name", label: "Employee", render: (value) => <span className="font-medium">{String(value)}</span> },
-            { key: "role", label: "Role" },
-            { key: "start", label: "Assigned from", className: "tabular-nums" },
-            { key: "status", label: "Status", render: (value) => <StaticStatus>{String(value)}</StaticStatus> },
-          ]}
-        />
-      </DataCard>
-    </ContractShell>
+    <DataCard
+      title="Assigned employees"
+      description="People currently allocated to this contract."
+      action={
+        <Button type="button" size="sm">
+          <PlusIcon data-icon="inline-start" />
+          Assign employee
+        </Button>
+      }
+      contentClassName="px-0"
+    >
+      <StaticTable
+        rows={contractEmployees}
+        columns={[
+          { key: "name", label: "Employee", render: (value) => <span className="font-medium">{String(value)}</span> },
+          { key: "role", label: "Role" },
+          { key: "start", label: "Assigned from", className: "tabular-nums" },
+          { key: "status", label: "Status", render: (value) => <StaticStatus>{String(value)}</StaticStatus> },
+        ]}
+      />
+    </DataCard>
   );
 }
 
-export function ContractInvoicesScreen({ contractId }: { contractId: string }) {
+export function ContractInvoicesScreen() {
   const rows = [
     {
       id: "INV-2026-039",
@@ -384,32 +315,26 @@ export function ContractInvoicesScreen({ contractId }: { contractId: string }) {
     },
   ];
   return (
-    <ContractShell contractId={contractId} active="invoices">
-      <DataCard
-        title="Contract invoices"
-        description="Billing records raised against this award."
-        contentClassName="px-0"
-      >
-        <StaticTable
-          rows={rows}
-          columns={[
-            {
-              key: "invoice",
-              label: "Invoice",
-              render: (value) => <span className="font-medium">{String(value)}</span>,
-            },
-            { key: "period", label: "Billing period" },
-            { key: "amount", label: "Amount", className: "text-right tabular-nums" },
-            { key: "status", label: "Status", render: (value) => <StaticStatus>{String(value)}</StaticStatus> },
-            { key: "due", label: "Due date", className: "text-right tabular-nums" },
-          ]}
-        />
-      </DataCard>
-    </ContractShell>
+    <DataCard title="Contract invoices" description="Billing records raised against this award." contentClassName="px-0">
+      <StaticTable
+        rows={rows}
+        columns={[
+          {
+            key: "invoice",
+            label: "Invoice",
+            render: (value) => <span className="font-medium">{String(value)}</span>,
+          },
+          { key: "period", label: "Billing period" },
+          { key: "amount", label: "Amount", className: "text-right tabular-nums" },
+          { key: "status", label: "Status", render: (value) => <StaticStatus>{String(value)}</StaticStatus> },
+          { key: "due", label: "Due date", className: "text-right tabular-nums" },
+        ]}
+      />
+    </DataCard>
   );
 }
 
-export function ContractPayrollScreen({ contractId }: { contractId: string }) {
+export function ContractPayrollScreen() {
   const rows = [
     {
       id: "PAY-AUG-2026",
@@ -437,28 +362,26 @@ export function ContractPayrollScreen({ contractId }: { contractId: string }) {
     },
   ];
   return (
-    <ContractShell contractId={contractId} active="payroll">
-      <DataCard title="Contract payroll" description="Payroll runs allocated to this contract." contentClassName="px-0">
-        <StaticTable
-          rows={rows}
-          columns={[
-            {
-              key: "period",
-              label: "Pay period",
-              render: (value) => <span className="font-medium">{String(value)}</span>,
-            },
-            { key: "employees", label: "Employees", className: "text-right tabular-nums" },
-            { key: "gross", label: "Gross pay", className: "text-right tabular-nums" },
-            { key: "deductions", label: "Deductions", className: "text-right tabular-nums" },
-            { key: "status", label: "Status", render: (value) => <StaticStatus>{String(value)}</StaticStatus> },
-          ]}
-        />
-      </DataCard>
-    </ContractShell>
+    <DataCard title="Contract payroll" description="Payroll runs allocated to this contract." contentClassName="px-0">
+      <StaticTable
+        rows={rows}
+        columns={[
+          {
+            key: "period",
+            label: "Pay period",
+            render: (value) => <span className="font-medium">{String(value)}</span>,
+          },
+          { key: "employees", label: "Employees", className: "text-right tabular-nums" },
+          { key: "gross", label: "Gross pay", className: "text-right tabular-nums" },
+          { key: "deductions", label: "Deductions", className: "text-right tabular-nums" },
+          { key: "status", label: "Status", render: (value) => <StaticStatus>{String(value)}</StaticStatus> },
+        ]}
+      />
+    </DataCard>
   );
 }
 
-export function ContractDocumentsScreen({ contractId }: { contractId: string }) {
+export function ContractDocumentsScreen() {
   const rows = [
     { id: "doc-1", document: "Letter of award.pdf", category: "Award", updated: "19 Dec 2025", owner: "Aarav Mehta" },
     {
@@ -478,37 +401,35 @@ export function ContractDocumentsScreen({ contractId }: { contractId: string }) 
     },
   ];
   return (
-    <ContractShell contractId={contractId} active="documents">
-      <DataCard
-        title="Documents"
-        description="Award, compliance, security, and delivery files."
-        action={
-          <Button type="button" size="sm">
-            <PlusIcon data-icon="inline-start" />
-            Add document
-          </Button>
-        }
-        contentClassName="px-0"
-      >
-        <StaticTable
-          rows={rows}
-          columns={[
-            {
-              key: "document",
-              label: "Document",
-              render: (value) => <span className="font-medium">{String(value)}</span>,
-            },
-            { key: "category", label: "Category" },
-            { key: "owner", label: "Owner" },
-            { key: "updated", label: "Last updated", className: "text-right tabular-nums" },
-          ]}
-        />
-      </DataCard>
-    </ContractShell>
+    <DataCard
+      title="Documents"
+      description="Award, compliance, security, and delivery files."
+      action={
+        <Button type="button" size="sm">
+          <PlusIcon data-icon="inline-start" />
+          Add document
+        </Button>
+      }
+      contentClassName="px-0"
+    >
+      <StaticTable
+        rows={rows}
+        columns={[
+          {
+            key: "document",
+            label: "Document",
+            render: (value) => <span className="font-medium">{String(value)}</span>,
+          },
+          { key: "category", label: "Category" },
+          { key: "owner", label: "Owner" },
+          { key: "updated", label: "Last updated", className: "text-right tabular-nums" },
+        ]}
+      />
+    </DataCard>
   );
 }
 
-export function ContractActivityScreen({ contractId }: { contractId: string }) {
+export function ContractActivityScreen() {
   const activity = [
     ["Invoice INV-2026-042 created", "Priya Kapoor", "Today, 10:42"],
     ["August payroll moved to review", "Rohan Desai", "Yesterday, 16:18"],
@@ -516,26 +437,24 @@ export function ContractActivityScreen({ contractId }: { contractId: string }) {
     ["Employee Vikram Singh assigned", "Aarav Mehta", "16 Aug, 09:31"],
   ];
   return (
-    <ContractShell contractId={contractId} active="activity">
-      <DataCard title="Activity" description="Recent changes recorded against this contract.">
-        <div className="flex flex-col divide-y">
-          {activity.map(([event, person, time]) => (
-            <div
-              key={event}
-              className="grid gap-1 py-3 first:pt-0 last:pb-0 sm:grid-cols-[minmax(0,1fr)_10rem_8rem] sm:items-center"
-            >
-              <span className="font-medium">{event}</span>
-              <span className="text-muted-foreground">{person}</span>
-              <span className="text-right text-xs text-muted-foreground tabular-nums">{time}</span>
-            </div>
-          ))}
-        </div>
-      </DataCard>
-    </ContractShell>
+    <DataCard title="Activity" description="Recent changes recorded against this contract.">
+      <div className="flex flex-col divide-y">
+        {activity.map(([event, person, time]) => (
+          <div
+            key={event}
+            className="grid gap-1 py-3 first:pt-0 last:pb-0 sm:grid-cols-[minmax(0,1fr)_10rem_8rem] sm:items-center"
+          >
+            <span className="font-medium">{event}</span>
+            <span className="text-muted-foreground">{person}</span>
+            <span className="text-right text-xs text-muted-foreground tabular-nums">{time}</span>
+          </div>
+        ))}
+      </div>
+    </DataCard>
   );
 }
 
-export function ContractDeadlinesScreen({ contractId }: { contractId: string }) {
+export function ContractDeadlinesScreen() {
   const rows = [
     {
       id: "deadline-1",
@@ -561,32 +480,30 @@ export function ContractDeadlinesScreen({ contractId }: { contractId: string }) 
     },
   ];
   return (
-    <ContractShell contractId={contractId} active="deadlines">
-      <DataCard
-        title="Deadlines"
-        description="Upcoming contractual and operational obligations."
-        action={
-          <Button type="button" size="sm">
-            <PlusIcon data-icon="inline-start" />
-            Add deadline
-          </Button>
-        }
-        contentClassName="px-0"
-      >
-        <StaticTable
-          rows={rows}
-          columns={[
-            {
-              key: "item",
-              label: "Obligation",
-              render: (value) => <span className="font-medium">{String(value)}</span>,
-            },
-            { key: "owner", label: "Owner" },
-            { key: "due", label: "Due date", className: "tabular-nums" },
-            { key: "status", label: "Status", render: (value) => <StaticStatus>{String(value)}</StaticStatus> },
-          ]}
-        />
-      </DataCard>
-    </ContractShell>
+    <DataCard
+      title="Deadlines"
+      description="Upcoming contractual and operational obligations."
+      action={
+        <Button type="button" size="sm">
+          <PlusIcon data-icon="inline-start" />
+          Add deadline
+        </Button>
+      }
+      contentClassName="px-0"
+    >
+      <StaticTable
+        rows={rows}
+        columns={[
+          {
+            key: "item",
+            label: "Obligation",
+            render: (value) => <span className="font-medium">{String(value)}</span>,
+          },
+          { key: "owner", label: "Owner" },
+          { key: "due", label: "Due date", className: "tabular-nums" },
+          { key: "status", label: "Status", render: (value) => <StaticStatus>{String(value)}</StaticStatus> },
+        ]}
+      />
+    </DataCard>
   );
 }

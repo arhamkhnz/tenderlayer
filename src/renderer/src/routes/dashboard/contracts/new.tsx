@@ -1,11 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { NewContractScreen } from "./-screens";
+import { NewContractScreen } from "./-components/screens";
 
 export const Route = createFileRoute("/dashboard/contracts/new")({
-  component: NewContractPage,
+  component: NewContractScreen,
 });
-
-function NewContractPage() {
-  return <NewContractScreen />;
-}

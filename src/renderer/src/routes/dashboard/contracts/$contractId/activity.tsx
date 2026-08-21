@@ -1,12 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { ContractActivityScreen } from "../-screens";
+import { ContractActivityScreen } from "../-components/screens";
 
 export const Route = createFileRoute("/dashboard/contracts/$contractId/activity")({
-  component: ContractActivityPage,
+  component: ContractActivityScreen,
 });
-
-function ContractActivityPage() {
-  const { contractId } = Route.useParams();
-  return <ContractActivityScreen contractId={contractId} />;
-}

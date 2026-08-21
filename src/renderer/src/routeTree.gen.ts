@@ -13,11 +13,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
-import { Route as DashboardContractsRouteRouteImport } from './routes/dashboard/contracts/route'
-import { Route as DashboardEmployeesRouteRouteImport } from './routes/dashboard/employees/route'
-import { Route as DashboardInvoicesRouteRouteImport } from './routes/dashboard/invoices/route'
-import { Route as DashboardPayrollRouteRouteImport } from './routes/dashboard/payroll/route'
-import { Route as DashboardSettingsRouteRouteImport } from './routes/dashboard/settings/route'
 import { Route as DashboardContractsIndexRouteImport } from './routes/dashboard/contracts/index'
 import { Route as DashboardContractsContractIdRouteRouteImport } from './routes/dashboard/contracts/$contractId/route'
 import { Route as DashboardContractsNewRouteImport } from './routes/dashboard/contracts/new'
@@ -30,8 +25,8 @@ import { Route as DashboardInvoicesNewRouteImport } from './routes/dashboard/inv
 import { Route as DashboardPayrollIndexRouteImport } from './routes/dashboard/payroll/index'
 import { Route as DashboardPayrollPayrollIdRouteImport } from './routes/dashboard/payroll/$payrollId'
 import { Route as DashboardPayrollNewRouteImport } from './routes/dashboard/payroll/new'
-import { Route as DashboardSettingsOrganizationRouteRouteImport } from './routes/dashboard/settings/organization/route'
-import { Route as DashboardSettingsTaxRouteRouteImport } from './routes/dashboard/settings/tax/route'
+import { Route as DashboardSettingsOrganizationRouteImport } from './routes/dashboard/settings/organization'
+import { Route as DashboardSettingsTaxRouteImport } from './routes/dashboard/settings/tax'
 import { Route as DashboardContractsContractIdIndexRouteImport } from './routes/dashboard/contracts/$contractId/index'
 import { Route as DashboardContractsContractIdActivityRouteImport } from './routes/dashboard/contracts/$contractId/activity'
 import { Route as DashboardContractsContractIdDeadlinesRouteImport } from './routes/dashboard/contracts/$contractId/deadlines'
@@ -60,107 +55,81 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
-const DashboardContractsRouteRoute = DashboardContractsRouteRouteImport.update({
-  id: '/contracts',
-  path: '/contracts',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardEmployeesRouteRoute = DashboardEmployeesRouteRouteImport.update({
-  id: '/employees',
-  path: '/employees',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardInvoicesRouteRoute = DashboardInvoicesRouteRouteImport.update({
-  id: '/invoices',
-  path: '/invoices',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardPayrollRouteRoute = DashboardPayrollRouteRouteImport.update({
-  id: '/payroll',
-  path: '/payroll',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardSettingsRouteRoute = DashboardSettingsRouteRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
 const DashboardContractsIndexRoute = DashboardContractsIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DashboardContractsRouteRoute,
+  id: '/contracts/',
+  path: '/contracts/',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardContractsContractIdRouteRoute =
   DashboardContractsContractIdRouteRouteImport.update({
-    id: '/$contractId',
-    path: '/$contractId',
-    getParentRoute: () => DashboardContractsRouteRoute,
+    id: '/contracts/$contractId',
+    path: '/contracts/$contractId',
+    getParentRoute: () => DashboardRouteRoute,
   } as any)
 const DashboardContractsNewRoute = DashboardContractsNewRouteImport.update({
-  id: '/new',
-  path: '/new',
-  getParentRoute: () => DashboardContractsRouteRoute,
+  id: '/contracts/new',
+  path: '/contracts/new',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardEmployeesIndexRoute = DashboardEmployeesIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DashboardEmployeesRouteRoute,
+  id: '/employees/',
+  path: '/employees/',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardEmployeesEmployeeIdRoute =
   DashboardEmployeesEmployeeIdRouteImport.update({
-    id: '/$employeeId',
-    path: '/$employeeId',
-    getParentRoute: () => DashboardEmployeesRouteRoute,
+    id: '/employees/$employeeId',
+    path: '/employees/$employeeId',
+    getParentRoute: () => DashboardRouteRoute,
   } as any)
 const DashboardEmployeesNewRoute = DashboardEmployeesNewRouteImport.update({
-  id: '/new',
-  path: '/new',
-  getParentRoute: () => DashboardEmployeesRouteRoute,
+  id: '/employees/new',
+  path: '/employees/new',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardInvoicesIndexRoute = DashboardInvoicesIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DashboardInvoicesRouteRoute,
+  id: '/invoices/',
+  path: '/invoices/',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardInvoicesInvoiceIdRoute =
   DashboardInvoicesInvoiceIdRouteImport.update({
-    id: '/$invoiceId',
-    path: '/$invoiceId',
-    getParentRoute: () => DashboardInvoicesRouteRoute,
+    id: '/invoices/$invoiceId',
+    path: '/invoices/$invoiceId',
+    getParentRoute: () => DashboardRouteRoute,
   } as any)
 const DashboardInvoicesNewRoute = DashboardInvoicesNewRouteImport.update({
-  id: '/new',
-  path: '/new',
-  getParentRoute: () => DashboardInvoicesRouteRoute,
+  id: '/invoices/new',
+  path: '/invoices/new',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardPayrollIndexRoute = DashboardPayrollIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DashboardPayrollRouteRoute,
+  id: '/payroll/',
+  path: '/payroll/',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardPayrollPayrollIdRoute =
   DashboardPayrollPayrollIdRouteImport.update({
-    id: '/$payrollId',
-    path: '/$payrollId',
-    getParentRoute: () => DashboardPayrollRouteRoute,
+    id: '/payroll/$payrollId',
+    path: '/payroll/$payrollId',
+    getParentRoute: () => DashboardRouteRoute,
   } as any)
 const DashboardPayrollNewRoute = DashboardPayrollNewRouteImport.update({
-  id: '/new',
-  path: '/new',
-  getParentRoute: () => DashboardPayrollRouteRoute,
+  id: '/payroll/new',
+  path: '/payroll/new',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
-const DashboardSettingsOrganizationRouteRoute =
-  DashboardSettingsOrganizationRouteRouteImport.update({
-    id: '/organization',
-    path: '/organization',
-    getParentRoute: () => DashboardSettingsRouteRoute,
+const DashboardSettingsOrganizationRoute =
+  DashboardSettingsOrganizationRouteImport.update({
+    id: '/settings/organization',
+    path: '/settings/organization',
+    getParentRoute: () => DashboardRouteRoute,
   } as any)
-const DashboardSettingsTaxRouteRoute =
-  DashboardSettingsTaxRouteRouteImport.update({
-    id: '/tax',
-    path: '/tax',
-    getParentRoute: () => DashboardSettingsRouteRoute,
-  } as any)
+const DashboardSettingsTaxRoute = DashboardSettingsTaxRouteImport.update({
+  id: '/settings/tax',
+  path: '/settings/tax',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
 const DashboardContractsContractIdIndexRoute =
   DashboardContractsContractIdIndexRouteImport.update({
     id: '/',
@@ -208,15 +177,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/welcome': typeof WelcomeRoute
-  '/dashboard/contracts': typeof DashboardContractsRouteRouteWithChildren
-  '/dashboard/employees': typeof DashboardEmployeesRouteRouteWithChildren
-  '/dashboard/invoices': typeof DashboardInvoicesRouteRouteWithChildren
-  '/dashboard/payroll': typeof DashboardPayrollRouteRouteWithChildren
-  '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/contracts/$contractId': typeof DashboardContractsContractIdRouteRouteWithChildren
-  '/dashboard/settings/organization': typeof DashboardSettingsOrganizationRouteRoute
-  '/dashboard/settings/tax': typeof DashboardSettingsTaxRouteRoute
   '/dashboard/contracts/new': typeof DashboardContractsNewRoute
   '/dashboard/employees/$employeeId': typeof DashboardEmployeesEmployeeIdRoute
   '/dashboard/employees/new': typeof DashboardEmployeesNewRoute
@@ -224,6 +186,8 @@ export interface FileRoutesByFullPath {
   '/dashboard/invoices/new': typeof DashboardInvoicesNewRoute
   '/dashboard/payroll/$payrollId': typeof DashboardPayrollPayrollIdRoute
   '/dashboard/payroll/new': typeof DashboardPayrollNewRoute
+  '/dashboard/settings/organization': typeof DashboardSettingsOrganizationRoute
+  '/dashboard/settings/tax': typeof DashboardSettingsTaxRoute
   '/dashboard/contracts/': typeof DashboardContractsIndexRoute
   '/dashboard/employees/': typeof DashboardEmployeesIndexRoute
   '/dashboard/invoices/': typeof DashboardInvoicesIndexRoute
@@ -239,10 +203,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/welcome': typeof WelcomeRoute
-  '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
   '/dashboard': typeof DashboardIndexRoute
-  '/dashboard/settings/organization': typeof DashboardSettingsOrganizationRouteRoute
-  '/dashboard/settings/tax': typeof DashboardSettingsTaxRouteRoute
   '/dashboard/contracts/new': typeof DashboardContractsNewRoute
   '/dashboard/employees/$employeeId': typeof DashboardEmployeesEmployeeIdRoute
   '/dashboard/employees/new': typeof DashboardEmployeesNewRoute
@@ -250,6 +211,8 @@ export interface FileRoutesByTo {
   '/dashboard/invoices/new': typeof DashboardInvoicesNewRoute
   '/dashboard/payroll/$payrollId': typeof DashboardPayrollPayrollIdRoute
   '/dashboard/payroll/new': typeof DashboardPayrollNewRoute
+  '/dashboard/settings/organization': typeof DashboardSettingsOrganizationRoute
+  '/dashboard/settings/tax': typeof DashboardSettingsTaxRoute
   '/dashboard/contracts': typeof DashboardContractsIndexRoute
   '/dashboard/employees': typeof DashboardEmployeesIndexRoute
   '/dashboard/invoices': typeof DashboardInvoicesIndexRoute
@@ -267,15 +230,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/welcome': typeof WelcomeRoute
-  '/dashboard/contracts': typeof DashboardContractsRouteRouteWithChildren
-  '/dashboard/employees': typeof DashboardEmployeesRouteRouteWithChildren
-  '/dashboard/invoices': typeof DashboardInvoicesRouteRouteWithChildren
-  '/dashboard/payroll': typeof DashboardPayrollRouteRouteWithChildren
-  '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/contracts/$contractId': typeof DashboardContractsContractIdRouteRouteWithChildren
-  '/dashboard/settings/organization': typeof DashboardSettingsOrganizationRouteRoute
-  '/dashboard/settings/tax': typeof DashboardSettingsTaxRouteRoute
   '/dashboard/contracts/new': typeof DashboardContractsNewRoute
   '/dashboard/employees/$employeeId': typeof DashboardEmployeesEmployeeIdRoute
   '/dashboard/employees/new': typeof DashboardEmployeesNewRoute
@@ -283,6 +239,8 @@ export interface FileRoutesById {
   '/dashboard/invoices/new': typeof DashboardInvoicesNewRoute
   '/dashboard/payroll/$payrollId': typeof DashboardPayrollPayrollIdRoute
   '/dashboard/payroll/new': typeof DashboardPayrollNewRoute
+  '/dashboard/settings/organization': typeof DashboardSettingsOrganizationRoute
+  '/dashboard/settings/tax': typeof DashboardSettingsTaxRoute
   '/dashboard/contracts/': typeof DashboardContractsIndexRoute
   '/dashboard/employees/': typeof DashboardEmployeesIndexRoute
   '/dashboard/invoices/': typeof DashboardInvoicesIndexRoute
@@ -301,15 +259,8 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/welcome'
-    | '/dashboard/contracts'
-    | '/dashboard/employees'
-    | '/dashboard/invoices'
-    | '/dashboard/payroll'
-    | '/dashboard/settings'
     | '/dashboard/'
     | '/dashboard/contracts/$contractId'
-    | '/dashboard/settings/organization'
-    | '/dashboard/settings/tax'
     | '/dashboard/contracts/new'
     | '/dashboard/employees/$employeeId'
     | '/dashboard/employees/new'
@@ -317,6 +268,8 @@ export interface FileRouteTypes {
     | '/dashboard/invoices/new'
     | '/dashboard/payroll/$payrollId'
     | '/dashboard/payroll/new'
+    | '/dashboard/settings/organization'
+    | '/dashboard/settings/tax'
     | '/dashboard/contracts/'
     | '/dashboard/employees/'
     | '/dashboard/invoices/'
@@ -332,10 +285,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/welcome'
-    | '/dashboard/settings'
     | '/dashboard'
-    | '/dashboard/settings/organization'
-    | '/dashboard/settings/tax'
     | '/dashboard/contracts/new'
     | '/dashboard/employees/$employeeId'
     | '/dashboard/employees/new'
@@ -343,6 +293,8 @@ export interface FileRouteTypes {
     | '/dashboard/invoices/new'
     | '/dashboard/payroll/$payrollId'
     | '/dashboard/payroll/new'
+    | '/dashboard/settings/organization'
+    | '/dashboard/settings/tax'
     | '/dashboard/contracts'
     | '/dashboard/employees'
     | '/dashboard/invoices'
@@ -359,15 +311,8 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/welcome'
-    | '/dashboard/contracts'
-    | '/dashboard/employees'
-    | '/dashboard/invoices'
-    | '/dashboard/payroll'
-    | '/dashboard/settings'
     | '/dashboard/'
     | '/dashboard/contracts/$contractId'
-    | '/dashboard/settings/organization'
-    | '/dashboard/settings/tax'
     | '/dashboard/contracts/new'
     | '/dashboard/employees/$employeeId'
     | '/dashboard/employees/new'
@@ -375,6 +320,8 @@ export interface FileRouteTypes {
     | '/dashboard/invoices/new'
     | '/dashboard/payroll/$payrollId'
     | '/dashboard/payroll/new'
+    | '/dashboard/settings/organization'
+    | '/dashboard/settings/tax'
     | '/dashboard/contracts/'
     | '/dashboard/employees/'
     | '/dashboard/invoices/'
@@ -424,138 +371,103 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
-    '/dashboard/contracts': {
-      id: '/dashboard/contracts'
-      path: '/contracts'
-      fullPath: '/dashboard/contracts'
-      preLoaderRoute: typeof DashboardContractsRouteRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/employees': {
-      id: '/dashboard/employees'
-      path: '/employees'
-      fullPath: '/dashboard/employees'
-      preLoaderRoute: typeof DashboardEmployeesRouteRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/invoices': {
-      id: '/dashboard/invoices'
-      path: '/invoices'
-      fullPath: '/dashboard/invoices'
-      preLoaderRoute: typeof DashboardInvoicesRouteRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/payroll': {
-      id: '/dashboard/payroll'
-      path: '/payroll'
-      fullPath: '/dashboard/payroll'
-      preLoaderRoute: typeof DashboardPayrollRouteRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
-    '/dashboard/settings': {
-      id: '/dashboard/settings'
-      path: '/settings'
-      fullPath: '/dashboard/settings'
-      preLoaderRoute: typeof DashboardSettingsRouteRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
     '/dashboard/contracts/': {
       id: '/dashboard/contracts/'
-      path: '/'
+      path: '/contracts'
       fullPath: '/dashboard/contracts/'
       preLoaderRoute: typeof DashboardContractsIndexRouteImport
-      parentRoute: typeof DashboardContractsRouteRoute
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/contracts/$contractId': {
       id: '/dashboard/contracts/$contractId'
-      path: '/$contractId'
+      path: '/contracts/$contractId'
       fullPath: '/dashboard/contracts/$contractId'
       preLoaderRoute: typeof DashboardContractsContractIdRouteRouteImport
-      parentRoute: typeof DashboardContractsRouteRoute
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/contracts/new': {
       id: '/dashboard/contracts/new'
-      path: '/new'
+      path: '/contracts/new'
       fullPath: '/dashboard/contracts/new'
       preLoaderRoute: typeof DashboardContractsNewRouteImport
-      parentRoute: typeof DashboardContractsRouteRoute
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/employees/': {
       id: '/dashboard/employees/'
-      path: '/'
+      path: '/employees'
       fullPath: '/dashboard/employees/'
       preLoaderRoute: typeof DashboardEmployeesIndexRouteImport
-      parentRoute: typeof DashboardEmployeesRouteRoute
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/employees/$employeeId': {
       id: '/dashboard/employees/$employeeId'
-      path: '/$employeeId'
+      path: '/employees/$employeeId'
       fullPath: '/dashboard/employees/$employeeId'
       preLoaderRoute: typeof DashboardEmployeesEmployeeIdRouteImport
-      parentRoute: typeof DashboardEmployeesRouteRoute
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/employees/new': {
       id: '/dashboard/employees/new'
-      path: '/new'
+      path: '/employees/new'
       fullPath: '/dashboard/employees/new'
       preLoaderRoute: typeof DashboardEmployeesNewRouteImport
-      parentRoute: typeof DashboardEmployeesRouteRoute
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/invoices/': {
       id: '/dashboard/invoices/'
-      path: '/'
+      path: '/invoices'
       fullPath: '/dashboard/invoices/'
       preLoaderRoute: typeof DashboardInvoicesIndexRouteImport
-      parentRoute: typeof DashboardInvoicesRouteRoute
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/invoices/$invoiceId': {
       id: '/dashboard/invoices/$invoiceId'
-      path: '/$invoiceId'
+      path: '/invoices/$invoiceId'
       fullPath: '/dashboard/invoices/$invoiceId'
       preLoaderRoute: typeof DashboardInvoicesInvoiceIdRouteImport
-      parentRoute: typeof DashboardInvoicesRouteRoute
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/invoices/new': {
       id: '/dashboard/invoices/new'
-      path: '/new'
+      path: '/invoices/new'
       fullPath: '/dashboard/invoices/new'
       preLoaderRoute: typeof DashboardInvoicesNewRouteImport
-      parentRoute: typeof DashboardInvoicesRouteRoute
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/payroll/': {
       id: '/dashboard/payroll/'
-      path: '/'
+      path: '/payroll'
       fullPath: '/dashboard/payroll/'
       preLoaderRoute: typeof DashboardPayrollIndexRouteImport
-      parentRoute: typeof DashboardPayrollRouteRoute
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/payroll/$payrollId': {
       id: '/dashboard/payroll/$payrollId'
-      path: '/$payrollId'
+      path: '/payroll/$payrollId'
       fullPath: '/dashboard/payroll/$payrollId'
       preLoaderRoute: typeof DashboardPayrollPayrollIdRouteImport
-      parentRoute: typeof DashboardPayrollRouteRoute
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/payroll/new': {
       id: '/dashboard/payroll/new'
-      path: '/new'
+      path: '/payroll/new'
       fullPath: '/dashboard/payroll/new'
       preLoaderRoute: typeof DashboardPayrollNewRouteImport
-      parentRoute: typeof DashboardPayrollRouteRoute
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/settings/organization': {
       id: '/dashboard/settings/organization'
-      path: '/organization'
+      path: '/settings/organization'
       fullPath: '/dashboard/settings/organization'
-      preLoaderRoute: typeof DashboardSettingsOrganizationRouteRouteImport
-      parentRoute: typeof DashboardSettingsRouteRoute
+      preLoaderRoute: typeof DashboardSettingsOrganizationRouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/settings/tax': {
       id: '/dashboard/settings/tax'
-      path: '/tax'
+      path: '/settings/tax'
       fullPath: '/dashboard/settings/tax'
-      preLoaderRoute: typeof DashboardSettingsTaxRouteRouteImport
-      parentRoute: typeof DashboardSettingsRouteRoute
+      preLoaderRoute: typeof DashboardSettingsTaxRouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/contracts/$contractId/': {
       id: '/dashboard/contracts/$contractId/'
@@ -642,111 +554,41 @@ const DashboardContractsContractIdRouteRouteWithChildren =
     DashboardContractsContractIdRouteRouteChildren,
   )
 
-interface DashboardContractsRouteRouteChildren {
+interface DashboardRouteRouteChildren {
+  DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardContractsContractIdRouteRoute: typeof DashboardContractsContractIdRouteRouteWithChildren
   DashboardContractsNewRoute: typeof DashboardContractsNewRoute
-  DashboardContractsIndexRoute: typeof DashboardContractsIndexRoute
-}
-
-const DashboardContractsRouteRouteChildren: DashboardContractsRouteRouteChildren =
-  {
-    DashboardContractsContractIdRouteRoute:
-      DashboardContractsContractIdRouteRouteWithChildren,
-    DashboardContractsNewRoute: DashboardContractsNewRoute,
-    DashboardContractsIndexRoute: DashboardContractsIndexRoute,
-  }
-
-const DashboardContractsRouteRouteWithChildren =
-  DashboardContractsRouteRoute._addFileChildren(
-    DashboardContractsRouteRouteChildren,
-  )
-
-interface DashboardEmployeesRouteRouteChildren {
   DashboardEmployeesEmployeeIdRoute: typeof DashboardEmployeesEmployeeIdRoute
   DashboardEmployeesNewRoute: typeof DashboardEmployeesNewRoute
-  DashboardEmployeesIndexRoute: typeof DashboardEmployeesIndexRoute
-}
-
-const DashboardEmployeesRouteRouteChildren: DashboardEmployeesRouteRouteChildren =
-  {
-    DashboardEmployeesEmployeeIdRoute: DashboardEmployeesEmployeeIdRoute,
-    DashboardEmployeesNewRoute: DashboardEmployeesNewRoute,
-    DashboardEmployeesIndexRoute: DashboardEmployeesIndexRoute,
-  }
-
-const DashboardEmployeesRouteRouteWithChildren =
-  DashboardEmployeesRouteRoute._addFileChildren(
-    DashboardEmployeesRouteRouteChildren,
-  )
-
-interface DashboardInvoicesRouteRouteChildren {
   DashboardInvoicesInvoiceIdRoute: typeof DashboardInvoicesInvoiceIdRoute
   DashboardInvoicesNewRoute: typeof DashboardInvoicesNewRoute
-  DashboardInvoicesIndexRoute: typeof DashboardInvoicesIndexRoute
-}
-
-const DashboardInvoicesRouteRouteChildren: DashboardInvoicesRouteRouteChildren =
-  {
-    DashboardInvoicesInvoiceIdRoute: DashboardInvoicesInvoiceIdRoute,
-    DashboardInvoicesNewRoute: DashboardInvoicesNewRoute,
-    DashboardInvoicesIndexRoute: DashboardInvoicesIndexRoute,
-  }
-
-const DashboardInvoicesRouteRouteWithChildren =
-  DashboardInvoicesRouteRoute._addFileChildren(
-    DashboardInvoicesRouteRouteChildren,
-  )
-
-interface DashboardPayrollRouteRouteChildren {
   DashboardPayrollPayrollIdRoute: typeof DashboardPayrollPayrollIdRoute
   DashboardPayrollNewRoute: typeof DashboardPayrollNewRoute
+  DashboardSettingsOrganizationRoute: typeof DashboardSettingsOrganizationRoute
+  DashboardSettingsTaxRoute: typeof DashboardSettingsTaxRoute
+  DashboardContractsIndexRoute: typeof DashboardContractsIndexRoute
+  DashboardEmployeesIndexRoute: typeof DashboardEmployeesIndexRoute
+  DashboardInvoicesIndexRoute: typeof DashboardInvoicesIndexRoute
   DashboardPayrollIndexRoute: typeof DashboardPayrollIndexRoute
 }
 
-const DashboardPayrollRouteRouteChildren: DashboardPayrollRouteRouteChildren = {
+const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardIndexRoute: DashboardIndexRoute,
+  DashboardContractsContractIdRouteRoute:
+    DashboardContractsContractIdRouteRouteWithChildren,
+  DashboardContractsNewRoute: DashboardContractsNewRoute,
+  DashboardEmployeesEmployeeIdRoute: DashboardEmployeesEmployeeIdRoute,
+  DashboardEmployeesNewRoute: DashboardEmployeesNewRoute,
+  DashboardInvoicesInvoiceIdRoute: DashboardInvoicesInvoiceIdRoute,
+  DashboardInvoicesNewRoute: DashboardInvoicesNewRoute,
   DashboardPayrollPayrollIdRoute: DashboardPayrollPayrollIdRoute,
   DashboardPayrollNewRoute: DashboardPayrollNewRoute,
+  DashboardSettingsOrganizationRoute: DashboardSettingsOrganizationRoute,
+  DashboardSettingsTaxRoute: DashboardSettingsTaxRoute,
+  DashboardContractsIndexRoute: DashboardContractsIndexRoute,
+  DashboardEmployeesIndexRoute: DashboardEmployeesIndexRoute,
+  DashboardInvoicesIndexRoute: DashboardInvoicesIndexRoute,
   DashboardPayrollIndexRoute: DashboardPayrollIndexRoute,
-}
-
-const DashboardPayrollRouteRouteWithChildren =
-  DashboardPayrollRouteRoute._addFileChildren(
-    DashboardPayrollRouteRouteChildren,
-  )
-
-interface DashboardSettingsRouteRouteChildren {
-  DashboardSettingsOrganizationRouteRoute: typeof DashboardSettingsOrganizationRouteRoute
-  DashboardSettingsTaxRouteRoute: typeof DashboardSettingsTaxRouteRoute
-}
-
-const DashboardSettingsRouteRouteChildren: DashboardSettingsRouteRouteChildren =
-  {
-    DashboardSettingsOrganizationRouteRoute:
-      DashboardSettingsOrganizationRouteRoute,
-    DashboardSettingsTaxRouteRoute: DashboardSettingsTaxRouteRoute,
-  }
-
-const DashboardSettingsRouteRouteWithChildren =
-  DashboardSettingsRouteRoute._addFileChildren(
-    DashboardSettingsRouteRouteChildren,
-  )
-
-interface DashboardRouteRouteChildren {
-  DashboardContractsRouteRoute: typeof DashboardContractsRouteRouteWithChildren
-  DashboardEmployeesRouteRoute: typeof DashboardEmployeesRouteRouteWithChildren
-  DashboardInvoicesRouteRoute: typeof DashboardInvoicesRouteRouteWithChildren
-  DashboardPayrollRouteRoute: typeof DashboardPayrollRouteRouteWithChildren
-  DashboardSettingsRouteRoute: typeof DashboardSettingsRouteRouteWithChildren
-  DashboardIndexRoute: typeof DashboardIndexRoute
-}
-
-const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
-  DashboardContractsRouteRoute: DashboardContractsRouteRouteWithChildren,
-  DashboardEmployeesRouteRoute: DashboardEmployeesRouteRouteWithChildren,
-  DashboardInvoicesRouteRoute: DashboardInvoicesRouteRouteWithChildren,
-  DashboardPayrollRouteRoute: DashboardPayrollRouteRouteWithChildren,
-  DashboardSettingsRouteRoute: DashboardSettingsRouteRouteWithChildren,
-  DashboardIndexRoute: DashboardIndexRoute,
 }
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(

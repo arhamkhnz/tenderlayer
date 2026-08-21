@@ -15,7 +15,7 @@ import {
   PageHeader,
   StaticStatus,
   StaticTable,
-} from "../-components/screen";
+} from "../../-components/screen";
 
 const payrollRuns = [
   {
@@ -251,7 +251,7 @@ export function NewPayrollScreen() {
   );
 }
 
-export function PayrollDetailsScreen({ payrollId: _payrollId }: { payrollId: string }) {
+export function PayrollDetailsScreen() {
   const employees = [
     {
       id: "emp-1",

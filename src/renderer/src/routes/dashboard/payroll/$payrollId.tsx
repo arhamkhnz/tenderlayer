@@ -1,12 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { PayrollDetailsScreen } from "./-screens";
+import { PayrollDetailsScreen } from "./-components/screens";
 
 export const Route = createFileRoute("/dashboard/payroll/$payrollId")({
-  component: PayrollDetailsPage,
+  component: PayrollDetailsScreen,
 });
-
-function PayrollDetailsPage() {
-  const { payrollId } = Route.useParams();
-  return <PayrollDetailsScreen payrollId={payrollId} />;
-}

@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-import { PageHeader } from "../-components/screen";
+import { PageHeader } from "../../-components/screen";
 
 export function OrganizationSettingsScreen() {
   return (

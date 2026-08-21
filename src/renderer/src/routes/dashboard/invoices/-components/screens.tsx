@@ -17,7 +17,7 @@ import {
   PageHeader,
   StaticStatus,
   StaticTable,
-} from "../-components/screen";
+} from "../../-components/screen";
 
 const invoices = [
   {
@@ -278,7 +278,7 @@ export function NewInvoiceScreen() {
   );
 }
 
-export function InvoiceDetailsScreen({ invoiceId: _invoiceId }: { invoiceId: string }) {
+export function InvoiceDetailsScreen() {
   return (
     <>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">

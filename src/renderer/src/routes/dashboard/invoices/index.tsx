@@ -1,11 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { InvoicesScreen } from "./-screens";
+import { InvoicesScreen } from "./-components/screens";
 
 export const Route = createFileRoute("/dashboard/invoices/")({
-  component: InvoicesPage,
+  component: InvoicesScreen,
 });
-
-function InvoicesPage() {
-  return <InvoicesScreen />;
-}

@@ -1,11 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { NewPayrollScreen } from "./-screens";
+import { NewPayrollScreen } from "./-components/screens";
 
 export const Route = createFileRoute("/dashboard/payroll/new")({
-  component: NewPayrollPage,
+  component: NewPayrollScreen,
 });
-
-function NewPayrollPage() {
-  return <NewPayrollScreen />;
-}

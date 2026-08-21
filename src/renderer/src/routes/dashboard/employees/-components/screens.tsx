@@ -1,17 +1,6 @@
 import {
   ArrowLeftIcon,
-  ArrowsDownUpIcon,
-  BriefcaseIcon,
-  CalendarBlankIcon,
-  ColumnsIcon,
-  CurrencyInrIcon,
-  FloppyDiskIcon,
-  FunnelSimpleIcon,
-  GearSixIcon,
-  IdentificationBadgeIcon,
-  ListBulletsIcon,
   PlusIcon,
-  UserIcon,
   UserPlusIcon,
   UsersThreeIcon,
 } from "@phosphor-icons/react";
@@ -24,18 +13,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
 
+import type { Employee } from "./employee-columns";
+import { EmployeeDataTable } from "./employee-data-table";
 import {
   DataCard,
   KeyValueGrid,
   PageHeader,
   StaticStatus,
   StaticTable,
-} from "../-components/screen";
+} from "../../-components/screen";
 
-const employees = [
+const employees: Employee[] = [
   {
     id: "ananya-sharma",
     initials: "AS",
@@ -44,8 +34,8 @@ const employees = [
     contract: "Railway signaling maintenance",
     location: "Delhi",
     status: "Active",
-    monthlyPay: "₹68,000",
-    joiningDate: "12 Aug 2024",
+    monthlyPay: 68000,
+    joiningDate: "2024-08-12",
   },
   {
     id: "vikram-singh",
@@ -55,8 +45,8 @@ const employees = [
     contract: "Railway signaling maintenance",
     location: "Lucknow",
     status: "Active",
-    monthlyPay: "₹48,000",
-    joiningDate: "03 Feb 2025",
+    monthlyPay: 48000,
+    joiningDate: "2025-02-03",
   },
   {
     id: "meera-joshi",
@@ -66,8 +56,8 @@ const employees = [
     contract: "Railway signaling maintenance",
     location: "Pune",
     status: "On leave",
-    monthlyPay: "₹62,000",
-    joiningDate: "18 Nov 2024",
+    monthlyPay: 62000,
+    joiningDate: "2024-11-18",
   },
   {
     id: "kabir-verma",
@@ -77,8 +67,8 @@ const employees = [
     contract: "Regional IT support services",
     location: "Jaipur",
     status: "Active",
-    monthlyPay: "₹55,000",
-    joiningDate: "08 Jan 2026",
+    monthlyPay: 55000,
+    joiningDate: "2026-01-08",
   },
   {
     id: "sana-khan",
@@ -88,8 +78,8 @@ const employees = [
     contract: "Airport facility staffing",
     location: "Mumbai",
     status: "Active",
-    monthlyPay: "₹52,000",
-    joiningDate: "22 Jul 2025",
+    monthlyPay: 52000,
+    joiningDate: "2025-07-22",
   },
 ];
 
@@ -110,116 +100,7 @@ export function EmployeesScreen() {
         </Link>
       </header>
 
-      <div className="flex min-h-12 flex-wrap items-center justify-between gap-2 border-b px-2 py-2">
-        <div className="flex items-center gap-1">
-          <Button type="button" variant="ghost">
-            <FunnelSimpleIcon data-icon="inline-start" />
-            Filter (0)
-          </Button>
-          <Button type="button" variant="ghost" size="icon" aria-label="Add filter">
-            <PlusIcon />
-          </Button>
-        </div>
-        <div className="flex flex-wrap items-center justify-end gap-1">
-          <Button type="button" variant="ghost">
-            <ColumnsIcon data-icon="inline-start" />
-            Layout
-          </Button>
-          <Button type="button" variant="ghost">
-            <ArrowsDownUpIcon data-icon="inline-start" />
-            Sort
-          </Button>
-          <Button type="button" variant="ghost">
-            <GearSixIcon data-icon="inline-start" />
-            View settings
-          </Button>
-          <Button type="button" variant="ghost" size="icon" aria-label="Save view">
-            <FloppyDiskIcon />
-          </Button>
-        </div>
-      </div>
-
-      <div className="min-h-0 flex-1 [&>[data-slot=table-container]]:h-full">
-        <Table className="h-full min-w-[64rem] text-sm">
-          <TableHeader>
-            <TableRow className="hover:bg-transparent">
-              <TableHead className="h-12 w-1/5 border-r px-4">
-                <span className="flex items-center gap-2">
-                  <UserIcon className="size-4 text-muted-foreground" aria-hidden="true" />
-                  Employee
-                </span>
-              </TableHead>
-              <TableHead className="h-12 w-1/5 border-r px-4">
-                <span className="flex items-center gap-2">
-                  <IdentificationBadgeIcon className="size-4 text-muted-foreground" aria-hidden="true" />
-                  Role
-                </span>
-              </TableHead>
-              <TableHead className="h-12 w-1/5 border-r px-4">
-                <span className="flex items-center gap-2">
-                  <BriefcaseIcon className="size-4 text-muted-foreground" aria-hidden="true" />
-                  Contract
-                </span>
-              </TableHead>
-              <TableHead className="h-12 w-1/5 border-r px-4">
-                <span className="flex items-center gap-2">
-                  <CurrencyInrIcon className="size-4 text-muted-foreground" aria-hidden="true" />
-                  Monthly pay
-                </span>
-              </TableHead>
-              <TableHead className="h-12 w-1/5 px-4">
-                <span className="flex items-center gap-2">
-                  <CalendarBlankIcon className="size-4 text-muted-foreground" aria-hidden="true" />
-                  Joining date
-                </span>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {employees.map((employee) => (
-              <TableRow key={employee.id}>
-                <TableCell className="h-14 border-r px-4">
-                  <div className="flex items-center gap-2.5">
-                    <Avatar size="sm">
-                      <AvatarFallback>{employee.initials}</AvatarFallback>
-                    </Avatar>
-                    <Link
-                      to="/dashboard/employees/$employeeId"
-                      params={{ employeeId: employee.id }}
-                      className="font-medium hover:underline"
-                    >
-                      {employee.name}
-                    </Link>
-                  </div>
-                </TableCell>
-                <TableCell className="h-14 border-r px-4">{employee.role}</TableCell>
-                <TableCell className="h-14 max-w-72 truncate border-r px-4">{employee.contract}</TableCell>
-                <TableCell className="h-14 border-r px-4 font-mono tabular-nums">{employee.monthlyPay}</TableCell>
-                <TableCell className="h-14 px-4 tabular-nums">{employee.joiningDate}</TableCell>
-              </TableRow>
-            ))}
-            <TableRow aria-hidden="true" className="h-full hover:bg-transparent">
-              <TableCell colSpan={5} className="p-0" />
-            </TableRow>
-          </TableBody>
-          <TableFooter className="sticky bottom-0">
-            <TableRow className="hover:bg-transparent">
-              <TableCell className="h-12 border-r px-4">
-                <span className="flex items-center gap-2 text-muted-foreground">
-                  <ListBulletsIcon className="size-4" aria-hidden="true" />
-                  Total: 42 employees
-                </span>
-              </TableCell>
-              <TableCell className="h-12 border-r px-4 text-muted-foreground">5 roles</TableCell>
-              <TableCell className="h-12 border-r px-4 text-muted-foreground">12 contracts</TableCell>
-              <TableCell className="h-12 border-r px-4 font-mono text-muted-foreground tabular-nums">
-                ₹23.8L monthly
-              </TableCell>
-              <TableCell className="h-12 px-4 text-muted-foreground">5 records shown</TableCell>
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </div>
+      <EmployeeDataTable data={employees} />
     </section>
   );
 }
@@ -306,7 +187,7 @@ export function NewEmployeeScreen() {
   );
 }
 
-export function EmployeeDetailsScreen({ employeeId: _employeeId }: { employeeId: string }) {
+export function EmployeeDetailsScreen() {
   return (
     <>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
