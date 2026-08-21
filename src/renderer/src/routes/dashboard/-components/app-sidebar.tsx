@@ -1,15 +1,14 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
-  DashboardSquare01Icon,
-  File02Icon,
-  Home01Icon,
-  Invoice01Icon,
-  MoneyBag02Icon,
-  Settings01Icon,
-  TaxesIcon,
-  UserGroupIcon,
-} from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
+  BankIcon,
+  FileIcon,
+  GearIcon,
+  HouseIcon,
+  MoneyIcon,
+  ReceiptIcon,
+  SquaresFourIcon,
+  UsersThreeIcon,
+} from "@phosphor-icons/react";
 
 import {
   Sidebar,
@@ -27,16 +26,16 @@ const navigationGroups = [
   {
     label: "Workspace",
     items: [
-      { label: "Overview", to: "/dashboard", icon: DashboardSquare01Icon, exact: true },
-      { label: "Contracts", to: "/dashboard/contracts", icon: File02Icon },
-      { label: "Employees", to: "/dashboard/employees", icon: UserGroupIcon },
+      { label: "Overview", to: "/dashboard", icon: SquaresFourIcon, exact: true },
+      { label: "Contracts", to: "/dashboard/contracts", icon: FileIcon },
+      { label: "Employees", to: "/dashboard/employees", icon: UsersThreeIcon },
     ],
   },
   {
     label: "Finance",
     items: [
-      { label: "Invoices", to: "/dashboard/invoices", icon: Invoice01Icon },
-      { label: "Payroll", to: "/dashboard/payroll", icon: MoneyBag02Icon },
+      { label: "Invoices", to: "/dashboard/invoices", icon: ReceiptIcon },
+      { label: "Payroll", to: "/dashboard/payroll", icon: MoneyIcon },
     ],
   },
   {
@@ -45,9 +44,9 @@ const navigationGroups = [
       {
         label: "Organization",
         to: "/dashboard/settings/organization",
-        icon: Settings01Icon,
+        icon: GearIcon,
       },
-      { label: "Tax", to: "/dashboard/settings/tax", icon: TaxesIcon },
+      { label: "Tax", to: "/dashboard/settings/tax", icon: BankIcon },
     ],
   },
 ] as const;
@@ -80,7 +79,7 @@ export function AppSidebar() {
                   return (
                     <SidebarMenuItem key={item.to}>
                       <SidebarMenuButton isActive={isActive} tooltip={item.label} render={<Link to={item.to} />}>
-                        <HugeiconsIcon icon={item.icon} strokeWidth={2} />
+                        <item.icon weight="regular" />
                         <span>{item.label}</span>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -96,7 +95,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton isActive={pathname === "/welcome"} tooltip="Welcome" render={<Link to="/welcome" />}>
-              <HugeiconsIcon icon={Home01Icon} strokeWidth={2} />
+              <HouseIcon weight="regular" />
               <span>Welcome</span>
             </SidebarMenuButton>
           </SidebarMenuItem>

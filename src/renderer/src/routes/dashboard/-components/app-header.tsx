@@ -1,6 +1,5 @@
 import { useRouterState } from "@tanstack/react-router";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowLeft01Icon, ArrowRight01Icon, LayoutAlignLeftIcon, PanelLeftIcon } from "@hugeicons/core-free-icons";
+import { ArrowLeftIcon, ArrowRightIcon, SidebarIcon, SidebarSimpleIcon } from "@phosphor-icons/react";
 import { router } from "@/app/router";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -23,13 +22,13 @@ export function AppHeader() {
       <div className="flex h-full items-center gap-1.5 [app-region:no-drag] [-webkit-app-region:no-drag]">
         <Button
           variant="ghost"
-          size="icon"
+          size="icon-lg"
           aria-label={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
           aria-pressed={isSidebarOpen}
           onClick={toggleSidebar}
           className="text-muted-foreground"
         >
-          <HugeiconsIcon icon={isSidebarOpen ? PanelLeftIcon : LayoutAlignLeftIcon} strokeWidth={2} />
+          {isSidebarOpen ? <SidebarIcon weight="fill" /> : <SidebarSimpleIcon weight="fill" />}
         </Button>
         <div className="flex items-center gap-1">
           <Button
@@ -40,7 +39,7 @@ export function AppHeader() {
             onClick={() => router.history.back()}
             className="text-muted-foreground"
           >
-            <HugeiconsIcon icon={ArrowLeft01Icon} strokeWidth={2} />
+            <ArrowLeftIcon weight="regular" />
           </Button>
           <Button
             variant="ghost"
@@ -49,7 +48,7 @@ export function AppHeader() {
             onClick={() => router.history.forward()}
             className="text-muted-foreground"
           >
-            <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} />
+            <ArrowRightIcon weight="regular" />
           </Button>
         </div>
       </div>
