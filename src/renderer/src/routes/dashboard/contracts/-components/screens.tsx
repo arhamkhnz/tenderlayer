@@ -8,14 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
-import {
-  DataCard,
-  KeyValueGrid,
-  MetricStrip,
-  PageHeader,
-  StaticStatus,
-  StaticTable,
-} from "../../-components/screen";
+import { DataCard, KeyValueGrid, MetricStrip, PageHeader, StaticStatus, StaticTable } from "../../-components/screen";
 
 const contracts = [
   {
@@ -315,7 +308,11 @@ export function ContractInvoicesScreen() {
     },
   ];
   return (
-    <DataCard title="Contract invoices" description="Billing records raised against this award." contentClassName="px-0">
+    <DataCard
+      title="Contract invoices"
+      description="Billing records raised against this award."
+      contentClassName="px-0"
+    >
       <StaticTable
         rows={rows}
         columns={[

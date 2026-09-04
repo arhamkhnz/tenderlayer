@@ -1,9 +1,4 @@
-import {
-  ArrowLeftIcon,
-  PlusIcon,
-  UserPlusIcon,
-  UsersThreeIcon,
-} from "@phosphor-icons/react";
+import { ArrowLeftIcon, PlusIcon, UsersThreeIcon } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -17,13 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 import type { Employee } from "./employee-columns";
 import { EmployeeDataTable } from "./employee-data-table";
-import {
-  DataCard,
-  KeyValueGrid,
-  PageHeader,
-  StaticStatus,
-  StaticTable,
-} from "../../-components/screen";
+import { DataCard, KeyValueGrid, PageHeader, StaticStatus, StaticTable } from "../../-components/screen";
 
 const employees: Employee[] = [
   {

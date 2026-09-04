@@ -10,14 +10,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
 
-import {
-  DataCard,
-  KeyValueGrid,
-  MetricStrip,
-  PageHeader,
-  StaticStatus,
-  StaticTable,
-} from "../../-components/screen";
+import { DataCard, KeyValueGrid, MetricStrip, PageHeader, StaticStatus, StaticTable } from "../../-components/screen";
 
 const invoices = [
   {

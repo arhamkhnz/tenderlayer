@@ -8,14 +8,7 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-import {
-  DataCard,
-  KeyValueGrid,
-  MetricStrip,
-  PageHeader,
-  StaticStatus,
-  StaticTable,
-} from "../../-components/screen";
+import { DataCard, KeyValueGrid, MetricStrip, PageHeader, StaticStatus, StaticTable } from "../../-components/screen";
 
 const payrollRuns = [
   {

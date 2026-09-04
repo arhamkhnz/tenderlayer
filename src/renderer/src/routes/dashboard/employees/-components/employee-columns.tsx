@@ -118,17 +118,19 @@ export const employeeColumns = columnHelper.columns([
     header: ({ column }) => <EmployeeColumnHeader column={column} icon={CurrencyInrIcon} title="Monthly pay" />,
     cell: ({ getValue }) => <span className="font-mono tabular-nums">{currencyFormatter.format(getValue())}</span>,
     footer: ({ table }) => {
-      const total = table
-        .getFilteredRowModel()
-        .rows.reduce((sum, row) => sum + row.original.monthlyPay, 0);
+      const total = table.getFilteredRowModel().rows.reduce((sum, row) => sum + row.original.monthlyPay, 0);
 
-      return <span className="font-mono text-muted-foreground tabular-nums">Sum: {currencyFormatter.format(total)}</span>;
+      return (
+        <span className="font-mono text-muted-foreground tabular-nums">Sum: {currencyFormatter.format(total)}</span>
+      );
     },
   }),
   columnHelper.accessor("joiningDate", {
     sortFn: "text",
     header: ({ column }) => <EmployeeColumnHeader column={column} icon={CalendarBlankIcon} title="Joining date" />,
-    cell: ({ getValue }) => <span className="tabular-nums">{dateFormatter.format(new Date(`${getValue()}T00:00:00`))}</span>,
+    cell: ({ getValue }) => (
+      <span className="tabular-nums">{dateFormatter.format(new Date(`${getValue()}T00:00:00`))}</span>
+    ),
     footer: ({ table }) => (
       <span className="text-muted-foreground">{table.getFilteredRowModel().rows.length} records shown</span>
     ),

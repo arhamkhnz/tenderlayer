@@ -1,9 +1,4 @@
-import {
-  BriefcaseIcon,
-  ClockCountdownIcon,
-  FileTextIcon,
-  ReceiptIcon,
-} from "@phosphor-icons/react";
+import { BriefcaseIcon, ClockCountdownIcon, FileTextIcon, ReceiptIcon } from "@phosphor-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { MetricStrip } from "./-components/screen";
