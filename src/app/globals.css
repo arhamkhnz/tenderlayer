@@ -1,1 +1,59 @@
 @import "tailwindcss";
+
+:root {
+  /* Desktop site shell */
+  --site-min-width: 80rem;
+  --site-gutter: 3.5rem;
+  --site-top-bar-start: 3.5rem;
+  --site-top-bar-height: 4rem;
+  --site-content-start: calc(var(--site-top-bar-start) + var(--site-top-bar-height));
+}
+
+/* Route transitions inside the center content column */
+::view-transition-group(.nav-forward),
+::view-transition-group(.nav-back) {
+  overflow: clip;
+}
+
+::view-transition-old(.nav-forward) {
+  --page-slide-offset: -100%;
+  animation: 280ms ease-in-out both page-slide-out;
+}
+
+::view-transition-new(.nav-forward) {
+  --page-slide-offset: 100%;
+  animation: 280ms ease-in-out both page-slide-in;
+}
+
+::view-transition-old(.nav-back) {
+  --page-slide-offset: 100%;
+  animation: 280ms ease-in-out both page-slide-out;
+}
+
+::view-transition-new(.nav-back) {
+  --page-slide-offset: -100%;
+  animation: 280ms ease-in-out both page-slide-in;
+}
+
+@keyframes page-slide-out {
+  to {
+    translate: var(--page-slide-offset) 0;
+    opacity: 0;
+  }
+}
+
+@keyframes page-slide-in {
+  from {
+    translate: var(--page-slide-offset) 0;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}

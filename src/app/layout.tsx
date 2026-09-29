@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+
+import type { Metadata } from "next";
 import "./globals.css";
 
 const fontGeist = Geist({
@@ -36,11 +37,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className="overscroll-none scroll-smooth"
-    >
-      <body className={`${fontGeist.className} ${fontMono.variable} ${fontSerif.variable} bg-zinc-50 text-zinc-900 antialiased`}>
+    <html lang="en" className="overscroll-none scroll-smooth">
+      <body
+        className={`${fontGeist.className} ${fontMono.variable} ${fontSerif.variable} bg-zinc-50 text-zinc-900 antialiased`}
+      >
         {children}
       </body>
     </html>
