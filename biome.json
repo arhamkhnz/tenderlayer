@@ -49,6 +49,9 @@
       },
       "complexity": {
         "noImportantStyles": "off"
+      },
+      "performance": {
+        "noImgElement": "off"
       }
     },
     "domains": {

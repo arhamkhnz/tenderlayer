@@ -7,7 +7,7 @@ import GitHubStarCount from "./github-star-count";
 export default function IntroSection({ repositoryUrl }: { repositoryUrl: string }) {
   return (
     <section className="flex flex-col gap-4" aria-label="About TenderLayer">
-      <header className="flex items-center justify-between gap-4">
+      <header className="flex items-start justify-between gap-4">
         <div className="flex flex-wrap items-center gap-3">
           <h1 className="w-fit -translate-x-0.5 font-light font-serif text-3xl leading-none tracking-[-0.08em] [font-variation-settings:'STYL'_100]">
             TenderLayer
@@ -17,7 +17,7 @@ export default function IntroSection({ repositoryUrl }: { repositoryUrl: string 
             In development
           </span>
         </div>
-        <a className="group inline-flex shrink-0 items-center gap-2" href={repositoryUrl}>
+        <a className="group inline-flex min-h-7.5 shrink-0 items-center gap-2" href={repositoryUrl}>
           <img
             className="opacity-75 group-hover:opacity-100"
             src="/logo/gh.svg"
