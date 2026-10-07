@@ -1,17 +1,17 @@
+import { Buffer } from "node:buffer";
+
 import { ImageResponse } from "next/og";
 
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
+import fontData from "./fonts/og-fonts.json";
 
 export const alt = "TenderLayer: Tender and Contract Management. In development.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const [sansRegular, sansMedium, serifLight] = await Promise.all([
-  readFile(join(process.cwd(), "src/app/fonts/TimelessSans-SansRegular.otf")),
-  readFile(join(process.cwd(), "src/app/fonts/TimelessSans-SansMedium.otf")),
-  readFile(join(process.cwd(), "src/app/fonts/TimelessSerif-Light.otf")),
-]);
+// Bundle font bytes for Workers. Regenerate with node scripts/generate-og-fonts.mjs.
+const sansRegular = Buffer.from(fontData.sansRegular, "base64");
+const sansMedium = Buffer.from(fontData.sansMedium, "base64");
+const serifLight = Buffer.from(fontData.serifLight, "base64");
 
 export default function OpenGraphImage() {
   return new ImageResponse(
