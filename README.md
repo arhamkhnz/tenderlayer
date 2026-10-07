@@ -1,87 +1,159 @@
-# TenderLayer
+# Turborepo starter
 
-TenderLayer is an open-source, local-first desktop application for managing tender and bid operations. It brings ongoing tenders, upcoming opportunities, application progress, and historical records into one workspace.
+This Turborepo starter is maintained by the Turborepo core team.
 
-> TenderLayer is in early development. The first phase focuses on managing active tenders and contracts.
+## Using this example
 
-## Why I am building it
+Run the following command:
 
-My father runs an outsourcing agency that primarily handles government and private-sector contracts across India, with many tenders sourced through the Government e-Marketplace (GeM) and state-specific procurement portals. Managing more than 500 employees and over 70 active contracts every month has become a tedious task.
-
-We tried free & paid tools, and I also built a web version during the early days of my career. However, this workflow does not need to depend entirely on a web application. TenderLayer is my attempt to build a focused desktop application that keeps day-to-day tender and contract management simple and local-first.
-
-## Development plan
-
-### Phase 1: Ongoing tenders and contracts
-
-The first phase focuses on managing active work after a tender has been awarded:
-
-- Tender and contract details
-- Employee records and contract assignments
-- Invoice generation and payment status
-- Tax and GST details
-- Payroll and payslip records
-- Documents, notes, deadlines, and contract history
-
-### Phase 2: Upcoming bids
-
-The second phase will focus on opportunities the organization is planning to apply for:
-
-- Upcoming tender and bid opportunities
-- Eligibility and requirement tracking
-- Go or no-go decisions
-- Bid preparation and submission status
-- Important dates, documents, and reminders
-- Submitted, won, lost, and archived bid history
-
-## Planned features
-
-- Optional cloud and local network sync
-- Role-based access control (RBAC)
-- Multi-user workspaces and collaboration
-- Automated backups, import, and export
-- Notifications and deadline reminders
-- Reports and operational dashboards
-- Country-specific tax support, including GST, VAT, and other regional tax requirements
-- Optional procurement portal integrations
-- An autonomous bid agent for preparing and submitting tender applications automatically
-
-## Foundation
-
-TenderLayer is built on [Electron Vite Starter](https://github.com/arhamkhnz/electron-vite-starter). Refer to the starter repository for details about the Electron architecture, development workflow, security baseline, and packaging setup.
-
-## Getting started
-
-Requirements:
-
-- Node.js `^22.18.0 || >=24.11.0`
-- npm
-
-```bash
-npm install
-npm run dev
+```sh
+npx create-turbo@latest
 ```
 
-## Commands
+## What's inside?
 
-```bash
-npm run dev               # Start the desktop development environment
-npm run dev:renderer      # Start only the renderer in a browser
-npm run db:generate       # Generate SQLite migrations from the Drizzle schema
-npm run db:studio         # Open Drizzle Studio with the local development database
-npm run rebuild:native    # Rebuild native dependencies for Electron
-npm run typecheck         # Check TypeScript
-npm run lint              # Check code with Oxlint
-npm run lint:fix          # Apply safe Oxlint fixes
-npm run format            # Format files with Oxfmt
-npm run format:check      # Check formatting
-npm run fix               # Apply safe lint fixes and format files
-npm run build             # Build the application
-npm start                 # Run an existing production build
-npm run package           # Create an unpacked application
-npm run make              # Create platform distributables
+This Turborepo includes the following packages/apps:
+
+### Apps and Packages
+
+- `docs`: a [Next.js](https://nextjs.org/) app
+- `web`: another [Next.js](https://nextjs.org/) app
+- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
+- `@repo/eslint-config`: `eslint` configurations (includes `@next/eslint-plugin-next` and `eslint-config-prettier`)
+- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+
+Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+
+### Utilities
+
+This Turborepo has some additional tools already setup for you:
+
+- [TypeScript](https://www.typescriptlang.org/) for static type checking
+- [ESLint](https://eslint.org/) for code linting
+- [Prettier](https://prettier.io) for code formatting
+
+### Build
+
+To build all apps and packages, run the following command:
+
+With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+
+```sh
+cd my-turborepo
+turbo build
 ```
 
-## Contributions
+Without global `turbo`, use your package manager:
 
-Contributions are welcome. Feel free to open an issue or reach out to me if you have a specific requirement, use case, or idea for TenderLayer.
+```sh
+cd my-turborepo
+npx turbo build
+npm exec turbo build
+npm exec turbo build
+```
+
+You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+
+With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+
+```sh
+turbo build --filter=docs
+```
+
+Without global `turbo`:
+
+```sh
+npx turbo build --filter=docs
+npm exec turbo build --filter=docs
+npm exec turbo build --filter=docs
+```
+
+### Develop
+
+To develop all apps and packages, run the following command:
+
+With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+
+```sh
+cd my-turborepo
+turbo dev
+```
+
+Without global `turbo`, use your package manager:
+
+```sh
+cd my-turborepo
+npx turbo dev
+npm exec turbo dev
+npm exec turbo dev
+```
+
+You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+
+With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+
+```sh
+turbo dev --filter=web
+```
+
+Without global `turbo`:
+
+```sh
+npx turbo dev --filter=web
+npm exec turbo dev --filter=web
+npm exec turbo dev --filter=web
+```
+
+### Remote Caching
+
+> [!TIP]
+> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+
+Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+
+By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+
+With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+
+```sh
+cd my-turborepo
+turbo login
+```
+
+Without global `turbo`, use your package manager:
+
+```sh
+cd my-turborepo
+npx turbo login
+npm exec turbo login
+npm exec turbo login
+```
+
+This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+
+Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+
+With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+
+```sh
+turbo link
+```
+
+Without global `turbo`:
+
+```sh
+npx turbo link
+npm exec turbo link
+npm exec turbo link
+```
+
+## Useful Links
+
+Learn more about the power of Turborepo:
+
+- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
+- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
+- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
+- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
+- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
+- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
