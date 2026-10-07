@@ -52,7 +52,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className="[scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <html lang="en" className="scrollbar-width:none [&::-webkit-scrollbar]:hidden">
       <body className={`${fontSans.variable} ${fontSerif.variable} antialiased`}>{children}</body>
     </html>
   );
