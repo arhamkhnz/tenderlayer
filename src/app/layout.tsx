@@ -1,48 +1,46 @@
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import localFont from "next/font/local";
 
 import type { Metadata } from "next";
 import "./globals.css";
 
-const fontGeist = Geist({
-  subsets: ["latin"],
+const fontSans = localFont({
+  src: "./fonts/TimelessSansVF.woff2",
+  variable: "--font-timeless-sans",
+  weight: "300 800",
+  style: "normal",
   display: "swap",
 });
 
-const fontMono = Geist_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
+const fontSerif = localFont({
+  src: "./fonts/TimelessSerifVF.woff2",
+  variable: "--font-timeless-serif",
+  weight: "200 700",
+  style: "normal",
+  adjustFontFallback: "Times New Roman",
   display: "swap",
 });
 
-const fontSerif = Instrument_Serif({
-  variable: "--font-serif",
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});
+const title = "TenderLayer | A local-first workspace for tenders and contracts";
+const description =
+  "An open-source desktop app for awarded tenders, contracts, employee records, invoices, and payroll. Local-first and in early development.";
 
 export const metadata: Metadata = {
-  title: "TenderLayer | A workspace for tenders and contracts",
-  description:
-    "An open-source, local-first desktop workspace for contracts, people, payroll, invoices, and the work that follows a tender. In early development.",
+  title,
+  description,
   applicationName: "TenderLayer",
   openGraph: {
-    title: "TenderLayer | A workspace for tenders and contracts",
-    description:
-      "Less scattered information. More room to focus. A local-first desktop app for tender and contract operations, built from a real working day.",
+    title,
+    description,
     siteName: "TenderLayer",
     type: "website",
   },
+  twitter: { card: "summary", title, description },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className="overscroll-none scroll-smooth">
-      <body
-        className={`${fontGeist.className} ${fontMono.variable} ${fontSerif.variable} bg-zinc-50 text-zinc-900 antialiased`}
-      >
-        {children}
-      </body>
+    <html lang="en" className="[scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <body className={`${fontSans.variable} ${fontSerif.variable} antialiased`}>{children}</body>
     </html>
   );
 }

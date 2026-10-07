@@ -1,9 +1,6 @@
-const GITHUB = {
-  org: "arhamkhnz",
-  repo: "tenderlayer",
-} as const;
+const GITHUB = { org: "arhamkhnz", repo: "tenderlayer" } as const;
 
-export async function getStargazerCount() {
+export async function getStargazerCount(): Promise<number | null> {
   try {
     const response = await fetch(`https://api.github.com/repos/${GITHUB.org}/${GITHUB.repo}`, {
       headers: {
@@ -11,15 +8,15 @@ export async function getStargazerCount() {
         "X-GitHub-Api-Version": "2022-11-28",
       },
       next: { revalidate: 86_400 },
+      signal: AbortSignal.timeout(5_000),
     });
 
-    if (!response.ok) {
-      return 0;
-    }
+    if (!response.ok) return null;
 
-    const json = (await response.json()) as { stargazers_count?: number };
-    return Number(json.stargazers_count) || 0;
+    const json = (await response.json()) as { stargazers_count?: unknown };
+    const count = json.stargazers_count;
+    return typeof count === "number" && Number.isSafeInteger(count) && count >= 0 ? count : null;
   } catch {
-    return 0;
+    return null;
   }
 }

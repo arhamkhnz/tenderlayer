@@ -18,7 +18,13 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project uses `next/font/local` to load the unmodified Timeless Sans and Serif variable fonts. These proprietary assets are covered by [their license](src/app/fonts/LICENSE.pdf), not the project's open-source license.
+
+The maintainer received this clarification from the licensor about including font assets in a public project repository:
+
+> That should be okay. That wouldn’t be redistributing from your end as long as that’s not the sole purpose and it’s part of a larger project.
+
+Obtain fonts for other projects from [Timeless](https://www.timeless.co/type).
 
 ## Learn More
 

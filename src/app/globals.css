@@ -1,59 +1,24 @@
 @import "tailwindcss";
 
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-timeless-sans);
+  --font-serif: var(--font-timeless-serif);
+}
+
 :root {
-  /* Desktop site shell */
-  --site-min-width: 80rem;
-  --site-gutter: 3.5rem;
-  --site-top-bar-start: 3.5rem;
-  --site-top-bar-height: 4rem;
-  --site-content-start: calc(var(--site-top-bar-start) + var(--site-top-bar-height));
+  --background: oklch(1 0 0);
+  --foreground: oklch(26.9% 0 none);
 }
 
-/* Route transitions inside the center content column */
-::view-transition-group(.nav-forward),
-::view-transition-group(.nav-back) {
-  overflow: clip;
-}
-
-::view-transition-old(.nav-forward) {
-  --page-slide-offset: -100%;
-  animation: 280ms ease-in-out both page-slide-out;
-}
-
-::view-transition-new(.nav-forward) {
-  --page-slide-offset: 100%;
-  animation: 280ms ease-in-out both page-slide-in;
-}
-
-::view-transition-old(.nav-back) {
-  --page-slide-offset: 100%;
-  animation: 280ms ease-in-out both page-slide-out;
-}
-
-::view-transition-new(.nav-back) {
-  --page-slide-offset: -100%;
-  animation: 280ms ease-in-out both page-slide-in;
-}
-
-@keyframes page-slide-out {
-  to {
-    translate: var(--page-slide-offset) 0;
-    opacity: 0;
+@layer base {
+  body {
+    @apply bg-background text-foreground font-sans;
   }
 }
 
-@keyframes page-slide-in {
-  from {
-    translate: var(--page-slide-offset) 0;
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(*),
-  ::view-transition-new(*),
-  ::view-transition-group(*) {
-    animation-duration: 0s !important;
-    animation-delay: 0s !important;
-  }
+@theme {
+  --color-muted: oklch(55.6% 0 none);
+  --color-rule: oklch(0.9461 0 0);
 }

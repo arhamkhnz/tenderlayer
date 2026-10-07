@@ -10,13 +10,13 @@
     "format": "biome format --write"
   },
   "dependencies": {
-    "@phosphor-icons/react": "^2.1.10",
-    "next": "^16.3.6",
+    "@keyline-icons/react": "^1.7.0",
+    "next": "^16.3.8",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.14",
+    "@biomejs/biome": "^2.5.15",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^20.19.43",
     "@types/react": "^19.3.0",
