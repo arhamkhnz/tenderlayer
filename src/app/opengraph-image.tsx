@@ -1,8 +1,7 @@
-import { Buffer } from "node:buffer";
-
 import { ImageResponse } from "next/og";
 
 import fontData from "./fonts/og-fonts.json";
+import { Buffer } from "node:buffer";
 
 export const alt = "TenderLayer: Tender and Contract Management. In development.";
 export const size = { width: 1200, height: 630 };
