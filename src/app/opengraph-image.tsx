@@ -8,7 +8,7 @@ export const alt = "TenderLayer: Tender and Contract Management. In development.
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Bundle font bytes for Workers. Regenerate with node scripts/generate-og-fonts.mjs.
+// Bundle font bytes to avoid runtime filesystem reads on Workers.
 const sansRegular = Buffer.from(fontData.sansRegular, "base64");
 const sansMedium = Buffer.from(fontData.sansMedium, "base64");
 const serifLight = Buffer.from(fontData.serifLight, "base64");
