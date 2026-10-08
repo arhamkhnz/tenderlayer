@@ -1,87 +1,53 @@
 # TenderLayer
 
-TenderLayer is an open-source, local-first desktop application for managing tender and bid operations. It brings ongoing tenders, upcoming opportunities, application progress, and historical records into one workspace.
+TenderLayer contains the desktop application and landing site in an npm workspace managed by Turborepo.
 
-> TenderLayer is in early development. The first phase focuses on managing active tenders and contracts.
+## Repository structure
 
-## Why I am building it
+- [apps/desktop](apps/desktop): Electron, React, and Vite desktop application. Its README covers the product and desktop development.
+- [apps/site](apps/site): Next.js landing site for [tenderlayer.com](https://tenderlayer.com).
+- [packages/ui](packages/ui): Shared shadcn components, hooks, utilities, and theme used by the desktop app.
 
-My father runs an outsourcing agency that primarily handles government and private-sector contracts across India, with many tenders sourced through the Government e-Marketplace (GeM) and state-specific procurement portals. Managing more than 500 employees and over 70 active contracts every month has become a tedious task.
+Oxlint and Oxfmt are configured at the repository root.
 
-We tried free & paid tools, and I also built a web version during the early days of my career. However, this workflow does not need to depend entirely on a web application. TenderLayer is my attempt to build a focused desktop application that keeps day-to-day tender and contract management simple and local-first.
-
-## Development plan
-
-### Phase 1: Ongoing tenders and contracts
-
-The first phase focuses on managing active work after a tender has been awarded:
-
-- Tender and contract details
-- Employee records and contract assignments
-- Invoice generation and payment status
-- Tax and GST details
-- Payroll and payslip records
-- Documents, notes, deadlines, and contract history
-
-### Phase 2: Upcoming bids
-
-The second phase will focus on opportunities the organization is planning to apply for:
-
-- Upcoming tender and bid opportunities
-- Eligibility and requirement tracking
-- Go or no-go decisions
-- Bid preparation and submission status
-- Important dates, documents, and reminders
-- Submitted, won, lost, and archived bid history
-
-## Planned features
-
-- Optional cloud and local network sync
-- Role-based access control (RBAC)
-- Multi-user workspaces and collaboration
-- Automated backups, import, and export
-- Notifications and deadline reminders
-- Reports and operational dashboards
-- Country-specific tax support, including GST, VAT, and other regional tax requirements
-- Optional procurement portal integrations
-- An autonomous bid agent for preparing and submitting tender applications automatically
-
-## Foundation
-
-TenderLayer is built on [Electron Vite Starter](https://github.com/arhamkhnz/electron-vite-starter). Refer to the starter repository for details about the Electron architecture, development workflow, security baseline, and packaging setup.
-
-## Getting started
-
-Requirements:
-
-- Node.js `^22.18.0 || >=24.11.0`
-- npm
-
-```bash
-npm install
-npm run dev
-```
+Development requires Node.js `>=24.11.0` and npm `11.16.0`.
 
 ## Commands
 
-```bash
-npm run dev               # Start the desktop development environment
-npm run dev:renderer      # Start only the renderer in a browser
-npm run db:generate       # Generate SQLite migrations from the Drizzle schema
-npm run db:studio         # Open Drizzle Studio with the local development database
-npm run rebuild:native    # Rebuild native dependencies for Electron
-npm run typecheck         # Check TypeScript
-npm run lint              # Check code with Oxlint
-npm run lint:fix          # Apply safe Oxlint fixes
-npm run format            # Format files with Oxfmt
-npm run format:check      # Check formatting
-npm run fix               # Apply safe lint fixes and format files
-npm run build             # Build the application
-npm start                 # Run an existing production build
-npm run package           # Create an unpacked application
-npm run make              # Create platform distributables
+Run commands from the repository root:
+
+```sh
+npm run dev              # Start desktop and site
+npm run dev:desktop      # Start Electron desktop development
+npm run dev:site         # Start the landing site
+npm run dev:renderer     # Start the desktop renderer in a browser
+npm run build            # Build desktop and site
+npm run build:desktop    # Build desktop only
+npm run build:site       # Build site only
+npm run start:desktop    # Run an existing desktop production build
+npm run start:site       # Serve an existing site production build
+npm run preview:renderer # Preview the built desktop renderer
+npm run check-types      # Check all workspace types
+npm run lint             # Lint all workspaces
+npm run lint:fix:desktop  # Apply desktop lint fixes
+npm run fix:desktop       # Apply desktop lint fixes and format desktop
+npm run format           # Format the repository
+npm run format:check     # Check repository formatting
+npm run fix              # Apply repository-wide lint fixes, then format
 ```
 
-## Contributions
+Desktop database and packaging workflows:
 
-Contributions are welcome. Feel free to open an issue or reach out to me if you have a specific requirement, use case, or idea for TenderLayer.
+```sh
+npm run db:generate      # Generate SQLite migrations
+npm run db:studio        # Open Drizzle Studio
+npm run rebuild:native   # Rebuild native dependencies for Electron
+npm run package          # Build and create an unpacked desktop app
+npm run make             # Build and create desktop installers
+```
+
+App scripts remain in their workspace packages. Root commands delegate through Turbo; formatting runs centrally through Oxfmt. The root `fix` command runs workspace lint fixes and a separate root TypeScript lint-fix task through Turbo before formatting. Packaging and installer tasks depend on the desktop build. Database tools, native rebuilds, and packaging run without caching.
+
+## Deployment
+
+Cloudflare deployment settings need to target `apps/site`.

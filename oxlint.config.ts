@@ -1,17 +1,39 @@
 import { defineConfig } from "oxlint";
 
 export default defineConfig({
-  ignorePatterns: ["assets/**", "drizzle/**", "src/renderer/src/components/ui/**", "src/renderer/src/routeTree.gen.ts"],
+  ignorePatterns: [
+    "**/.next/**",
+    "**/next-env.d.ts",
+    "**/dist/**",
+    "**/out/**",
+    "**/coverage/**",
+    "apps/desktop/assets/**",
+    "apps/desktop/drizzle/**",
+    "apps/desktop/src/renderer/src/routeTree.gen.ts",
+    "packages/ui/src/components/**",
+  ],
   plugins: ["react", "typescript", "oxc"],
   rules: {
     "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { allowConstantExport: true }],
   },
   overrides: [
     {
-      files: ["src/renderer/src/routes/**/*.tsx"],
+      files: ["apps/desktop/src/renderer/src/**/*.{ts,tsx}", "packages/ui/src/**/*.{ts,tsx}"],
+      rules: {
+        "react/only-export-components": ["warn", { allowConstantExport: true }],
+      },
+    },
+    {
+      files: ["apps/desktop/src/renderer/src/routes/**/*.tsx"],
       rules: {
         "react/only-export-components": "off",
+      },
+    },
+    {
+      files: ["apps/site/**/*.{js,jsx,ts,tsx,mjs,mts,cjs,cts}"],
+      plugins: ["react", "typescript", "oxc", "nextjs"],
+      rules: {
+        "nextjs/no-img-element": "off",
       },
     },
   ],

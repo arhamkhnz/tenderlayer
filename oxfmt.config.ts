@@ -1,7 +1,13 @@
 import { defineConfig } from "oxfmt";
 
 export default defineConfig({
-  ignorePatterns: ["assets/**", "drizzle/**", "src/renderer/src/components/ui/**", "src/renderer/src/routeTree.gen.ts"],
+  ignorePatterns: [
+    "apps/desktop/assets/**",
+    "apps/desktop/drizzle/**",
+    "apps/desktop/src/renderer/src/routeTree.gen.ts",
+    "apps/site/public/**",
+    "packages/ui/src/components/**",
+  ],
   printWidth: 120,
   tabWidth: 2,
   useTabs: false,
