@@ -11,6 +11,12 @@
       "dependsOn": ["^lint"],
       "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/oxlint.config.ts"]
     },
+    "lint:fix": {
+      "cache": false
+    },
+    "//#lint:fix:root": {
+      "cache": false
+    },
     "check-types": {
       "dependsOn": ["^check-types"]
     },

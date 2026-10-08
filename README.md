@@ -10,6 +10,8 @@ TenderLayer contains the desktop application and landing site in an npm workspac
 
 Oxlint and Oxfmt are configured at the repository root.
 
+Development requires Node.js `>=24.11.0` and npm `11.16.0`.
+
 ## Commands
 
 Run commands from the repository root:
@@ -44,7 +46,7 @@ npm run package          # Build and create an unpacked desktop app
 npm run make             # Build and create desktop installers
 ```
 
-App scripts remain in their workspace packages. Root commands delegate through Turbo; formatting runs centrally through Oxfmt. Packaging and installer tasks depend on the desktop build. Database tools, native rebuilds, and packaging run without caching.
+App scripts remain in their workspace packages. Root commands delegate through Turbo; formatting runs centrally through Oxfmt. The root `fix` command runs workspace lint fixes and a separate root TypeScript lint-fix task through Turbo before formatting. Packaging and installer tasks depend on the desktop build. Database tools, native rebuilds, and packaging run without caching.
 
 ## Deployment
 

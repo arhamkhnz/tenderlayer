@@ -11,6 +11,8 @@ import { cn } from "@tenderlayer/ui/lib/utils";
 import "@tenderlayer/ui/globals.css";
 ```
 
+The shared stylesheet registers this package's sources and the desktop app's sources. The landing site uses its own stylesheet.
+
 To add a component directly to this package from the repository root:
 
 ```sh

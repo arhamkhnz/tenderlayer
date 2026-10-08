@@ -56,8 +56,8 @@ Run installation and workspace commands from the repository root.
 
 Requirements:
 
-- Node.js `^22.18.0 || >=24.11.0`
-- npm
+- Node.js `>=24.11.0`
+- npm `11.16.0`
 
 ```bash
 npm install

@@ -3,7 +3,10 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**", "node_modules/.tmp/**"]
+    },
+    "check-types": {
+      "outputs": ["node_modules/.tmp/**"]
     },
     "dev": {
       "passThroughEnv": ["TENDERLAYER_DB_PATH"]
@@ -37,9 +40,6 @@
     },
     "make": {
       "dependsOn": ["build"],
-      "cache": false
-    },
-    "lint:fix": {
       "cache": false
     },
     "fix": {

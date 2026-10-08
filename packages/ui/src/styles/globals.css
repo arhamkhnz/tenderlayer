@@ -5,7 +5,7 @@
 @import "@fontsource-variable/geist-mono";
 @import "@fontsource/instrument-serif";
 
-@source "../../../../apps/**/*.{ts,tsx}";
+@source "../../../../apps/desktop/**/*.{ts,tsx}";
 @source "../**/*.{ts,tsx}";
 
 @custom-variant dark (&:is(.dark *));

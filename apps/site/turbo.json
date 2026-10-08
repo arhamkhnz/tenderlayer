@@ -1,0 +1,12 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "outputs": ["$TURBO_EXTENDS$", "next-env.d.ts", "tsconfig.tsbuildinfo"]
+    },
+    "check-types": {
+      "outputs": [".next/types/**", "next-env.d.ts", "tsconfig.tsbuildinfo"]
+    }
+  }
+}

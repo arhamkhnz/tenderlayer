@@ -12,6 +12,7 @@
   },
   "scripts": {
     "lint": "oxlint --config ../../oxlint.config.ts .",
+    "lint:fix": "oxlint --config ../../oxlint.config.ts --fix .",
     "check-types": "tsc --noEmit"
   },
   "devDependencies": {

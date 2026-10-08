@@ -23,7 +23,8 @@
     "fix:desktop": "turbo run fix --filter=@tenderlayer/desktop",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
-    "fix": "oxlint --config oxlint.config.ts --fix . && oxfmt",
+    "lint:fix:root": "oxlint --config oxlint.config.ts --fix *.ts",
+    "fix": "turbo run lint:fix lint:fix:root && oxfmt",
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
@@ -33,7 +34,7 @@
     "typescript": "^6.0.3"
   },
   "engines": {
-    "node": ">=24"
+    "node": ">=24.11.0"
   },
   "devEngines": {
     "packageManager": {

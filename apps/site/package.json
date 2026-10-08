@@ -8,6 +8,7 @@
     "start": "next start",
     "check-types": "next typegen && tsc --noEmit",
     "lint": "oxlint --config ../../oxlint.config.ts .",
+    "lint:fix": "oxlint --config ../../oxlint.config.ts --fix .",
     "format": "oxfmt"
   },
   "dependencies": {
