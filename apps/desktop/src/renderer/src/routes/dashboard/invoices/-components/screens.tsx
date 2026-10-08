@@ -6,7 +6,14 @@ import { Button, buttonVariants } from "@tenderlayer/ui/components/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@tenderlayer/ui/components/card";
 import { Field, FieldGroup, FieldLabel } from "@tenderlayer/ui/components/field";
 import { Input } from "@tenderlayer/ui/components/input";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@tenderlayer/ui/components/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@tenderlayer/ui/components/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@tenderlayer/ui/components/table";
 import { Textarea } from "@tenderlayer/ui/components/textarea";
 

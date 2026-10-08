@@ -16,7 +16,15 @@ import {
 
 import { Button } from "@tenderlayer/ui/components/button";
 import { Input } from "@tenderlayer/ui/components/input";
-import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@tenderlayer/ui/components/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@tenderlayer/ui/components/table";
 
 import { employeeColumns, type Employee } from "./employee-columns";
 import { employeeTableFeatures } from "./employee-data-table-features";

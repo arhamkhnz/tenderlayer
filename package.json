@@ -1,6 +1,7 @@
 {
   "name": "tenderlayer",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "turbo run dev",
     "dev:desktop": "turbo run dev --filter=@tenderlayer/desktop",
