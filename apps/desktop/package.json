@@ -16,8 +16,8 @@
     "build": "tsc -b && node scripts/build.mjs",
     "db:generate": "drizzle-kit generate",
     "db:studio": "electron scripts/db-studio.mjs",
-    "lint": "oxlint",
-    "lint:fix": "oxlint --fix",
+    "lint": "oxlint --config ../../oxlint.config.ts .",
+    "lint:fix": "oxlint --config ../../oxlint.config.ts --fix .",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
     "fix": "npm run lint:fix; npm run format",
@@ -75,8 +75,6 @@
     "babel-plugin-react-compiler": "^1.0.0",
     "drizzle-kit": "^0.31.10",
     "electron": "^44.2.0",
-    "oxfmt": "^0.66.0",
-    "oxlint": "^1.81.0",
     "typescript": "~6.0.2",
     "vite": "^8.2.2"
   }
