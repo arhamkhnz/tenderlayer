@@ -11,6 +11,7 @@ export default defineConfig({
     "apps/desktop/drizzle/**",
     "apps/desktop/src/renderer/src/components/ui/**",
     "apps/desktop/src/renderer/src/routeTree.gen.ts",
+    "packages/ui/src/components/**",
   ],
   plugins: ["react", "typescript", "oxc"],
   rules: {
