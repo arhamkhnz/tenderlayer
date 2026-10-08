@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "check-types": "next typegen && tsc --noEmit",
     "lint": "oxlint --config ../../oxlint.config.ts .",
     "format": "oxfmt"
   },
