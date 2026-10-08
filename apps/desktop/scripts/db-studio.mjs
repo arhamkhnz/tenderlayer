@@ -1,10 +1,11 @@
 import { spawn } from "node:child_process";
+import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { app } from "electron";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const drizzleKitEntry = path.join(root, "node_modules", "drizzle-kit", "bin.cjs");
+const drizzleKitEntry = path.join(path.dirname(createRequire(import.meta.url).resolve("drizzle-kit")), "bin.cjs");
 
 // The Electron CLI identifies this helper as "Electron" unless the app name
 // is set explicitly before resolving the userData path.

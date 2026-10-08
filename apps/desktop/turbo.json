@@ -1,0 +1,49 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      "outputs": ["dist/**"]
+    },
+    "dev": {
+      "passThroughEnv": ["TENDERLAYER_DB_PATH"]
+    },
+    "dev:renderer": {
+      "cache": false,
+      "persistent": true
+    },
+    "start": {
+      "passThroughEnv": ["TENDERLAYER_DB_PATH"]
+    },
+    "preview:renderer": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:generate": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:studio": {
+      "cache": false,
+      "persistent": true,
+      "passThroughEnv": ["TENDERLAYER_DB_PATH", "npm_node_execpath"]
+    },
+    "rebuild:native": {
+      "cache": false
+    },
+    "package": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "make": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "lint:fix": {
+      "cache": false
+    },
+    "fix": {
+      "cache": false
+    }
+  }
+}

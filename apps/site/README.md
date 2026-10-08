@@ -7,7 +7,7 @@ The [Next.js](https://nextjs.org) landing site for [TenderLayer](https://tenderl
 From the repository root, run the development server:
 
 ```sh
-npm run dev --workspace tenderlayer-site
+npm run dev:site
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.

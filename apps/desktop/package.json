@@ -1,5 +1,5 @@
 {
-  "name": "tenderlayer",
+  "name": "@tenderlayer/desktop",
   "productName": "TenderLayer",
   "description": "A production-ready Electron, React, TypeScript, and Vite foundation.",
   "author": "Arham Khan",
@@ -25,9 +25,9 @@
     "postinstall": "npm run rebuild:native",
     "rebuild:native": "electron-rebuild -f -w better-sqlite3",
     "start": "electron .",
-    "typecheck": "tsc -b",
-    "package": "npm run build && electron-forge package",
-    "make": "npm run build && electron-forge make"
+    "check-types": "tsc -b",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",

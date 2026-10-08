@@ -61,7 +61,7 @@ Requirements:
 
 ```bash
 npm install
-npm run dev --workspace apps/desktop
+npm run dev:desktop
 ```
 
 Shared shadcn components, hooks, and theme live in `packages/ui`. To add a component from the repository root:
@@ -72,25 +72,28 @@ npx shadcn@latest add <component> -c apps/desktop
 
 ## Commands
 
-Run the following commands from `apps/desktop`:
+Run desktop workflows from the repository root:
 
 ```bash
-npm run dev               # Start the desktop development environment
-npm run dev:renderer      # Start only the renderer in a browser
-npm run db:generate       # Generate SQLite migrations from the Drizzle schema
-npm run db:studio         # Open Drizzle Studio with the local development database
-npm run rebuild:native    # Rebuild native dependencies for Electron
-npm run typecheck         # Check TypeScript
-npm run lint              # Check code with Oxlint
-npm run lint:fix          # Apply safe Oxlint fixes
-npm run format            # Format files with Oxfmt
-npm run format:check      # Check formatting
-npm run fix               # Apply safe lint fixes and format files
-npm run build             # Build the application
-npm start                 # Run an existing production build
-npm run package           # Create an unpacked application
-npm run make              # Create platform distributables
+npm run dev:desktop      # Start the desktop development environment
+npm run dev:renderer     # Start only the renderer in a browser
+npm run db:generate      # Generate SQLite migrations from the Drizzle schema
+npm run db:studio        # Open Drizzle Studio with the local development database
+npm run rebuild:native   # Rebuild native dependencies for Electron
+npm run check-types -- --filter=@tenderlayer/desktop
+npm run lint -- --filter=@tenderlayer/desktop
+npm run lint:fix:desktop  # Apply desktop lint fixes
+npm run format           # Format the repository with Oxfmt
+npm run format:check     # Check repository formatting
+npm run fix:desktop       # Apply desktop lint fixes and format desktop
+npm run build:desktop    # Build the application
+npm run start:desktop    # Run an existing production build
+npm run preview:renderer # Preview the built renderer
+npm run package          # Build and create an unpacked application
+npm run make             # Build and create platform distributables
 ```
+
+Root `package` and `make` commands build through Turbo first. When invoking Electron Forge scripts directly inside `apps/desktop`, build the app beforehand.
 
 ## Contributions
 
