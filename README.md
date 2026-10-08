@@ -7,7 +7,6 @@ TenderLayer contains the desktop application and landing site in an npm workspac
 - [apps/desktop](apps/desktop): Electron, React, and Vite desktop application. Its README covers the product and desktop development.
 - [apps/site](apps/site): Next.js landing site for [tenderlayer.com](https://tenderlayer.com).
 - [packages/ui](packages/ui): Shared shadcn components, hooks, utilities, and theme used by the desktop app.
-- `packages/typescript-config`: Shared TypeScript configurations.
 
 Oxlint and Oxfmt are configured at the repository root.
 

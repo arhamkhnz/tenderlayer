@@ -1,7 +1,6 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2023",
-    "lib": ["ES2023"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "types": ["node", "electron"],
@@ -11,15 +10,9 @@
     "declaration": true,
     "declarationDir": "./node_modules/.tmp/types/electron",
     "emitDeclarationOnly": true,
+    "noEmit": false,
     "noEmitOnError": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "verbatimModuleSyntax": true,
-    "moduleDetection": "force",
-    "erasableSyntaxOnly": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "strict": true
   },
   "include": ["src/main/**/*.ts", "src/preload/**/*.ts", "src/shared/**/*.ts", "src/types/**/*.d.ts"]
 }
