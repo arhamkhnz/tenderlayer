@@ -9,7 +9,6 @@ export default defineConfig({
     "**/coverage/**",
     "apps/desktop/assets/**",
     "apps/desktop/drizzle/**",
-    "apps/desktop/src/renderer/src/components/ui/**",
     "apps/desktop/src/renderer/src/routeTree.gen.ts",
     "packages/ui/src/components/**",
   ],

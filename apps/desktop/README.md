@@ -52,6 +52,8 @@ TenderLayer is built on [Electron Vite Starter](https://github.com/arhamkhnz/ele
 
 ## Getting started
 
+Run installation and workspace commands from the repository root.
+
 Requirements:
 
 - Node.js `^22.18.0 || >=24.11.0`
@@ -59,10 +61,18 @@ Requirements:
 
 ```bash
 npm install
-npm run dev
+npm run dev --workspace apps/desktop
+```
+
+Shared shadcn components, hooks, and theme live in `packages/ui`. To add a component from the repository root:
+
+```bash
+npx shadcn@latest add <component> -c apps/desktop
 ```
 
 ## Commands
+
+Run the following commands from `apps/desktop`:
 
 ```bash
 npm run dev               # Start the desktop development environment

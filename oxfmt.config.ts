@@ -4,7 +4,6 @@ export default defineConfig({
   ignorePatterns: [
     "apps/desktop/assets/**",
     "apps/desktop/drizzle/**",
-    "apps/desktop/src/renderer/src/components/ui/**",
     "apps/desktop/src/renderer/src/routeTree.gen.ts",
     "apps/site/public/**",
     "packages/ui/src/components/**",

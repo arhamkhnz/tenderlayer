@@ -1,8 +1,8 @@
 import { useRouterState } from "@tanstack/react-router";
 import { ArrowLeftIcon, ArrowRightIcon, SidebarIcon, SidebarSimpleIcon } from "@phosphor-icons/react";
 import { router } from "@/app/router";
-import { Button } from "@/components/ui/button";
-import { useSidebar } from "@/components/ui/sidebar";
+import { Button } from "@tenderlayer/ui/components/button";
+import { useSidebar } from "@tenderlayer/ui/components/sidebar";
 
 export function AppHeader() {
   const isMac = window.electronAPI.platform === "darwin";

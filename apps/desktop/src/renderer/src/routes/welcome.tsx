@@ -3,10 +3,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Spinner } from "@/components/ui/spinner";
+import { Button } from "@tenderlayer/ui/components/button";
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@tenderlayer/ui/components/field";
+import { Input } from "@tenderlayer/ui/components/input";
+import { Spinner } from "@tenderlayer/ui/components/spinner";
 import { createOrganizationSchema } from "../../../shared/schemas/organizations";
 
 export const Route = createFileRoute("/welcome")({

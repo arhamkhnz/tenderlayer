@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@tenderlayer/ui/components/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@tenderlayer/ui/components/card";
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "@tenderlayer/ui/components/field";
+import { Input } from "@tenderlayer/ui/components/input";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@tenderlayer/ui/components/select";
+import { Textarea } from "@tenderlayer/ui/components/textarea";
 
 import { PageHeader } from "../../-components/screen";
 

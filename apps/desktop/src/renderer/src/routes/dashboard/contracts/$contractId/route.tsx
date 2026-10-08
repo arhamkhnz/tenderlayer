@@ -1,8 +1,8 @@
 import { ArrowLeftIcon } from "@phosphor-icons/react";
 import { Link, Outlet, createFileRoute } from "@tanstack/react-router";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@tenderlayer/ui/components/badge";
+import { Button } from "@tenderlayer/ui/components/button";
 
 export const Route = createFileRoute("/dashboard/contracts/$contractId")({
   component: ContractLayout,

@@ -2,7 +2,8 @@
   "files": [],
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/renderer/src/*"]
+      "@/*": ["./src/renderer/src/*"],
+      "@tenderlayer/ui/*": ["../../packages/ui/src/*"]
     }
   },
   "references": [

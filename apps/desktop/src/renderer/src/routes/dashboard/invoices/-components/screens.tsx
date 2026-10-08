@@ -1,14 +1,14 @@
 import { ArrowLeftIcon, MagnifyingGlassIcon, PlusIcon, ReceiptIcon } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
 
-import { Badge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@tenderlayer/ui/components/badge";
+import { Button, buttonVariants } from "@tenderlayer/ui/components/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@tenderlayer/ui/components/card";
+import { Field, FieldGroup, FieldLabel } from "@tenderlayer/ui/components/field";
+import { Input } from "@tenderlayer/ui/components/input";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@tenderlayer/ui/components/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@tenderlayer/ui/components/table";
+import { Textarea } from "@tenderlayer/ui/components/textarea";
 
 import { DataCard, KeyValueGrid, MetricStrip, PageHeader, StaticStatus, StaticTable } from "../../-components/screen";
 

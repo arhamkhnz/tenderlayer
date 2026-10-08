@@ -6,23 +6,23 @@ import { useRender } from "@base-ui/react/use-render"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"
 
-import { useIsMobile } from "@repo/ui/hooks/use-mobile"
-import { Button } from "@repo/ui/components/button"
-import { Input } from "@repo/ui/components/input"
-import { Separator } from "@repo/ui/components/separator"
+import { useIsMobile } from "@tenderlayer/ui/hooks/use-mobile"
+import { Button } from "@tenderlayer/ui/components/button"
+import { Input } from "@tenderlayer/ui/components/input"
+import { Separator } from "@tenderlayer/ui/components/separator"
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@repo/ui/components/sheet"
-import { Skeleton } from "@repo/ui/components/skeleton"
+} from "@tenderlayer/ui/components/sheet"
+import { Skeleton } from "@tenderlayer/ui/components/skeleton"
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@repo/ui/components/tooltip"
+} from "@tenderlayer/ui/components/tooltip"
 import { SidebarIcon } from "@phosphor-icons/react"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"

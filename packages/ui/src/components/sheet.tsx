@@ -4,7 +4,7 @@ import * as React from "react"
 import { Dialog as SheetPrimitive } from "@base-ui/react/dialog"
 import { cn } from "cn"
 
-import { Button } from "@repo/ui/components/button"
+import { Button } from "@tenderlayer/ui/components/button"
 import { XIcon } from "@phosphor-icons/react"
 
 function Sheet({ ...props }: SheetPrimitive.Root.Props) {

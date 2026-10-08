@@ -1,7 +1,7 @@
 import { Outlet } from "@tanstack/react-router";
 
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { SidebarProvider } from "@tenderlayer/ui/components/sidebar";
+import { TooltipProvider } from "@tenderlayer/ui/components/tooltip";
 
 import { AppSidebar } from "./app-sidebar";
 import { AppHeader } from "./app-header";

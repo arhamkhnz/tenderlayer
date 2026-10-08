@@ -14,9 +14,9 @@ import {
   type SortingState,
 } from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from "@tenderlayer/ui/components/button";
+import { Input } from "@tenderlayer/ui/components/input";
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@tenderlayer/ui/components/table";
 
 import { employeeColumns, type Employee } from "./employee-columns";
 import { employeeTableFeatures } from "./employee-data-table-features";

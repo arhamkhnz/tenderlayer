@@ -20,7 +20,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
+} from "@tenderlayer/ui/components/sidebar";
 
 const navigationGroups = [
   {

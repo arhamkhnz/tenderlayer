@@ -11,8 +11,8 @@ import {
 import { Link } from "@tanstack/react-router";
 import { createColumnHelper, type Column } from "@tanstack/react-table";
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@tenderlayer/ui/components/avatar";
+import { Button } from "@tenderlayer/ui/components/button";
 
 import type { EmployeeTableFeatures } from "./employee-data-table-features";
 
