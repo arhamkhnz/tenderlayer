@@ -133,3 +133,12 @@
     @apply font-sans;
   }
 }
+
+@layer components {
+  .brand-wordmark {
+    font-family: var(--font-timeless-serif);
+    font-weight: 300;
+    letter-spacing: -0.08em;
+    font-variation-settings: "STYL" 100;
+  }
+}

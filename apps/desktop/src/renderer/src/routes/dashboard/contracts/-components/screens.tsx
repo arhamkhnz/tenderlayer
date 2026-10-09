@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, FilePlusIcon, MagnifyingGlassIcon, PlusIcon } from "@phosphor-icons/react";
+import { ArrowLeftIcon, FilePlusIcon, SearchIcon, PlusIcon } from "@keyline-icons/react";
 import { Link } from "@tanstack/react-router";
 
 import { Button, buttonVariants } from "@tenderlayer/ui/components/button";
@@ -93,7 +93,7 @@ export function ContractsScreen() {
         description="Static contract records for the selected organization."
         action={
           <div className="relative w-52">
-            <MagnifyingGlassIcon className="pointer-events-none absolute top-1/2 left-2 size-3.5 -translate-y-1/2 text-muted-foreground" />
+            <SearchIcon className="pointer-events-none absolute top-1/2 left-2 size-3.5 -translate-y-1/2 text-muted-foreground" />
             <Input className="pl-7" placeholder="Search contracts" />
           </div>
         }

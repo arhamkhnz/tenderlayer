@@ -1,12 +1,5 @@
 import { useState } from "react";
-import {
-  ArrowsDownUpIcon,
-  ColumnsIcon,
-  FloppyDiskIcon,
-  FunnelSimpleIcon,
-  GearSixIcon,
-  PlusIcon,
-} from "@phosphor-icons/react";
+import { ArrowUpDownIcon, Columns3Icon, SaveIcon, FilterIcon, SettingsIcon, PlusIcon } from "@keyline-icons/react";
 import {
   useTable,
   type ColumnFiltersState,
@@ -106,7 +99,7 @@ export function EmployeeDataTable({ data }: { data: Employee[] }) {
       <div className="flex min-h-12 flex-wrap items-center justify-between gap-2 border-b px-2 py-2">
         <div className="flex flex-wrap items-center gap-1">
           <Button type="button" variant="ghost" onClick={() => setShowFilter((current) => !current)}>
-            <FunnelSimpleIcon data-icon="inline-start" />
+            <FilterIcon data-icon="inline-start" />
             Filter ({table.state.columnFilters.length})
           </Button>
           <Button type="button" variant="ghost" size="icon" aria-label="Add filter" onClick={() => setShowFilter(true)}>
@@ -125,7 +118,7 @@ export function EmployeeDataTable({ data }: { data: Employee[] }) {
 
         <div className="flex flex-wrap items-center justify-end gap-1">
           <Button type="button" variant="ghost" onClick={() => setShowColumns((current) => !current)}>
-            <ColumnsIcon data-icon="inline-start" />
+            <Columns3Icon data-icon="inline-start" />
             Layout
           </Button>
           {showColumns
@@ -146,15 +139,15 @@ export function EmployeeDataTable({ data }: { data: Employee[] }) {
                 ))
             : null}
           <Button type="button" variant="ghost" onClick={cycleNameSorting}>
-            <ArrowsDownUpIcon data-icon="inline-start" />
+            <ArrowUpDownIcon data-icon="inline-start" />
             Sort
           </Button>
           <Button type="button" variant="ghost" onClick={resetView}>
-            <GearSixIcon data-icon="inline-start" />
+            <SettingsIcon data-icon="inline-start" />
             View settings
           </Button>
           <Button type="button" variant="ghost" size="icon" aria-label="Save view" onClick={saveView}>
-            <FloppyDiskIcon />
+            <SaveIcon />
           </Button>
         </div>
       </div>

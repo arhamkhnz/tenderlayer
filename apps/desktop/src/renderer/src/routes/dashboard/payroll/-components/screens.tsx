@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, MoneyIcon, PlusIcon } from "@phosphor-icons/react";
+import { ArrowLeftIcon, BanknoteIcon, PlusIcon } from "@keyline-icons/react";
 import { Link } from "@tanstack/react-router";
 
 import { Badge } from "@tenderlayer/ui/components/badge";
@@ -64,7 +64,7 @@ export function PayrollScreen() {
         description="Review monthly employee pay across active contracts."
         action={
           <Link to="/dashboard/payroll/new" className={buttonVariants()}>
-            <MoneyIcon data-icon="inline-start" />
+            <BanknoteIcon data-icon="inline-start" />
             New payroll run
           </Link>
         }

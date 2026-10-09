@@ -1,5 +1,5 @@
-import type { Icon } from "@phosphor-icons/react";
-import type { ReactNode } from "react";
+import type { IconProps } from "@keyline-icons/react";
+import type { ComponentType, ReactNode } from "react";
 
 import {
   Card,
@@ -36,7 +36,7 @@ type MetricItem = {
   label: string;
   value: string;
   detail?: string;
-  icon?: Icon;
+  icon?: ComponentType<IconProps>;
 };
 
 export function MetricStrip({ items, variant = "strip" }: { items: MetricItem[]; variant?: "strip" | "cards" }) {
@@ -52,7 +52,7 @@ export function MetricStrip({ items, variant = "strip" }: { items: MetricItem[];
                 <CardDescription className="flex items-center gap-2">
                   {ItemIcon ? (
                     <span className="flex size-5 items-center justify-center rounded-sm bg-background ring-1 ring-foreground/10 [&_svg]:size-3">
-                      <ItemIcon weight="fill" aria-hidden="true" />
+                      <ItemIcon aria-hidden="true" />
                     </span>
                   ) : null}
                   {item.label}

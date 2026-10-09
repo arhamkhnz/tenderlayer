@@ -1,14 +1,14 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
-  BankIcon,
+  LandmarkIcon,
   FileIcon,
-  GearIcon,
+  SettingsIcon,
   HouseIcon,
-  MoneyIcon,
+  BanknoteIcon,
   ReceiptIcon,
-  SquaresFourIcon,
-  UsersThreeIcon,
-} from "@phosphor-icons/react";
+  LayoutDashboardIcon,
+  UsersIcon,
+} from "@keyline-icons/react";
 
 import {
   Sidebar,
@@ -26,16 +26,16 @@ const navigationGroups = [
   {
     label: "Workspace",
     items: [
-      { label: "Overview", to: "/dashboard", icon: SquaresFourIcon, exact: true },
+      { label: "Overview", to: "/dashboard", icon: LayoutDashboardIcon, exact: true },
       { label: "Contracts", to: "/dashboard/contracts", icon: FileIcon },
-      { label: "Employees", to: "/dashboard/employees", icon: UsersThreeIcon },
+      { label: "Employees", to: "/dashboard/employees", icon: UsersIcon },
     ],
   },
   {
     label: "Finance",
     items: [
       { label: "Invoices", to: "/dashboard/invoices", icon: ReceiptIcon },
-      { label: "Payroll", to: "/dashboard/payroll", icon: MoneyIcon },
+      { label: "Payroll", to: "/dashboard/payroll", icon: BanknoteIcon },
     ],
   },
   {
@@ -44,9 +44,9 @@ const navigationGroups = [
       {
         label: "Organization",
         to: "/dashboard/settings/organization",
-        icon: GearIcon,
+        icon: SettingsIcon,
       },
-      { label: "Tax", to: "/dashboard/settings/tax", icon: BankIcon },
+      { label: "Tax", to: "/dashboard/settings/tax", icon: LandmarkIcon },
     ],
   },
 ] as const;
@@ -79,7 +79,7 @@ export function AppSidebar() {
                   return (
                     <SidebarMenuItem key={item.to}>
                       <SidebarMenuButton isActive={isActive} tooltip={item.label} render={<Link to={item.to} />}>
-                        <item.icon weight="regular" />
+                        <item.icon />
                         <span>{item.label}</span>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -95,7 +95,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton isActive={pathname === "/welcome"} tooltip="Welcome" render={<Link to="/welcome" />}>
-              <HouseIcon weight="regular" />
+              <HouseIcon />
               <span>Welcome</span>
             </SidebarMenuButton>
           </SidebarMenuItem>

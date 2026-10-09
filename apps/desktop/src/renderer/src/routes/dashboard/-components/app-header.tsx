@@ -1,5 +1,5 @@
 import { useRouterState } from "@tanstack/react-router";
-import { ArrowLeftIcon, ArrowRightIcon, SidebarIcon, SidebarSimpleIcon } from "@phosphor-icons/react";
+import { ArrowLeftIcon, ArrowRightIcon, PanelLeftIcon, PanelLeftOpenIcon } from "@keyline-icons/react";
 import { router } from "@/app/router";
 import { Button } from "@tenderlayer/ui/components/button";
 import { useSidebar } from "@tenderlayer/ui/components/sidebar";
@@ -28,7 +28,7 @@ export function AppHeader() {
           onClick={toggleSidebar}
           className="-ml-2 text-muted-foreground"
         >
-          {isSidebarOpen ? <SidebarIcon weight="fill" /> : <SidebarSimpleIcon weight="fill" />}
+          {isSidebarOpen ? <PanelLeftIcon /> : <PanelLeftOpenIcon />}
         </Button>
         <div className="flex items-center gap-1">
           <Button
@@ -39,7 +39,7 @@ export function AppHeader() {
             onClick={() => router.history.back()}
             className="text-muted-foreground"
           >
-            <ArrowLeftIcon weight="regular" />
+            <ArrowLeftIcon />
           </Button>
           <Button
             variant="ghost"
@@ -48,7 +48,7 @@ export function AppHeader() {
             onClick={() => router.history.forward()}
             className="text-muted-foreground"
           >
-            <ArrowRightIcon weight="regular" />
+            <ArrowRightIcon />
           </Button>
         </div>
       </div>

@@ -66,7 +66,7 @@ function WelcomePage() {
         <header className="flex flex-col gap-6">
           <h1 id="welcome-title" className="flex flex-col items-start gap-1">
             <span className="leading-5 text-sm text-muted-foreground">Welcome to</span>
-            <span className="font-serif text-5xl leading-none font-normal tracking-tight">TenderLayer</span>
+            <span className="brand-wordmark text-4xl leading-none">TenderLayer</span>
           </h1>
           <p className="text-sm leading-5 text-muted-foreground">
             Create your organization to manage active tenders, contracts, and day-to-day operations from one local
@@ -107,7 +107,7 @@ function WelcomePage() {
                 )}
               />
 
-              <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+              <Button size="lg" type="submit" className="w-full" disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting && <Spinner data-icon="inline-start" />}
                 {form.formState.isSubmitting ? "Creating..." : "Create organization"}
               </Button>

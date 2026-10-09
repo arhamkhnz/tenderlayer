@@ -1,13 +1,14 @@
-import type { Icon } from "@phosphor-icons/react";
+import type { ComponentType } from "react";
+import type { IconProps } from "@keyline-icons/react";
 import {
-  ArrowsDownUpIcon,
+  ArrowUpDownIcon,
   BriefcaseIcon,
-  CalendarBlankIcon,
-  CurrencyInrIcon,
-  IdentificationBadgeIcon,
-  ListBulletsIcon,
+  CalendarIcon,
+  IndianRupeeIcon,
+  IdBadgeIcon,
+  ListIcon,
   UserIcon,
-} from "@phosphor-icons/react";
+} from "@keyline-icons/react";
 import { Link } from "@tanstack/react-router";
 import { createColumnHelper, type Column } from "@tanstack/react-table";
 
@@ -46,7 +47,7 @@ function EmployeeColumnHeader<TValue>({
   title,
 }: {
   column: Column<EmployeeTableFeatures, Employee, TValue>;
-  icon: Icon;
+  icon: ComponentType<IconProps>;
   title: string;
 }) {
   const sortDirection = column.getIsSorted();
@@ -60,7 +61,7 @@ function EmployeeColumnHeader<TValue>({
     >
       <HeaderIcon data-icon="inline-start" />
       {title}
-      {sortDirection ? <ArrowsDownUpIcon data-icon="inline-end" weight="bold" /> : null}
+      {sortDirection ? <ArrowUpDownIcon data-icon="inline-end" strokeWidth={3} /> : null}
     </Button>
   );
 }
@@ -92,7 +93,7 @@ export const employeeColumns = columnHelper.columns([
 
       return (
         <span className="flex items-center gap-2 text-muted-foreground">
-          <ListBulletsIcon className="size-4" aria-hidden="true" />
+          <ListIcon className="size-4" aria-hidden="true" />
           Total: {visibleEmployees} employees
         </span>
       );
@@ -100,7 +101,7 @@ export const employeeColumns = columnHelper.columns([
   }),
   columnHelper.accessor("role", {
     sortFn: "text",
-    header: ({ column }) => <EmployeeColumnHeader column={column} icon={IdentificationBadgeIcon} title="Role" />,
+    header: ({ column }) => <EmployeeColumnHeader column={column} icon={IdBadgeIcon} title="Role" />,
     footer: ({ table }) => {
       const roles = new Set(table.getFilteredRowModel().rows.map((row) => row.original.role));
       return <span className="text-muted-foreground">{roles.size} roles</span>;
@@ -115,7 +116,7 @@ export const employeeColumns = columnHelper.columns([
     },
   }),
   columnHelper.accessor("monthlyPay", {
-    header: ({ column }) => <EmployeeColumnHeader column={column} icon={CurrencyInrIcon} title="Monthly pay" />,
+    header: ({ column }) => <EmployeeColumnHeader column={column} icon={IndianRupeeIcon} title="Monthly pay" />,
     cell: ({ getValue }) => <span className="font-mono tabular-nums">{currencyFormatter.format(getValue())}</span>,
     footer: ({ table }) => {
       const total = table.getFilteredRowModel().rows.reduce((sum, row) => sum + row.original.monthlyPay, 0);
@@ -127,7 +128,7 @@ export const employeeColumns = columnHelper.columns([
   }),
   columnHelper.accessor("joiningDate", {
     sortFn: "text",
-    header: ({ column }) => <EmployeeColumnHeader column={column} icon={CalendarBlankIcon} title="Joining date" />,
+    header: ({ column }) => <EmployeeColumnHeader column={column} icon={CalendarIcon} title="Joining date" />,
     cell: ({ getValue }) => (
       <span className="tabular-nums">{dateFormatter.format(new Date(`${getValue()}T00:00:00`))}</span>
     ),

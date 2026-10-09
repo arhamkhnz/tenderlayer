@@ -1,4 +1,4 @@
-import { ArrowLeftIcon } from "@phosphor-icons/react";
+import { ArrowLeftIcon } from "@keyline-icons/react";
 import { Link, Outlet, createFileRoute } from "@tanstack/react-router";
 
 import { Badge } from "@tenderlayer/ui/components/badge";

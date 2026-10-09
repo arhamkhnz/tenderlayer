@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, MagnifyingGlassIcon, PlusIcon, ReceiptIcon } from "@phosphor-icons/react";
+import { ArrowLeftIcon, SearchIcon, PlusIcon, ReceiptIcon } from "@keyline-icons/react";
 import { Link } from "@tanstack/react-router";
 
 import { Badge } from "@tenderlayer/ui/components/badge";
@@ -93,7 +93,7 @@ export function InvoicesScreen() {
         description="Static billing records for all contracts."
         action={
           <div className="relative w-52">
-            <MagnifyingGlassIcon className="pointer-events-none absolute top-1/2 left-2 size-3.5 -translate-y-1/2 text-muted-foreground" />
+            <SearchIcon className="pointer-events-none absolute top-1/2 left-2 size-3.5 -translate-y-1/2 text-muted-foreground" />
             <Input className="pl-7" placeholder="Search invoices" />
           </div>
         }

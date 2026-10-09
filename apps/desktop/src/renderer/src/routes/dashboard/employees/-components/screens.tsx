@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, PlusIcon, UsersThreeIcon } from "@phosphor-icons/react";
+import { ArrowLeftIcon, PlusIcon, UsersIcon } from "@keyline-icons/react";
 import { Link } from "@tanstack/react-router";
 
 import { Avatar, AvatarFallback } from "@tenderlayer/ui/components/avatar";
@@ -87,7 +87,7 @@ export function EmployeesScreen() {
     >
       <header className="flex min-h-14 items-center justify-between gap-4 border-b px-4">
         <div className="flex items-center gap-2">
-          <UsersThreeIcon className="size-5 text-muted-foreground" aria-hidden="true" />
+          <UsersIcon className="size-5 text-muted-foreground" aria-hidden="true" />
           <h1 className="text-base font-medium">Employees</h1>
         </div>
         <Link to="/dashboard/employees/new" className={buttonVariants({ variant: "ghost" })}>

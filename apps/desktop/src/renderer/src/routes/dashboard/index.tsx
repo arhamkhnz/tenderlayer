@@ -1,4 +1,4 @@
-import { BriefcaseIcon, ClockCountdownIcon, FileTextIcon, ReceiptIcon } from "@phosphor-icons/react";
+import { BriefcaseIcon, ClockIcon, FileTextIcon, ReceiptIcon } from "@keyline-icons/react";
 import { createFileRoute } from "@tanstack/react-router";
 
 import { MetricStrip } from "./-components/screen";
@@ -19,7 +19,7 @@ function DashboardPage() {
         variant="cards"
         items={[
           { label: "Active contracts", value: "12", detail: "Across 5 departments", icon: BriefcaseIcon },
-          { label: "Ending in 30 days", value: "3", detail: "₹18.4L total value", icon: ClockCountdownIcon },
+          { label: "Ending in 30 days", value: "3", detail: "₹18.4L total value", icon: ClockIcon },
           { label: "Draft contracts", value: "4", detail: "2 awaiting review", icon: FileTextIcon },
           { label: "Open invoices", value: "₹7.8L", detail: "6 invoices", icon: ReceiptIcon },
         ]}

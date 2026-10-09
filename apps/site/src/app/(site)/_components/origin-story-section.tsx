@@ -1,6 +1,9 @@
 export default function OriginStorySection() {
   return (
-    <section className="flex flex-col gap-4 font-normal text-base text-muted-foreground leading-6" aria-labelledby="why-title">
+    <section
+      className="flex flex-col gap-4 font-normal text-base text-muted-foreground leading-6"
+      aria-labelledby="why-title"
+    >
       <h2 className="font-normal text-foreground text-lg leading-7" id="why-title">
         Why we’re building it
       </h2>
