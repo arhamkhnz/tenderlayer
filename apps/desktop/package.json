@@ -36,6 +36,7 @@
     "@tailwindcss/vite": "^4.3.3",
     "@tanstack/react-router": "^1.170.41",
     "@tanstack/react-table": "^9.2.6",
+    "@tenderlayer/fonts": "^0.0.0",
     "@tenderlayer/ui": "^0.0.0",
     "better-sqlite3": "^13.0.3",
     "cn": "^0.4.0",

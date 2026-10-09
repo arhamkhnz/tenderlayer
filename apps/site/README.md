@@ -16,7 +16,9 @@ The landing page is `src/app/(site)/page.tsx`. SEO metadata is in `src/app/layou
 
 ## Fonts
 
-This project uses `next/font/local` to load the unmodified Timeless Sans and Serif variable fonts. These proprietary assets are covered by [their license](src/app/fonts/LICENSE.pdf), not the project's open-source license.
+This project uses `next/font/local` to load the unmodified Timeless Sans and Serif variable fonts. These proprietary assets are covered by [their license](../../packages/fonts/src/LICENSE.pdf), not the project's open-source license.
+
+Timeless Sans and Serif are loaded through `@tenderlayer/fonts/next`; Open Graph font data remains local to the site. Include `packages/fonts/*` in Cloudflare's build watch paths so changes to the shared fonts trigger a site deployment.
 
 The maintainer received this clarification from the licensor about including font assets in a public project repository:
 

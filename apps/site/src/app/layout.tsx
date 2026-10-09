@@ -1,25 +1,8 @@
-import localFont from "next/font/local";
+import { fontSans, fontSerif } from "@tenderlayer/fonts/next";
 
 import type { Metadata } from "next";
 
 import "./globals.css";
-
-const fontSans = localFont({
-  src: "./fonts/TimelessSansVF.woff2",
-  variable: "--font-timeless-sans",
-  weight: "300 800",
-  style: "normal",
-  display: "block",
-});
-
-const fontSerif = localFont({
-  src: "./fonts/TimelessSerifVF.woff2",
-  variable: "--font-timeless-serif",
-  weight: "200 700",
-  style: "normal",
-  adjustFontFallback: "Times New Roman",
-  display: "block",
-});
 
 const title = "TenderLayer | Tender and Contract Management";
 const description =

@@ -2,12 +2,13 @@
 
 Shared UI components, the mobile hook, and theme used by the desktop app.
 
-The package uses Base UI, shadcn's Mira style, and Phosphor icons. Its CSS includes the desktop's Geist, Geist Mono, and Instrument Serif fonts.
+The package uses Base UI, shadcn's Mira style, and Phosphor icons. Its theme uses Timeless Sans and Serif from `@tenderlayer/fonts`, and its CSS includes Geist Mono for monospace text.
 
 ```tsx
 import { Button } from "@tenderlayer/ui/components/button";
 import { useIsMobile } from "@tenderlayer/ui/hooks/use-mobile";
 import { cn } from "@tenderlayer/ui/lib/utils";
+import "@tenderlayer/fonts/fonts.css";
 import "@tenderlayer/ui/globals.css";
 ```
 
