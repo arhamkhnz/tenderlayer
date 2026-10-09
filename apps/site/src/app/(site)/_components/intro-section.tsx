@@ -30,7 +30,7 @@ export default function IntroSection({ repositoryUrl }: { repositoryUrl: string 
           </Suspense>
         </a>
       </header>
-      <p className="text-pretty font-normal text-muted leading-6">
+      <p className="text-pretty font-normal text-muted-foreground leading-6">
         An open-source, local-first desktop app for managing tenders and contracts, designed to keep your business data
         on your computer.
       </p>

@@ -2,7 +2,7 @@ import { fontSans, fontSerif } from "@tenderlayer/fonts/next";
 
 import type { Metadata } from "next";
 
-import "./globals.css";
+import "@tenderlayer/ui/globals.css";
 
 const title = "TenderLayer | Tender and Contract Management";
 const description =
@@ -35,8 +35,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className="scrollbar-width:none [&::-webkit-scrollbar]:hidden">
-      <body className={`${fontSans.variable} ${fontSerif.variable} antialiased`}>{children}</body>
+    <html
+      lang="en"
+      style={{ colorScheme: "light" }}
+      className={`${fontSans.variable} ${fontSerif.variable} scrollbar-width:none [&::-webkit-scrollbar]:hidden`}
+    >
+      <body className="antialiased">{children}</body>
     </html>
   );
 }

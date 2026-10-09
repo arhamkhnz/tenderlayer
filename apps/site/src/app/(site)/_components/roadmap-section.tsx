@@ -8,7 +8,7 @@ export default function RoadmapSection() {
       <h2 className="font-normal text-foreground text-lg leading-7" id="roadmap-title">
         Where we’re headed
       </h2>
-      <div className="flex flex-col gap-2 text-pretty text-muted">
+      <div className="flex flex-col gap-2 text-pretty text-muted-foreground">
         <p>
           TenderLayer is in early development. The first phase focuses on{" "}
           <span className="text-foreground">awarded tenders and active contracts</span>.

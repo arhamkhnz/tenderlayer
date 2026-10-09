@@ -14,6 +14,8 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 The landing page is `src/app/(site)/page.tsx`. SEO metadata is in `src/app/layout.tsx`.
 
+`src/app/layout.tsx` imports the shared `@tenderlayer/ui/globals.css` stylesheet directly. The site uses the shared theme without a site-specific stylesheet. Include `packages/ui/*` in Cloudflare's build watch paths so shared stylesheet changes trigger a site deployment.
+
 ## Fonts
 
 This project uses `next/font/local` to load the unmodified Timeless Sans and Serif variable fonts. These proprietary assets are covered by [their license](../../packages/fonts/src/LICENSE.pdf), not the project's open-source license.

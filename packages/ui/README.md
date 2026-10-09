@@ -12,7 +12,7 @@ import "@tenderlayer/fonts/fonts.css";
 import "@tenderlayer/ui/globals.css";
 ```
 
-The shared stylesheet registers this package's sources and the desktop app's sources. The landing site uses its own stylesheet.
+The shared stylesheet registers this package's sources and the desktop app's sources. The landing site imports it directly in its root layout and uses the same theme.
 
 To add a component directly to this package from the repository root:
 

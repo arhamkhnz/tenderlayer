@@ -10,10 +10,10 @@ export default async function GitHubStarCount() {
 
   return (
     <>
-      <span className="text-muted text-sm" aria-hidden="true">
+      <span className="text-muted-foreground text-sm" aria-hidden="true">
         ·
       </span>
-      <span className="inline-flex items-center gap-1 text-muted text-sm tabular-nums transition-colors group-hover:text-foreground">
+      <span className="inline-flex items-center gap-1 text-muted-foreground text-sm tabular-nums transition-colors group-hover:text-foreground">
         <Star className="size-3.5 shrink-0" aria-hidden="true" />
         <span aria-hidden="true">{formattedCount}</span>
         <span className="sr-only">{`${formattedCount} ${starCount === 1 ? "star" : "stars"}`}</span>
