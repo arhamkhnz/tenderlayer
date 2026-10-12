@@ -12,7 +12,7 @@
     "format": "oxfmt"
   },
   "dependencies": {
-    "@keyline-icons/react": "^1.7.0",
+    "@keyline-icons/react": "^1.8.0",
     "@opennextjs/cloudflare": "^1.20.10",
     "@tenderlayer/fonts": "^0.0.0",
     "@tenderlayer/ui": "^0.0.0",
@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
-    "@types/node": "^24.19.1",
+    "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "babel-plugin-react-compiler": "1.0.0",
