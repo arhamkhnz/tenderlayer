@@ -16,7 +16,9 @@ export function DashboardLayout() {
           className="relative min-w-0 w-full bg-background"
           style={{ paddingTop: "env(titlebar-area-height, 3rem)" }}
         >
-          <Outlet />
+          <div className="min-h-0 min-w-0 p-4 has-data-[content-padding=false]:p-0">
+            <Outlet />
+          </div>
         </main>
       </SidebarProvider>
     </TooltipProvider>

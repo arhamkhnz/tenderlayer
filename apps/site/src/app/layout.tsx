@@ -1,4 +1,4 @@
-import { fontSans, fontSerif } from "@tenderlayer/fonts/next";
+import { fontMono, fontSans, fontSerif } from "@tenderlayer/fonts/next";
 
 import type { Metadata } from "next";
 
@@ -38,7 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       style={{ colorScheme: "light" }}
-      className={`${fontSans.variable} ${fontSerif.variable} scrollbar-width:none [&::-webkit-scrollbar]:hidden`}
+      className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} scrollbar-width:none [&::-webkit-scrollbar]:hidden`}
     >
       <body className="antialiased">{children}</body>
     </html>

@@ -1,6 +1,4 @@
-import { useRouterState } from "@tanstack/react-router";
-import { ArrowLeftIcon, ArrowRightIcon, PanelLeftIcon, PanelLeftOpenIcon } from "@keyline-icons/react";
-import { router } from "@/app/router";
+import { PanelLeftIcon, PanelLeftOpenIcon } from "@keyline-icons/react";
 import { Button } from "@tenderlayer/ui/components/button";
 import { useSidebar } from "@tenderlayer/ui/components/sidebar";
 
@@ -8,9 +6,6 @@ export function AppHeader() {
   const isMac = window.electronAPI.platform === "darwin";
   const { isMobile, open, openMobile, toggleSidebar } = useSidebar();
   const isSidebarOpen = isMobile ? openMobile : open;
-  const canGoBack = useRouterState({
-    select: () => router.history.canGoBack(),
-  });
   return (
     <header
       className="absolute inset-x-0 top-0 z-50 flex items-center border-b px-4 [app-region:drag]"
@@ -30,27 +25,6 @@ export function AppHeader() {
         >
           {isSidebarOpen ? <PanelLeftIcon /> : <PanelLeftOpenIcon />}
         </Button>
-        <div className="flex items-center gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Go back"
-            disabled={!canGoBack}
-            onClick={() => router.history.back()}
-            className="text-muted-foreground"
-          >
-            <ArrowLeftIcon />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Go forward"
-            onClick={() => router.history.forward()}
-            className="text-muted-foreground"
-          >
-            <ArrowRightIcon />
-          </Button>
-        </div>
       </div>
     </header>
   );

@@ -82,6 +82,7 @@ const employees: Employee[] = [
 export function EmployeesScreen() {
   return (
     <section
+      data-content-padding="false"
       className="flex min-h-0 flex-col overflow-hidden bg-background"
       style={{ height: "calc(100vh - env(titlebar-area-height, 3rem))" }}
     >

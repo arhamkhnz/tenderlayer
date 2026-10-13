@@ -16,3 +16,11 @@ export const fontSerif = localFont({
   adjustFontFallback: "Times New Roman",
   display: "block",
 });
+
+export const fontMono = localFont({
+  src: "./PaperMonoVF.woff2",
+  variable: "--font-paper-mono",
+  weight: "100 800",
+  style: "normal",
+  display: "swap",
+});

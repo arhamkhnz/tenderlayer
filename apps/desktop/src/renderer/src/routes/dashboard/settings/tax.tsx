@@ -1,7 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
-
-import { TaxSettingsScreen } from "./-components/screens";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/dashboard/settings/tax")({
-  component: TaxSettingsScreen,
+  beforeLoad: () => {
+    throw redirect({ to: "/dashboard/settings/organization", replace: true });
+  },
 });

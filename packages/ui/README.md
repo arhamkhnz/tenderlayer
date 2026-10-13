@@ -2,7 +2,7 @@
 
 Shared UI components, the mobile hook, and theme used by the desktop app.
 
-The package uses Base UI, shadcn's Mira style, and Phosphor icons. Its theme uses Timeless Sans and Serif from `@tenderlayer/fonts`, and its CSS includes Geist Mono for monospace text.
+The package uses Base UI, shadcn's Mira style, and Phosphor icons. Its theme uses Timeless Sans, Timeless Serif, and Paper Mono from `@tenderlayer/fonts`. Paper Mono uses one variable WOFF2 file supporting weights 100–800 for monospace text.
 
 ```tsx
 import { Button } from "@tenderlayer/ui/components/button";

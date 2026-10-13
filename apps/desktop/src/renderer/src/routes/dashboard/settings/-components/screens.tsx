@@ -19,7 +19,7 @@ export function OrganizationSettingsScreen() {
     <>
       <PageHeader
         title="Organization"
-        description="Company identity and contact details used across contracts and invoices."
+        description="Company details, statutory registrations, and defaults used across contracts, invoices, and payroll."
       />
       <Card>
         <CardHeader className="border-b">
@@ -108,20 +108,6 @@ export function OrganizationSettingsScreen() {
           </FieldGroup>
         </CardContent>
       </Card>
-      <div className="flex justify-end">
-        <Button type="button">Save changes</Button>
-      </div>
-    </>
-  );
-}
-
-export function TaxSettingsScreen() {
-  return (
-    <>
-      <PageHeader
-        title="Tax settings"
-        description="GST registration and default tax treatment for invoices and payroll records."
-      />
       <Card>
         <CardHeader className="border-b">
           <CardTitle>GST registration</CardTitle>
@@ -244,7 +230,7 @@ export function TaxSettingsScreen() {
         </CardContent>
       </Card>
       <div className="flex justify-end">
-        <Button type="button">Save tax settings</Button>
+        <Button type="button">Save changes</Button>
       </div>
     </>
   );
