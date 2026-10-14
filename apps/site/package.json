@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@keyline-icons/react": "^1.8.0",
-    "@opennextjs/cloudflare": "^1.20.10",
+    "@opennextjs/cloudflare": "^1.20.11",
     "@tenderlayer/fonts": "^0.0.0",
     "@tenderlayer/ui": "^0.0.0",
     "next": "16.3.8",
@@ -28,6 +28,6 @@
     "babel-plugin-react-compiler": "1.0.0",
     "tailwindcss": "^4",
     "typescript": "^6.0.3",
-    "wrangler": "^4.149.0"
+    "wrangler": "^4.151.0"
   }
 }
