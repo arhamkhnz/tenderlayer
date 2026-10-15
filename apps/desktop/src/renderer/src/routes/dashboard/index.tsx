@@ -11,8 +11,8 @@ function DashboardPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-1">
-        <h1 className="text-3xl tracking-tight leading-none">Welcome back</h1>
-        <p className="text-sm text-muted-foreground">Here's an overview of your firm's operations.</p>
+        <h1 className="text-3xl tracking-tighter leading-none">Welcome back</h1>
+        <p className="text-sm text-muted-foreground">Here's an overview of your business.</p>
       </div>
 
       <MetricStrip
