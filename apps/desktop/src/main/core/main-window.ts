@@ -1,5 +1,6 @@
 import { BrowserWindow, nativeTheme } from "electron/main";
 import { shell } from "electron";
+import { isMacOS } from "../../shared/platform.js";
 import { isTrustedRendererUrl, preloadPath, rendererPageUrl } from "./renderer-protocol.js";
 
 function isSafeExternalUrl(url: string) {
@@ -11,7 +12,7 @@ function isSafeExternalUrl(url: string) {
 }
 
 export function createMainWindow() {
-  const isMac = process.platform === "darwin";
+  const isMac = isMacOS(process.platform);
 
   const mainWindow = new BrowserWindow({
     width: 1200,

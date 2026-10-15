@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from "electron/main";
 import squirrelStartup from "electron-squirrel-startup";
+import { isMacOS } from "../shared/platform.js";
 import { closeDatabase, initializeDatabase } from "./core/database/client.js";
 import { createMainWindow } from "./core/main-window.js";
 import { registerRendererProtocol, registerRendererScheme } from "./core/renderer-protocol.js";
@@ -33,7 +34,7 @@ app
 app.on("will-quit", closeDatabase);
 
 app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
+  if (!isMacOS(process.platform)) {
     app.quit();
   }
 });

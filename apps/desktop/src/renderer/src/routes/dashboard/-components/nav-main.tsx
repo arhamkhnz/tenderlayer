@@ -37,11 +37,7 @@ export function NavMain({ items }: { items: readonly NavGroup[] }) {
 
   return items.map((group) => (
     <SidebarGroup key={group.id}>
-      {group.label ? (
-        <SidebarGroupLabel className="font-mono uppercase group-data-[collapsible=icon]:pointer-events-none">
-          {group.label}
-        </SidebarGroupLabel>
-      ) : null}
+      {group.label ? <SidebarGroupLabel className="font-mono uppercase">{group.label}</SidebarGroupLabel> : null}
       <SidebarGroupContent>
         <SidebarMenu>
           {group.items.map((item) => (
