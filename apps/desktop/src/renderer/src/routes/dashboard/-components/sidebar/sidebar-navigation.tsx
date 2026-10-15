@@ -14,7 +14,7 @@ function isItemActive(pathname: string, item: NavItem) {
   return pathname === item.url || pathname === `${item.url}/` || (!item.exact && pathname.startsWith(`${item.url}/`));
 }
 
-function NavLinkItem({ item, isActive }: { item: NavItem; isActive: boolean }) {
+function SidebarNavigationItem({ item, isActive }: { item: NavItem; isActive: boolean }) {
   const Icon = item.icon;
 
   return (
@@ -32,7 +32,7 @@ function NavLinkItem({ item, isActive }: { item: NavItem; isActive: boolean }) {
   );
 }
 
-export function NavMain({ items }: { items: readonly NavGroup[] }) {
+export function SidebarNavigation({ items }: { items: readonly NavGroup[] }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
 
   return items.map((group) => (
@@ -41,7 +41,7 @@ export function NavMain({ items }: { items: readonly NavGroup[] }) {
       <SidebarGroupContent>
         <SidebarMenu>
           {group.items.map((item) => (
-            <NavLinkItem key={item.id} item={item} isActive={isItemActive(pathname, item)} />
+            <SidebarNavigationItem key={item.id} item={item} isActive={isItemActive(pathname, item)} />
           ))}
         </SidebarMenu>
       </SidebarGroupContent>
@@ -49,13 +49,13 @@ export function NavMain({ items }: { items: readonly NavGroup[] }) {
   ));
 }
 
-export function NavFooter({ items }: { items: readonly NavItem[] }) {
+export function SidebarFooterNavigation({ items }: { items: readonly NavItem[] }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
 
   return (
     <SidebarMenu>
       {items.map((item) => (
-        <NavLinkItem key={item.id} item={item} isActive={isItemActive(pathname, item)} />
+        <SidebarNavigationItem key={item.id} item={item} isActive={isItemActive(pathname, item)} />
       ))}
     </SidebarMenu>
   );

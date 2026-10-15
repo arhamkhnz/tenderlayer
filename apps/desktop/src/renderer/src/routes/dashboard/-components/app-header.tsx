@@ -34,11 +34,14 @@ export function AppHeader() {
   return (
     <header
       ref={headerRef}
-      className="absolute top-0 left-0 z-50 flex h-(--header-height) w-fit items-center border-b [app-region:drag]"
+      className={cn(
+        "absolute top-0 left-0 z-50 flex h-(--header-height) w-fit items-center [app-region:drag]",
+        !isMobile && open && "border-b",
+      )}
     >
       <div
         className={cn(
-          "flex shrink-0 items-center justify-between gap-2 px-4",
+          "flex shrink-0 items-center justify-between gap-2 pl-4 pr-2",
           !isMobile && open && "md:w-(--sidebar-width)",
         )}
         style={{
@@ -47,7 +50,7 @@ export function AppHeader() {
       >
         <Button
           variant="ghost"
-          size="icon-lg"
+          size="icon"
           aria-label={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
           aria-pressed={isSidebarOpen}
           onClick={toggleSidebar}
@@ -55,10 +58,10 @@ export function AppHeader() {
         >
           {isSidebarOpen ? <PanelLeftIcon /> : <PanelLeftOpenIcon />}
         </Button>
-        <div className="hidden items-center gap-2 sm:flex">
+        <div className="hidden items-center gap-1.5 sm:flex">
           <Button
             variant="ghost"
-            size="icon-lg"
+            size="icon"
             aria-label="Go back"
             disabled={!canGoBack}
             onClick={() => router.history.back()}
@@ -68,7 +71,7 @@ export function AppHeader() {
           </Button>
           <Button
             variant="ghost"
-            size="icon-lg"
+            size="icon"
             aria-label="Go forward"
             disabled={historyIndex >= router.history.length - 1}
             onClick={() => router.history.forward()}

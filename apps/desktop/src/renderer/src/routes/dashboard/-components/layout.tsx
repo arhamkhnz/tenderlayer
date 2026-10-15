@@ -3,7 +3,7 @@ import { Outlet } from "@tanstack/react-router";
 import { SidebarProvider, useSidebar } from "@tenderlayer/ui/components/sidebar";
 import { TooltipProvider } from "@tenderlayer/ui/components/tooltip";
 
-import { AppSidebar } from "./app-sidebar";
+import { AppSidebar } from "./sidebar/app-sidebar";
 import { AppHeader } from "./app-header";
 import { ThemeToggle } from "./theme-toggle";
 
