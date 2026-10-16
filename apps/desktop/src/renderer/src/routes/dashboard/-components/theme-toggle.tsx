@@ -1,14 +1,11 @@
-import { useState } from "react";
 import { Button } from "@tenderlayer/ui/components/button";
+import { usePreferences } from "@/app/preferences";
 
 export function ThemeToggle() {
-  const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains("dark"));
+  const { isDark, setTheme } = usePreferences();
 
   function toggleTheme() {
-    const nextIsDark = !isDark;
-    document.documentElement.classList.toggle("dark", nextIsDark);
-    document.documentElement.style.colorScheme = nextIsDark ? "dark" : "light";
-    setIsDark(nextIsDark);
+    void setTheme(isDark ? "light" : "dark");
   }
 
   return (

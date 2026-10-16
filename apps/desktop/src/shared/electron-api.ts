@@ -1,4 +1,5 @@
 import type { OrganizationsApi } from "./contracts/organizations.js";
+import type { PreferencesApi } from "./contracts/preferences.js";
 
 export type ElectronPlatform = "darwin" | "linux" | "win32";
 
@@ -10,4 +11,5 @@ export interface ElectronApi {
     node: string;
   }>;
   organizations: Readonly<OrganizationsApi>;
+  preferences: Readonly<PreferencesApi>;
 }

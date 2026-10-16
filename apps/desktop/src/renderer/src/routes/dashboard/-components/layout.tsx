@@ -2,6 +2,7 @@ import { Outlet } from "@tanstack/react-router";
 
 import { SidebarProvider, useSidebar } from "@tenderlayer/ui/components/sidebar";
 import { TooltipProvider } from "@tenderlayer/ui/components/tooltip";
+import { usePreferences } from "@/app/preferences";
 
 import { AppSidebar } from "./sidebar/app-sidebar";
 import { AppHeader } from "./app-header";
@@ -20,9 +21,17 @@ function MainHeader() {
 }
 
 export function DashboardLayout() {
+  const { sidebarOpen, setSidebarOpen } = usePreferences();
+
   return (
     <TooltipProvider>
-      <SidebarProvider className="relative [--header-height:46px]">
+      <SidebarProvider
+        className="relative [--header-height:46px]"
+        open={sidebarOpen}
+        onOpenChange={(open) => {
+          void setSidebarOpen(open);
+        }}
+      >
         <AppHeader />
         <AppSidebar />
         <main className="relative flex min-w-0 flex-1 flex-col bg-background">

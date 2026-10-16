@@ -1,6 +1,7 @@
 import { contextBridge } from "electron/renderer";
 import type { ElectronApi, ElectronPlatform } from "../shared/electron-api.js";
 import { organizationsApi } from "./organizations.js";
+import { preferencesApi } from "./preferences.js";
 
 const electronApi = {
   platform: process.platform as ElectronPlatform,
@@ -10,6 +11,7 @@ const electronApi = {
     node: process.versions.node,
   },
   organizations: organizationsApi,
+  preferences: preferencesApi,
 } satisfies ElectronApi;
 
 contextBridge.exposeInMainWorld("electronAPI", electronApi);
