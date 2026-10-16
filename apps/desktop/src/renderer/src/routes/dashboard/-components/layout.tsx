@@ -26,7 +26,7 @@ export function DashboardLayout() {
   return (
     <TooltipProvider>
       <SidebarProvider
-        className="relative [--header-height:46px]"
+        className="relative [--header-height:env(titlebar-area-height,46px)]"
         open={sidebarOpen}
         onOpenChange={(open) => {
           void setSidebarOpen(open);

@@ -41,7 +41,7 @@ export function AppHeader() {
     >
       <div
         className={cn(
-          "flex shrink-0 items-center justify-between gap-2 pl-4 pr-2",
+          "flex shrink-0 items-center justify-between gap-1.5 pl-4 pr-2",
           !isMobile && open && "md:w-(--sidebar-width)",
         )}
         style={{

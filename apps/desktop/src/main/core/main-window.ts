@@ -18,7 +18,7 @@ export function createMainWindow() {
     width: 1200,
     height: 800,
     titleBarStyle: isMac ? "hiddenInset" : "default",
-    titleBarOverlay: isMac,
+    titleBarOverlay: isMac ? { height: 46 } : false,
     ...(isMac
       ? {
           trafficLightPosition: {
