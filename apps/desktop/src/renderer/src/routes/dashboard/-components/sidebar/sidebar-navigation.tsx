@@ -25,7 +25,7 @@ function SidebarNavigationItem({ item, isActive }: { item: NavItem; isActive: bo
         tooltip={item.title}
         render={<Link to={item.url} aria-current={isActive ? "page" : undefined} />}
       >
-        <Icon className="size-3.5" strokeWidth={1.75} />
+        <Icon strokeWidth={1.75} />
         <span className="text-sm font-[450]">{item.title}</span>
       </SidebarMenuButton>
     </SidebarMenuItem>
