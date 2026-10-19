@@ -8,25 +8,30 @@ import {
   SelectValue,
 } from "@tenderlayer/ui/components/select";
 
-const periods = [
-  { label: "All time", value: "all-time" },
-  { label: "Last 7 days", value: "last-7-days" },
-  { label: "Last 30 days", value: "last-30-days" },
-  { label: "Last 3 months", value: "last-3-months" },
-  { label: "This month", value: "this-month" },
-  { label: "This year", value: "this-year" },
-];
+import { reportingPeriods, type ReportingPeriod } from "./reporting-period";
 
-export function PeriodFilter() {
+export function PeriodFilter({
+  value,
+  onValueChange,
+}: {
+  value: ReportingPeriod;
+  onValueChange: (value: ReportingPeriod) => void;
+}) {
   return (
-    <Select items={periods} defaultValue="all-time">
+    <Select
+      items={reportingPeriods}
+      value={value}
+      onValueChange={(next) => {
+        if (next) onValueChange(next);
+      }}
+    >
       <SelectTrigger className="w-36 bg-background dark:bg-background" aria-label="Reporting period">
         <CalendarIcon aria-hidden="true" />
         <SelectValue className="font-medium" placeholder="Select period" />
       </SelectTrigger>
       <SelectContent alignItemWithTrigger={false} side="bottom" align="end">
         <SelectGroup>
-          {periods.map((period) => (
+          {reportingPeriods.map((period) => (
             <SelectItem key={period.value} value={period.value}>
               {period.label}
             </SelectItem>

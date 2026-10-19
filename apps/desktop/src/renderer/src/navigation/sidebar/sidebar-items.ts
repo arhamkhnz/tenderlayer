@@ -28,6 +28,7 @@ export interface NavGroup {
 export const sidebarItems = [
   {
     id: "workspace",
+    label: "Workspace",
     items: [
       { id: "overview", title: "Overview", url: "/dashboard", icon: BuildingsIcon, exact: true },
       { id: "contracts", title: "Contracts", url: "/dashboard/contracts", icon: FileIcon },

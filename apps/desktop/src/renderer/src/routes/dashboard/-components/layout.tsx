@@ -36,7 +36,7 @@ export function DashboardLayout() {
         <AppSidebar />
         <main className="relative flex min-w-0 flex-1 flex-col bg-background">
           <MainHeader />
-          <div className="min-h-0 min-w-0 p-4 has-data-[content-padding=false]:p-0">
+          <div className="min-h-0 w-full min-w-0 p-4 has-data-[content-padding=false]:p-0">
             <Outlet />
           </div>
         </main>

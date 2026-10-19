@@ -10,6 +10,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarSeparator,
 } from "@tenderlayer/ui/components/sidebar";
 import { sidebarFooterItems, sidebarItems } from "@/navigation/sidebar/sidebar-items";
 
@@ -50,6 +51,7 @@ export function AppSidebar() {
         <SidebarNavigation items={sidebarItems} />
       </SidebarContent>
       <SidebarFooter>
+        <SidebarSeparator className="mx-0" />
         <SidebarFooterNavigation items={sidebarFooterItems} />
       </SidebarFooter>
     </Sidebar>

@@ -1,6 +1,7 @@
 import {
   BanknoteIcon,
   BriefcaseIcon,
+  IndianRupeeIcon,
   MoreVerticalIcon,
   FilePlusIcon,
   ReceiptIcon,
@@ -20,29 +21,32 @@ import {
 
 import { KpiCards } from "./-components/kpi-cards";
 import { PeriodFilter } from "./-components/period-filter";
+import { BidsWon } from "./-components/bids-won";
+import { ContractStatus } from "./-components/contract-status";
+import type { ReportingPeriod } from "./-components/reporting-period";
 
 export const Route = createFileRoute("/dashboard/")({
   component: DashboardPage,
 });
 
 function DashboardPage() {
-  const [today] = useState(() =>
-    new Intl.DateTimeFormat("en-IN", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    }).format(new Date()),
-  );
+  const [today] = useState(() => new Date());
+  const [period, setPeriod] = useState<ReportingPeriod>("last-12-months");
+  const formattedDate = new Intl.DateTimeFormat("en-IN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(today);
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
         <div className="flex flex-col gap-1">
           <h1 className="text-3xl tracking-tighter leading-none">Welcome back</h1>
-          <p className="text-sm text-muted-foreground">Here's your business summary as of {today}.</p>
+          <p className="text-sm text-muted-foreground">Here's your business summary as of {formattedDate}.</p>
         </div>
         <div className="flex shrink-0 flex-wrap items-center gap-2">
-          <PeriodFilter />
+          <PeriodFilter value={period} onValueChange={setPeriod} />
           <Link to="/dashboard/contracts/new" className={buttonVariants()}>
             <FilePlusIcon data-icon="inline-start" />
             New contract
@@ -82,7 +86,7 @@ function DashboardPage() {
           {
             label: "Contract value",
             value: "₹18.4L",
-            icon: BanknoteIcon,
+            icon: IndianRupeeIcon,
             to: "/dashboard/contracts",
           },
           {
@@ -99,6 +103,10 @@ function DashboardPage() {
           },
         ]}
       />
+      <div className="grid gap-3 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+        <BidsWon today={today} />
+        <ContractStatus />
+      </div>
     </div>
   );
 }
