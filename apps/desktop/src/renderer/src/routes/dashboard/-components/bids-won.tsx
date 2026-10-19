@@ -28,7 +28,12 @@ const compactCurrency = new Intl.NumberFormat("en-IN", {
 });
 const currency = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 });
 const dayLabel = new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short" });
-const fullDayLabel = new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "long", year: "numeric" });
+const fullDayLabel = new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short", year: "numeric" });
+const formatTooltipDate = (date: number) =>
+  fullDayLabel
+    .formatToParts(date)
+    .map(({ type, value }) => (type === "month" ? `${value.replace(/\.$/, "")}.` : value))
+    .join("");
 
 type WeeklyWins = { date: number; tooltip: string; count: number; value: number };
 
@@ -73,7 +78,7 @@ function getSampleWins(today: Date, period: ReportingPeriod): WeeklyWins[] {
     cycleEnd.setDate(cycleEnd.getDate() + 6);
     buckets.set(keyFor(cursor), {
       date: keyFor(cursor),
-      tooltip: `${fullDayLabel.format(Math.max(cursor.getTime(), start.getTime()))} – ${fullDayLabel.format(Math.min(cycleEnd.getTime(), end.getTime()))}`,
+      tooltip: `${formatTooltipDate(Math.max(cursor.getTime(), start.getTime()))} – ${formatTooltipDate(Math.min(cycleEnd.getTime(), end.getTime()))}`,
       count: 0,
       value: 0,
     });
@@ -151,6 +156,7 @@ export function BidsWon({ today }: { today: Date }) {
                 const cycle = payload?.[0]?.payload as WeeklyWins | undefined;
                 return (
                   <ChartTooltipContent
+                    className="min-w-36"
                     active={active}
                     label={cycle?.tooltip}
                     hideIndicator

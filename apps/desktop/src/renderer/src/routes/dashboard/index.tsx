@@ -22,7 +22,7 @@ import {
 import { KpiCards } from "./-components/kpi-cards";
 import { PeriodFilter } from "./-components/period-filter";
 import { BidsWon } from "./-components/bids-won";
-import { ContractStatus } from "./-components/contract-status";
+import { InvoiceAgeing } from "./-components/invoice-ageing";
 import type { ReportingPeriod } from "./-components/reporting-period";
 
 export const Route = createFileRoute("/dashboard/")({
@@ -105,7 +105,7 @@ function DashboardPage() {
       />
       <div className="grid gap-3 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <BidsWon today={today} />
-        <ContractStatus />
+        <InvoiceAgeing />
       </div>
     </div>
   );
