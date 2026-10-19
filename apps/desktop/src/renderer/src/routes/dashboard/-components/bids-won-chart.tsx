@@ -102,7 +102,7 @@ function getSampleWins(today: Date, period: ReportingPeriod): WeeklyWins[] {
   return [...buckets.values()];
 }
 
-export function BidsWon({ today }: { today: Date }) {
+export function BidsWonChart({ today }: { today: Date }) {
   const [period, setPeriod] = useState<ReportingPeriod>("this-year");
   const data = getSampleWins(today, period);
   const totals = data.reduce((sum, cycle) => ({ count: sum.count + cycle.count, value: sum.value + cycle.value }), {
@@ -111,7 +111,7 @@ export function BidsWon({ today }: { today: Date }) {
   });
 
   return (
-    <Card size="sm" className="min-w-0">
+    <Card size="sm" className="min-w-0 overflow-visible">
       <CardHeader>
         <CardTitle className="leading-none text-muted-foreground font-normal">Bids won over time</CardTitle>
         <CardDescription className="flex flex-wrap items-baseline gap-1.5">
