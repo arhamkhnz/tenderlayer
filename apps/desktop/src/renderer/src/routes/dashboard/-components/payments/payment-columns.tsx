@@ -58,18 +58,18 @@ export const paymentColumns = columnHelper.columns([
   columnHelper.accessor("name", {
     enableHiding: false,
     header: "Particulars",
-    cell: ({ getValue }) => <span className="font-medium">{getValue()}</span>,
+    cell: ({ getValue }) => <span className="font-450">{getValue()}</span>,
   }),
   columnHelper.accessor("id", {
     header: "Reference",
-    cell: ({ getValue }) => <span className="text-muted-foreground font-mono">{getValue()}</span>,
+    cell: ({ getValue }) => <span className="text-muted-foreground font-mono text-xs">{getValue()}</span>,
   }),
   columnHelper.accessor("category", {
     header: "Category",
     cell: ({ getValue }) => {
       const category = getValue();
       return (
-        <Badge variant="secondary" className={cn("rounded-md px-1.5", categoryColors[category])}>
+        <Badge variant="secondary" className={cn("rounded-md px-1.5 font-450", categoryColors[category])}>
           {category}
         </Badge>
       );
@@ -77,14 +77,16 @@ export const paymentColumns = columnHelper.columns([
   }),
   columnHelper.accessor("dueDate", {
     header: "Due date",
-    cell: ({ getValue }) => <span className="tabular-nums">{paymentDateFormatter.format(getValue())}</span>,
+    cell: ({ getValue }) => (
+      <span className="text-muted-foreground tabular-nums">{paymentDateFormatter.format(getValue())}</span>
+    ),
   }),
   columnHelper.accessor("status", {
     header: "Status",
     cell: ({ getValue }) => {
       const status = getValue();
       return (
-        <Badge variant="secondary" className={cn("rounded-md px-1.5", statusColors[status])}>
+        <Badge variant="secondary" className={cn("rounded-md px-1.5 font-450", statusColors[status])}>
           {status}
         </Badge>
       );
@@ -92,8 +94,6 @@ export const paymentColumns = columnHelper.columns([
   }),
   columnHelper.accessor("amount", {
     header: () => <div className="text-right">Amount due</div>,
-    cell: ({ getValue }) => (
-      <div className="text-right font-medium tabular-nums">₹{formatCompactNumber(getValue())}</div>
-    ),
+    cell: ({ getValue }) => <div className="text-right font-450 tabular-nums">₹{formatCompactNumber(getValue())}</div>,
   }),
 ]);

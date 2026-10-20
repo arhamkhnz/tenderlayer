@@ -1,10 +1,14 @@
 import {
   BriefcaseIcon,
+  BinIcon,
   CalendarIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   HashIcon,
+  EyeIcon,
   IndianRupeeIcon,
+  MoreHorizontalIcon,
+  PenLineIcon,
   SearchIcon,
   TagIcon,
 } from "@keyline-icons/react";
@@ -14,6 +18,15 @@ import { cn } from "cn";
 
 import { Badge } from "@tenderlayer/ui/components/badge";
 import { Button } from "@tenderlayer/ui/components/button";
+import { Checkbox } from "@tenderlayer/ui/components/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@tenderlayer/ui/components/dropdown-menu";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@tenderlayer/ui/components/input-group";
 import {
   Select,
@@ -56,10 +69,13 @@ const pageSizeOptions = [10, 25, 50, 100].map((size) => ({ value: String(size), 
 export function ContractsTable({ contracts }: { contracts: ContractRecord[] }) {
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(() => new Set());
   const pageCount = Math.max(1, Math.ceil(contracts.length / pageSize));
   const currentPage = Math.min(pageIndex, pageCount - 1);
   const start = currentPage * pageSize;
   const visibleContracts = contracts.slice(start, start + pageSize);
+  const selectedCount = visibleContracts.filter((contract) => selectedIds.has(contract.id)).length;
+  const allSelected = visibleContracts.length > 0 && selectedCount === visibleContracts.length;
   const pageStart = Math.max(0, Math.min(currentPage - 2, pageCount - 5));
   const pages = Array.from({ length: Math.min(5, pageCount) }, (_, index) => pageStart + index);
   const statuses = [
@@ -125,6 +141,25 @@ export function ContractsTable({ contracts }: { contracts: ContractRecord[] }) {
       <Table className="min-w-260 border-y border-border/60" aria-label="Contracts">
         <TableHeader>
           <TableRow className="border-border/60 hover:bg-transparent">
+            <TableHead className="h-10 w-14 border-r border-border/50 px-2.5 [&:has([role=checkbox])]:pr-2.5">
+              <Checkbox
+                className="mx-auto"
+                aria-label="Select all contracts on this page"
+                checked={allSelected}
+                indeterminate={selectedCount > 0 && !allSelected}
+                disabled={visibleContracts.length === 0}
+                onCheckedChange={(checked) =>
+                  setSelectedIds((current) => {
+                    const next = new Set(current);
+                    for (const contract of visibleContracts) {
+                      if (checked) next.add(contract.id);
+                      else next.delete(contract.id);
+                    }
+                    return next;
+                  })
+                }
+              />
+            </TableHead>
             {columns.map(({ label, icon: Icon, right }) => (
               <TableHead
                 key={label}
@@ -136,11 +171,27 @@ export function ContractsTable({ contracts }: { contracts: ContractRecord[] }) {
                 </div>
               </TableHead>
             ))}
+            <TableHead className="h-10 w-14 px-2.5" />
           </TableRow>
         </TableHeader>
         <TableBody>
           {visibleContracts.map((contract) => (
             <TableRow key={contract.id} className="border-border/60 hover:bg-muted/30">
+              <TableCell className="h-12 w-14 border-r border-border/50 px-2.5 py-2 [&:has([role=checkbox])]:pr-2.5">
+                <Checkbox
+                  className="mx-auto"
+                  aria-label={`Select ${contract.name}`}
+                  checked={selectedIds.has(contract.id)}
+                  onCheckedChange={(checked) =>
+                    setSelectedIds((current) => {
+                      const next = new Set(current);
+                      if (checked) next.add(contract.id);
+                      else next.delete(contract.id);
+                      return next;
+                    })
+                  }
+                />
+              </TableCell>
               <TableCell className="h-12 border-r border-border/50 px-4.5 py-2">
                 <Link
                   to="/dashboard/contracts/$contractId"
@@ -162,14 +213,46 @@ export function ContractsTable({ contracts }: { contracts: ContractRecord[] }) {
               <TableCell className="border-r border-border/50 px-4.5 py-2 text-right font-450 tabular-nums">
                 {contract.value}
               </TableCell>
-              <TableCell className="px-4.5 py-2 text-right text-muted-foreground tabular-nums">
+              <TableCell className="border-r border-border/50 px-4.5 py-2 text-right text-muted-foreground tabular-nums">
                 {contract.endDate}
+              </TableCell>
+              <TableCell className="w-14 px-2.5 py-2">
+                <div className="flex justify-center">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger
+                      render={<Button variant="ghost" size="icon-sm" aria-label={`Actions for ${contract.name}`} />}
+                    >
+                      <MoreHorizontalIcon />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-36 font-450">
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem
+                          render={<Link to="/dashboard/contracts/$contractId" params={{ contractId: contract.id }} />}
+                        >
+                          <EyeIcon aria-hidden="true" />
+                          View
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <PenLineIcon aria-hidden="true" />
+                          Edit
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem variant="destructive">
+                          <BinIcon aria-hidden="true" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </TableCell>
             </TableRow>
           ))}
           {contracts.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center text-muted-foreground">
+              <TableCell colSpan={columns.length + 2} className="h-24 text-center text-muted-foreground">
                 No contracts yet.
               </TableCell>
             </TableRow>

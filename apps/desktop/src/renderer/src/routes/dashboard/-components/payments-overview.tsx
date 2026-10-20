@@ -123,7 +123,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
   }
 
   return (
-    <Card size="sm" className="min-w-0">
+    <Card size="sm" className="min-w-0 card-plain-footer">
       <CardHeader>
         <CardTitle className="leading-none text-muted-foreground font-normal">Payments overview</CardTitle>
         <CardDescription className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
@@ -150,7 +150,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
             }
           }}
         >
-          <div className="flex flex-wrap items-center justify-between gap-2 px-3 pb-2">
+          <div className="flex flex-wrap items-center justify-between gap-3 px-4 pb-3">
             <div className="flex flex-wrap items-center gap-2">
               <TabsList className="group-data-horizontal/tabs:h-7" aria-label="Payment direction">
                 {paymentDirectionOptions.map((option) => (
@@ -218,7 +218,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
               </Select>
             </div>
             <div className="flex items-center gap-2">
-              <InputGroup className="h-7 w-52 [&_[data-slot=input-group-control]]:h-7">
+              <InputGroup className="h-7 w-52 bg-background dark:bg-background [&_[data-slot=input-group-control]]:h-7">
                 <InputGroupAddon>
                   <SearchIcon aria-hidden="true" />
                 </InputGroupAddon>
@@ -258,14 +258,14 @@ export function PaymentsOverview({ today }: { today: Date }) {
             </div>
           </div>
           <TabsContent value={direction}>
-            <Table className="min-w-220 text-sm" aria-label="Payments overview">
-              <TableHeader className="border-t">
+            <Table className="min-w-220 border-y border-border/60 text-sm" aria-label="Payments overview">
+              <TableHeader>
                 {table.getHeaderGroups().map((group) => (
-                  <TableRow key={group.id} className="bg-muted hover:bg-muted">
+                  <TableRow key={group.id} className="border-border/60 bg-muted/75 hover:bg-muted/75">
                     {group.headers.map((header) => (
                       <TableHead
                         key={header.id}
-                        className="h-12 px-2 font-450 text-foreground first:w-10 first:pl-3 first:pr-0 last:pr-3"
+                        className="h-10 border-r border-border/50 px-4.5 font-normal text-muted-foreground last:border-r-0 first:w-14 first:px-2.5 [&:has([role=checkbox])]:pr-2.5 [&_[role=checkbox]]:mx-auto"
                       >
                         {header.isPlaceholder ? null : <table.FlexRender header={header} />}
                       </TableHead>
@@ -278,13 +278,13 @@ export function PaymentsOverview({ today }: { today: Date }) {
                   rows.map((row) => (
                     <TableRow
                       key={row.id}
-                      className="bg-background hover:bg-muted/50 data-[state=selected]:bg-muted"
+                      className="border-border/60 hover:bg-muted/30 data-[state=selected]:bg-muted"
                       data-state={row.getIsSelected() ? "selected" : undefined}
                     >
                       {row.getVisibleCells().map((cell) => (
                         <TableCell
                           key={cell.id}
-                          className="h-10 px-2 py-2.5 first:w-10 first:pl-3 first:pr-0 last:pr-3"
+                          className="h-12 border-r border-border/50 px-4.5 py-2 last:border-r-0 first:w-14 first:px-2.5 [&:has([role=checkbox])]:pr-2.5 [&_[role=checkbox]]:mx-auto"
                         >
                           <table.FlexRender cell={cell} />
                         </TableCell>
@@ -306,7 +306,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
           </TabsContent>
         </Tabs>
       </CardContent>
-      <CardFooter className="flex flex-wrap justify-between gap-3 border-t">
+      <CardFooter className="flex min-h-[49px] flex-wrap items-center justify-between gap-3 px-4 py-2">
         <div className="flex flex-wrap items-center gap-3 text-muted-foreground">
           <div className="flex items-center gap-2">
             <span>Rows per page</span>
@@ -339,7 +339,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
         <nav aria-label="Payment pages" className="flex items-center gap-1">
           <Button
             variant="outline"
-            size="icon"
+            size="icon-sm"
             aria-label="Previous page"
             disabled={!table.getCanPreviousPage()}
             onClick={() => table.previousPage()}
@@ -350,7 +350,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
             <Button
               key={page}
               variant={page === currentPage ? "secondary" : "ghost"}
-              size="icon"
+              size="icon-sm"
               aria-label={`Page ${page + 1}`}
               aria-current={page === currentPage ? "page" : undefined}
               onClick={() => table.setPageIndex(page)}
@@ -360,7 +360,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
           ))}
           <Button
             variant="outline"
-            size="icon"
+            size="icon-sm"
             aria-label="Next page"
             disabled={!table.getCanNextPage()}
             onClick={() => table.nextPage()}
