@@ -281,8 +281,8 @@ export function NewInvoiceScreen() {
 export function InvoiceDetailsScreen() {
   return (
     <>
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div>
+      <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
+        <div className="flex min-w-0 flex-col gap-1">
           <Link
             to="/dashboard/invoices"
             className="mb-1 flex w-fit items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
@@ -291,7 +291,7 @@ export function InvoiceDetailsScreen() {
             Invoices
           </Link>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-semibold tracking-tight">INV-2026-042</h1>
+            <h1 className="text-3xl tracking-tighter leading-none">INV-2026-042</h1>
             <Badge variant="outline">Draft</Badge>
           </div>
           <p className="text-sm text-muted-foreground">Railway signaling maintenance · August 2026</p>

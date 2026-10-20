@@ -68,16 +68,18 @@ const contracts = [
 export function ContractsScreen() {
   return (
     <>
-      <PageHeader
-        title="Contracts"
-        description="Track awarded work, delivery periods, assigned teams, and commercial records."
-        action={
+      <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-3xl tracking-tighter leading-none">Contracts <span className="font-mono text-muted-foreground text-xl leading-none">[{contracts.length}]</span></h1>
+          <p className="text-sm text-muted-foreground">Track awarded work, delivery periods, assigned teams, and commercial records.</p>
+        </div>
+        <div className="flex shrink-0 flex-wrap items-center gap-2">
           <Link to="/dashboard/contracts/new" className={buttonVariants()}>
             <FilePlusIcon data-icon="inline-start" />
             New contract
           </Link>
-        }
-      />
+        </div>
+      </div>
 
       <MetricStrip
         items={[

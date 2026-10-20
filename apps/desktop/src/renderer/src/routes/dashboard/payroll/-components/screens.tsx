@@ -292,8 +292,8 @@ export function PayrollDetailsScreen() {
   ];
   return (
     <>
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div>
+      <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
+        <div className="flex min-w-0 flex-col gap-1">
           <Link
             to="/dashboard/payroll"
             className="mb-1 flex w-fit items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
@@ -302,7 +302,7 @@ export function PayrollDetailsScreen() {
             Payroll
           </Link>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-semibold tracking-tight">August 2026 payroll</h1>
+            <h1 className="text-3xl tracking-tighter leading-none">August 2026 payroll</h1>
             <Badge variant="outline">Review</Badge>
           </div>
           <p className="text-sm text-muted-foreground">PAY-AUG-2026 · Payment date 31 August 2026</p>

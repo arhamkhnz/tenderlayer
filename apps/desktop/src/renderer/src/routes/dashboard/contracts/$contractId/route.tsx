@@ -22,7 +22,7 @@ function ContractLayout() {
 
   return (
     <>
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+      <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
         <div className="flex min-w-0 flex-col gap-1">
           <Link
             to="/dashboard/contracts"
@@ -32,7 +32,7 @@ function ContractLayout() {
             Contracts
           </Link>
           <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-2xl font-semibold tracking-tight">Railway signaling maintenance</h1>
+            <h1 className="text-3xl tracking-tighter leading-none">Railway signaling maintenance</h1>
             <Badge variant="outline">Active</Badge>
           </div>
           <p className="text-sm text-muted-foreground">GEM/2026/B/4412081 · Indian Railways</p>

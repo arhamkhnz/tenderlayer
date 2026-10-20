@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, PlusIcon, UsersIcon } from "@keyline-icons/react";
+import { ArrowLeftIcon, PlusIcon } from "@keyline-icons/react";
 import { Link } from "@tanstack/react-router";
 
 import { Avatar, AvatarFallback } from "@tenderlayer/ui/components/avatar";
@@ -86,10 +86,9 @@ export function EmployeesScreen() {
       className="flex min-h-0 flex-col overflow-hidden bg-background"
       style={{ height: "calc(100vh - env(titlebar-area-height, 3rem))" }}
     >
-      <header className="flex min-h-14 items-center justify-between gap-4 border-b px-4">
-        <div className="flex items-center gap-2">
-          <UsersIcon className="size-5 text-muted-foreground" aria-hidden="true" />
-          <h1 className="text-base font-medium">Employees</h1>
+      <header className="flex shrink-0 flex-col gap-4 px-4 py-4 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-3xl tracking-tighter leading-none">Employees</h1>
         </div>
         <Link to="/dashboard/employees/new" className={buttonVariants({ variant: "ghost" })}>
           <PlusIcon data-icon="inline-start" />
@@ -187,7 +186,7 @@ export function NewEmployeeScreen() {
 export function EmployeeDetailsScreen() {
   return (
     <>
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+      <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
         <div className="flex min-w-0 items-start gap-3">
           <Avatar size="lg">
             <AvatarFallback>AS</AvatarFallback>
@@ -201,7 +200,7 @@ export function EmployeeDetailsScreen() {
               Employees
             </Link>
             <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-2xl font-semibold tracking-tight">Ananya Sharma</h1>
+              <h1 className="text-3xl tracking-tighter leading-none">Ananya Sharma</h1>
               <Badge variant="outline">Active</Badge>
             </div>
             <p className="text-sm text-muted-foreground">EMP-014 · Site supervisor · Delhi</p>
