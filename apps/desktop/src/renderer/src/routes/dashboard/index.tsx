@@ -23,6 +23,7 @@ import { KpiCards } from "./-components/kpi-cards";
 import { PeriodFilter } from "./-components/period-filter";
 import { BidsWonChart } from "./-components/bids-won-chart";
 import { ContractValueByDepartmentChart } from "./-components/contract-value-by-department-chart";
+import { PaymentsOverview } from "./-components/payments-overview";
 import type { ReportingPeriod } from "./-components/reporting-period";
 
 export const Route = createFileRoute("/dashboard/")({
@@ -107,6 +108,7 @@ function DashboardPage() {
         <BidsWonChart today={today} />
         <ContractValueByDepartmentChart />
       </div>
+      <PaymentsOverview today={today} />
     </div>
   );
 }
