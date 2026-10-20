@@ -135,9 +135,9 @@ export function NewPayrollScreen() {
                 <FieldLabel>Month</FieldLabel>
                 <Select defaultValue="august">
                   <SelectTrigger className="w-full" aria-label="Payroll month">
-                    <SelectValue />
+                    <SelectValue className="font-450" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="font-450">
                     <SelectGroup>
                       <SelectItem value="august">August 2026</SelectItem>
                       <SelectItem value="september">September 2026</SelectItem>

@@ -79,7 +79,7 @@ export function ContractValueByDepartmentChart() {
   const [status, setStatus] = useState("active");
 
   return (
-    <Card size="sm" className="min-h-0 min-w-0 overflow-visible xl:contain-size">
+    <Card size="sm" className="card-plain-footer min-h-0 min-w-0 overflow-visible xl:contain-size">
       <CardHeader>
         <CardTitle className="leading-none text-muted-foreground font-normal">Contract value by department</CardTitle>
         <CardDescription className="flex flex-wrap items-baseline gap-1.5">
@@ -90,10 +90,13 @@ export function ContractValueByDepartmentChart() {
         </CardDescription>
         <CardAction>
           <DropdownMenu>
-            <DropdownMenuTrigger render={<Button variant="outline" size="icon" />} aria-label="Filter contract value">
+            <DropdownMenuTrigger
+              render={<Button variant="outline" size="icon-sm" />}
+              aria-label="Filter contract value"
+            >
               <FilterIcon />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-52">
+            <DropdownMenuContent align="end" className="w-52 font-450">
               <DropdownMenuGroup>
                 <DropdownMenuRadioGroup value={status} onValueChange={setStatus}>
                   <DropdownMenuRadioItem value="active">Active contracts</DropdownMenuRadioItem>

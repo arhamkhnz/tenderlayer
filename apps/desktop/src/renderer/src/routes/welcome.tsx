@@ -107,7 +107,7 @@ function WelcomePage() {
                 )}
               />
 
-              <Button size="lg" type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+              <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting && <Spinner data-icon="inline-start" />}
                 {form.formState.isSubmitting ? "Creating..." : "Create organization"}
               </Button>

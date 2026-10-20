@@ -1,21 +1,32 @@
-import type { ComponentType } from "react";
-import type { IconProps } from "@keyline-icons/react";
+import type { ComponentType, CSSProperties, ReactNode } from "react";
 import {
-  ArrowUpDownIcon,
+  BinIcon,
   BriefcaseIcon,
-  CalendarIcon,
-  IndianRupeeIcon,
+  EyeIcon,
   IdBadgeIcon,
-  ListIcon,
+  IndianRupeeIcon,
+  MapPinIcon,
+  MoreHorizontalIcon,
+  PenLineIcon,
+  TagIcon,
   UserIcon,
+  type IconProps,
 } from "@keyline-icons/react";
 import { Link } from "@tanstack/react-router";
-import { createColumnHelper, type Column } from "@tanstack/react-table";
+import { cn } from "cn";
 
-import { Avatar, AvatarFallback } from "@tenderlayer/ui/components/avatar";
+import { Badge } from "@tenderlayer/ui/components/badge";
 import { Button } from "@tenderlayer/ui/components/button";
-
-import type { EmployeeTableFeatures } from "./employee-data-table-features";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@tenderlayer/ui/components/dropdown-menu";
+import { getAvatarColors } from "@tenderlayer/ui/lib/avatar-colors";
+import { getInitials } from "@tenderlayer/ui/lib/utils";
 
 export type Employee = {
   id: string;
@@ -29,111 +40,141 @@ export type Employee = {
   joiningDate: string;
 };
 
+type EmployeeColumn = {
+  id: string;
+  header: ReactNode;
+  cell: (employee: Employee) => ReactNode;
+};
+
 const currencyFormatter = new Intl.NumberFormat("en-IN", {
   style: "currency",
   currency: "INR",
   maximumFractionDigits: 0,
 });
+const statusColors: Record<string, string> = {
+  Active: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200",
+  "On leave": "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200",
+  Inactive: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200",
+};
 
-const dateFormatter = new Intl.DateTimeFormat("en-GB", {
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-});
-
-function EmployeeColumnHeader<TValue>({
-  column,
-  icon: HeaderIcon,
+function EmployeeColumnHeader({
+  icon: Icon,
   title,
+  right = false,
 }: {
-  column: Column<EmployeeTableFeatures, Employee, TValue>;
   icon: ComponentType<IconProps>;
   title: string;
+  right?: boolean;
 }) {
-  const sortDirection = column.getIsSorted();
-
   return (
-    <Button
-      type="button"
-      variant="ghost"
-      className="-ml-2"
-      onClick={() => column.toggleSorting(sortDirection === "asc")}
-    >
-      <HeaderIcon data-icon="inline-start" />
+    <div className={cn("flex items-center gap-2", right && "justify-end")}>
+      <Icon className="size-3.5 shrink-0" aria-hidden="true" />
       {title}
-      {sortDirection ? <ArrowUpDownIcon data-icon="inline-end" strokeWidth={3} /> : null}
-    </Button>
+    </div>
   );
 }
 
-const columnHelper = createColumnHelper<EmployeeTableFeatures, Employee>();
+function EmployeeAvatar({ name }: { name: string }) {
+  const colors = getAvatarColors(name);
 
-export const employeeColumns = columnHelper.columns([
-  columnHelper.accessor("name", {
-    enableHiding: false,
-    filterFn: "includesString",
-    sortFn: "text",
-    header: ({ column }) => <EmployeeColumnHeader column={column} icon={UserIcon} title="Employee" />,
-    cell: ({ row }) => (
+  return (
+    <div
+      aria-hidden="true"
+      className="size-4.5 shrink-0 grid place-items-center text-xs font-mono rounded-sm bg-(--avatar-bg) text-(--avatar-fg) ring-1 ring-inset ring-(--avatar-outline) dark:bg-(--avatar-dark-bg) dark:text-(--avatar-dark-fg) dark:ring-(--avatar-dark-outline)"
+      style={
+        {
+          "--avatar-bg": colors.light.background,
+          "--avatar-fg": colors.light.foreground,
+          "--avatar-outline": colors.light.outline,
+          "--avatar-dark-bg": colors.dark.background,
+          "--avatar-dark-fg": colors.dark.foreground,
+          "--avatar-dark-outline": colors.dark.outline,
+        } as CSSProperties
+      }
+    >
+      {getInitials(name, 1)}
+    </div>
+  );
+}
+
+export const employeeColumns: EmployeeColumn[] = [
+  {
+    id: "name",
+    header: <EmployeeColumnHeader icon={UserIcon} title="Employee" />,
+    cell: (employee) => (
       <div className="flex items-center gap-2.5">
-        <Avatar size="sm">
-          <AvatarFallback>{row.original.initials}</AvatarFallback>
-        </Avatar>
+        <EmployeeAvatar name={employee.name} />
         <Link
           to="/dashboard/employees/$employeeId"
-          params={{ employeeId: row.original.id }}
-          className="font-medium hover:underline"
+          params={{ employeeId: employee.id }}
+          className="rounded-sm font-450 outline-none hover:text-primary focus-visible:ring-2 focus-visible:ring-ring"
         >
-          {row.original.name}
+          {employee.name}
         </Link>
       </div>
     ),
-    footer: ({ table }) => {
-      const visibleEmployees = table.getFilteredRowModel().rows.length;
-
-      return (
-        <span className="flex items-center gap-2 text-muted-foreground">
-          <ListIcon className="size-4" aria-hidden="true" />
-          Total: {visibleEmployees} employees
-        </span>
-      );
-    },
-  }),
-  columnHelper.accessor("role", {
-    sortFn: "text",
-    header: ({ column }) => <EmployeeColumnHeader column={column} icon={IdBadgeIcon} title="Role" />,
-    footer: ({ table }) => {
-      const roles = new Set(table.getFilteredRowModel().rows.map((row) => row.original.role));
-      return <span className="text-muted-foreground">{roles.size} roles</span>;
-    },
-  }),
-  columnHelper.accessor("contract", {
-    sortFn: "text",
-    header: ({ column }) => <EmployeeColumnHeader column={column} icon={BriefcaseIcon} title="Contract" />,
-    footer: ({ table }) => {
-      const contracts = new Set(table.getFilteredRowModel().rows.map((row) => row.original.contract));
-      return <span className="text-muted-foreground">{contracts.size} contracts</span>;
-    },
-  }),
-  columnHelper.accessor("monthlyPay", {
-    header: ({ column }) => <EmployeeColumnHeader column={column} icon={IndianRupeeIcon} title="Monthly pay" />,
-    cell: ({ getValue }) => <span className="font-mono tabular-nums">{currencyFormatter.format(getValue())}</span>,
-    footer: ({ table }) => {
-      const total = table.getFilteredRowModel().rows.reduce((sum, row) => sum + row.original.monthlyPay, 0);
-
-      return (
-        <span className="font-mono text-muted-foreground tabular-nums">Sum: {currencyFormatter.format(total)}</span>
-      );
-    },
-  }),
-  columnHelper.accessor("joiningDate", {
-    sortFn: "text",
-    header: ({ column }) => <EmployeeColumnHeader column={column} icon={CalendarIcon} title="Joining date" />,
-    cell: ({ getValue }) => (
-      <span className="tabular-nums">{dateFormatter.format(new Date(`${getValue()}T00:00:00`))}</span>
+  },
+  { id: "role", header: <EmployeeColumnHeader icon={IdBadgeIcon} title="Role" />, cell: (employee) => employee.role },
+  {
+    id: "contract",
+    header: <EmployeeColumnHeader icon={BriefcaseIcon} title="Contract" />,
+    cell: (employee) => employee.contract,
+  },
+  {
+    id: "location",
+    header: <EmployeeColumnHeader icon={MapPinIcon} title="Location" />,
+    cell: (employee) => employee.location,
+  },
+  {
+    id: "status",
+    header: <EmployeeColumnHeader icon={TagIcon} title="Status" />,
+    cell: (employee) => (
+      <Badge variant="secondary" className={cn("rounded-md px-1.5 font-450", statusColors[employee.status])}>
+        {employee.status}
+      </Badge>
     ),
-    footer: ({ table }) => (
-      <span className="text-muted-foreground">{table.getFilteredRowModel().rows.length} records shown</span>
+  },
+  {
+    id: "monthlyPay",
+    header: <EmployeeColumnHeader icon={IndianRupeeIcon} title="Monthly pay" right />,
+    cell: (employee) => (
+      <div className="text-right font-450 tabular-nums">{currencyFormatter.format(employee.monthlyPay)}</div>
     ),
-  }),
-]);
+  },
+  {
+    id: "actions",
+    header: null,
+    cell: (employee) => (
+      <div className="flex justify-center">
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            render={<Button variant="ghost" size="icon-sm" aria-label={`Actions for ${employee.name}`} />}
+          >
+            <MoreHorizontalIcon />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-36 font-450">
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                render={<Link to="/dashboard/employees/$employeeId" params={{ employeeId: employee.id }} />}
+              >
+                <EyeIcon aria-hidden="true" />
+                View
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <PenLineIcon aria-hidden="true" />
+                Edit
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem variant="destructive">
+                <BinIcon aria-hidden="true" />
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    ),
+  },
+];

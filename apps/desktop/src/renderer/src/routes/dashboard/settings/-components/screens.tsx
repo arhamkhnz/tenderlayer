@@ -60,9 +60,9 @@ export function OrganizationSettingsScreen() {
                 <FieldLabel>Default currency</FieldLabel>
                 <Select defaultValue="inr">
                   <SelectTrigger className="w-full" aria-label="Default currency">
-                    <SelectValue />
+                    <SelectValue className="font-450" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="font-450">
                     <SelectGroup>
                       <SelectItem value="inr">INR — Indian Rupee</SelectItem>
                       <SelectItem value="usd">USD — US Dollar</SelectItem>
@@ -74,9 +74,9 @@ export function OrganizationSettingsScreen() {
                 <FieldLabel>Financial year starts</FieldLabel>
                 <Select defaultValue="april">
                   <SelectTrigger className="w-full" aria-label="Financial year start">
-                    <SelectValue />
+                    <SelectValue className="font-450" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="font-450">
                     <SelectGroup>
                       <SelectItem value="april">April</SelectItem>
                       <SelectItem value="january">January</SelectItem>
@@ -129,9 +129,9 @@ export function OrganizationSettingsScreen() {
                 <FieldLabel>State of registration</FieldLabel>
                 <Select defaultValue="delhi">
                   <SelectTrigger className="w-full" aria-label="State of registration">
-                    <SelectValue />
+                    <SelectValue className="font-450" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="font-450">
                     <SelectGroup>
                       <SelectItem value="delhi">Delhi</SelectItem>
                       <SelectItem value="maharashtra">Maharashtra</SelectItem>
@@ -160,9 +160,9 @@ export function OrganizationSettingsScreen() {
                 <FieldLabel>Default GST rate</FieldLabel>
                 <Select defaultValue="18">
                   <SelectTrigger className="w-full" aria-label="Default GST rate">
-                    <SelectValue />
+                    <SelectValue className="font-450" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="font-450">
                     <SelectGroup>
                       <SelectItem value="0">0%</SelectItem>
                       <SelectItem value="5">5%</SelectItem>
@@ -181,9 +181,9 @@ export function OrganizationSettingsScreen() {
                 <FieldLabel>Place of supply</FieldLabel>
                 <Select defaultValue="contract">
                   <SelectTrigger className="w-full" aria-label="Place of supply">
-                    <SelectValue />
+                    <SelectValue className="font-450" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="font-450">
                     <SelectGroup>
                       <SelectItem value="contract">Use contract location</SelectItem>
                       <SelectItem value="organization">Use organization state</SelectItem>
@@ -195,9 +195,9 @@ export function OrganizationSettingsScreen() {
                 <FieldLabel>Tax calculation</FieldLabel>
                 <Select defaultValue="exclusive">
                   <SelectTrigger className="w-full" aria-label="Tax calculation">
-                    <SelectValue />
+                    <SelectValue className="font-450" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="font-450">
                     <SelectGroup>
                       <SelectItem value="exclusive">Tax exclusive</SelectItem>
                       <SelectItem value="inclusive">Tax inclusive</SelectItem>

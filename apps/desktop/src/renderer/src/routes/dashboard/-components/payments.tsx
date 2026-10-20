@@ -91,9 +91,9 @@ export function Payments() {
             }}
           >
             <SelectTrigger className="bg-background dark:bg-background" aria-label="Payment type">
-              <SelectValue className="font-medium" />
+              <SelectValue className="font-450" />
             </SelectTrigger>
-            <SelectContent className="min-w-max" alignItemWithTrigger={false} side="bottom" align="end">
+            <SelectContent className="min-w-max font-450" alignItemWithTrigger={false} side="bottom" align="end">
               <SelectGroup>
                 {paymentOptions.map((option) => (
                   <SelectItem key={option.value} value={option.value} className="pr-8">

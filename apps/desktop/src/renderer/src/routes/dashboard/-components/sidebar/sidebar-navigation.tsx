@@ -20,13 +20,13 @@ function SidebarNavigationItem({ item, isActive }: { item: NavItem; isActive: bo
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
-        className="gap-1.5"
+        className="gap-1.5 text-xs"
         isActive={isActive}
         tooltip={item.title}
         render={<Link to={item.url} aria-current={isActive ? "page" : undefined} />}
       >
         <Icon strokeWidth={1.75} />
-        <span className="text-sm font-[450]">{item.title}</span>
+        <span className="text-sm font-450">{item.title}</span>
       </SidebarMenuButton>
     </SidebarMenuItem>
   );
@@ -36,10 +36,12 @@ export function SidebarNavigation({ items }: { items: readonly NavGroup[] }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
 
   return items.map((group) => (
-    <SidebarGroup key={group.id}>
-      {group.label ? <SidebarGroupLabel className="font-mono uppercase">{group.label}</SidebarGroupLabel> : null}
-      <SidebarGroupContent>
-        <SidebarMenu>
+    <SidebarGroup key={group.id} className="py-1">
+      {group.label ? (
+        <SidebarGroupLabel className="font-mono font-normal uppercase">{group.label}</SidebarGroupLabel>
+      ) : null}
+      <SidebarGroupContent className="text-xs">
+        <SidebarMenu className="gap-px">
           {group.items.map((item) => (
             <SidebarNavigationItem key={item.id} item={item} isActive={isItemActive(pathname, item)} />
           ))}
@@ -53,7 +55,7 @@ export function SidebarFooterNavigation({ items }: { items: readonly NavItem[] }
   const pathname = useRouterState({ select: (state) => state.location.pathname });
 
   return (
-    <SidebarMenu>
+    <SidebarMenu className="gap-px">
       {items.map((item) => (
         <SidebarNavigationItem key={item.id} item={item} isActive={isItemActive(pathname, item)} />
       ))}

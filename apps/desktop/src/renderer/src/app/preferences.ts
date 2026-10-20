@@ -3,8 +3,12 @@ import type { AppPreferences, ThemePreference } from "../../../shared/contracts/
 
 export function applyTheme(theme: ThemePreference) {
   const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  document.documentElement.classList.add("disable-transitions");
   document.documentElement.classList.toggle("dark", isDark);
   document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => document.documentElement.classList.remove("disable-transitions"));
+  });
   return isDark;
 }
 

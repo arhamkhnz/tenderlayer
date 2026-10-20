@@ -47,7 +47,7 @@ import {
 } from "./payments/payment-data";
 import { getPaymentMonthRange, type PaymentDateRange, type PaymentPeriod } from "./payments/payment-date-range";
 import { PaymentPeriodFilter } from "./payments/payment-period-filter";
-import { paymentTableFeatures } from "./payments/payment-table-features";
+import { dataTableFeatures } from "@/lib/data-table-features";
 
 const pageSizes = [10, 25, 50, 100].map((size) => ({ value: String(size), label: String(size) }));
 
@@ -64,7 +64,11 @@ export function PaymentsOverview({ today }: { today: Date }) {
   const data = useMemo(() => getSamplePayments(today), [today]);
 
   const table = useTable({
-    features: paymentTableFeatures,
+    features: dataTableFeatures,
+    manualFiltering: true,
+    manualSorting: true,
+    enableSorting: false,
+    enableColumnFilters: false,
     data,
     columns: paymentColumns,
     getRowId: (row) => row.id,
@@ -131,7 +135,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
           </span>
         </CardDescription>
         <CardAction>
-          <Button variant="outline" onClick={exportCsv} disabled={paymentCount === 0}>
+          <Button variant="outline" size="sm" onClick={exportCsv} disabled={paymentCount === 0}>
             <DownloadIcon data-icon="inline-start" />
             {selectedCount ? `Export ${selectedCount} selected` : "Export CSV"}
           </Button>
@@ -148,7 +152,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
         >
           <div className="flex flex-wrap items-center justify-between gap-2 px-3 pb-2">
             <div className="flex flex-wrap items-center gap-2">
-              <TabsList aria-label="Payment direction">
+              <TabsList className="group-data-horizontal/tabs:h-7" aria-label="Payment direction">
                 {paymentDirectionOptions.map((option) => (
                   <TabsTrigger key={option.value} value={option.value}>
                     {option.label}
@@ -171,10 +175,14 @@ export function PaymentsOverview({ today }: { today: Date }) {
                   if (value) setStatus(value);
                 }}
               >
-                <SelectTrigger className="w-36 bg-background dark:bg-background" aria-label="Filter payment status">
-                  <SelectValue className="font-medium" />
+                <SelectTrigger
+                  size="sm"
+                  className="w-36 bg-background dark:bg-background"
+                  aria-label="Filter payment status"
+                >
+                  <SelectValue className="font-450" />
                 </SelectTrigger>
-                <SelectContent alignItemWithTrigger={false} align="start">
+                <SelectContent className="font-450" alignItemWithTrigger={false} align="start">
                   <SelectGroup>
                     {paymentStatusOptions.map((item) => (
                       <SelectItem key={item.value} value={item.value} className="pr-8">
@@ -191,10 +199,14 @@ export function PaymentsOverview({ today }: { today: Date }) {
                   if (value) setCategory(value);
                 }}
               >
-                <SelectTrigger className="w-36 bg-background dark:bg-background" aria-label="Filter payment category">
-                  <SelectValue className="font-medium" />
+                <SelectTrigger
+                  size="sm"
+                  className="w-36 bg-background dark:bg-background"
+                  aria-label="Filter payment category"
+                >
+                  <SelectValue className="font-450" />
                 </SelectTrigger>
-                <SelectContent className="min-w-max" alignItemWithTrigger={false} align="start">
+                <SelectContent className="min-w-max font-450" alignItemWithTrigger={false} align="start">
                   <SelectGroup>
                     {categories.map((item) => (
                       <SelectItem key={item.value} value={item.value} className="pr-8">
@@ -206,7 +218,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
               </Select>
             </div>
             <div className="flex items-center gap-2">
-              <InputGroup className="w-52">
+              <InputGroup className="h-7 w-52 [&_[data-slot=input-group-control]]:h-7">
                 <InputGroupAddon>
                   <SearchIcon aria-hidden="true" />
                 </InputGroupAddon>
@@ -220,12 +232,12 @@ export function PaymentsOverview({ today }: { today: Date }) {
               </InputGroup>
               <DropdownMenu>
                 <DropdownMenuTrigger
-                  render={<Button variant="outline" size="icon" />}
+                  render={<Button variant="outline" size="icon-sm" />}
                   aria-label="Choose payment columns"
                 >
                   <Columns3Icon />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent className="font-450" align="end">
                   <DropdownMenuGroup>
                     <DropdownMenuLabel>Columns</DropdownMenuLabel>
                     {table
@@ -253,7 +265,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
                     {group.headers.map((header) => (
                       <TableHead
                         key={header.id}
-                        className="h-12 px-2 font-[450] text-foreground first:w-10 first:pl-3 first:pr-0 last:pr-3"
+                        className="h-12 px-2 font-450 text-foreground first:w-10 first:pl-3 first:pr-0 last:pr-3"
                       >
                         {header.isPlaceholder ? null : <table.FlexRender header={header} />}
                       </TableHead>
@@ -306,9 +318,9 @@ export function PaymentsOverview({ today }: { today: Date }) {
               }}
             >
               <SelectTrigger size="sm" className="w-16 bg-background dark:bg-background" aria-label="Rows per page">
-                <SelectValue className="font-medium" />
+                <SelectValue className="font-450" />
               </SelectTrigger>
-              <SelectContent side="top" alignItemWithTrigger={false}>
+              <SelectContent className="font-450" side="top" alignItemWithTrigger={false}>
                 <SelectGroup>
                   {pageSizes.map((item) => (
                     <SelectItem key={item.value} value={item.value} className="pr-8">

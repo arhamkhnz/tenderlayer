@@ -8,6 +8,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-weight-450: 450;
   --font-heading: var(--font-sans);
   --font-sans: var(--font-timeless-sans);
   --font-mono: var(--font-paper-mono);
@@ -140,10 +141,21 @@
 }
 
 @layer components {
+  .disable-transitions * {
+    transition: none !important;
+  }
+
   .brand-wordmark {
     font-family: var(--font-timeless-serif);
     font-weight: 300;
     letter-spacing: -0.08em;
     font-variation-settings: "STYL" 100;
+  }
+}
+
+@utility card-plain-footer {
+  & > [data-slot="card-footer"] {
+    background-color: transparent;
+    border-top-width: 0;
   }
 }

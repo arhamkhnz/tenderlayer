@@ -156,9 +156,9 @@ export function NewInvoiceScreen() {
                 <FieldLabel>Contract</FieldLabel>
                 <Select defaultValue="railway">
                   <SelectTrigger className="w-full" aria-label="Contract">
-                    <SelectValue />
+                    <SelectValue className="font-450" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="font-450">
                     <SelectGroup>
                       <SelectItem value="railway">Railway signaling maintenance</SelectItem>
                       <SelectItem value="nhai">Regional IT support services</SelectItem>

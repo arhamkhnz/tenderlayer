@@ -58,11 +58,11 @@ export function PaymentPeriodFilter({
           }
         }}
       >
-        <SelectTrigger className="w-36 bg-background dark:bg-background" aria-label="Payment period">
+        <SelectTrigger size="sm" className="w-36 bg-background dark:bg-background" aria-label="Payment period">
           <CalendarIcon aria-hidden="true" />
-          <SelectValue className="font-medium" />
+          <SelectValue className="font-450" />
         </SelectTrigger>
-        <SelectContent alignItemWithTrigger={false} align="start" className="min-w-40">
+        <SelectContent alignItemWithTrigger={false} align="start" className="min-w-40 font-450">
           <SelectGroup>
             {paymentPeriodOptions.map((option) => (
               <SelectItem key={option.value} value={option.value} className="pr-8">
@@ -82,7 +82,10 @@ export function PaymentPeriodFilter({
             } else closePicker();
           }}
         >
-          <PopoverTrigger render={<Button variant="outline" />} aria-label="Choose custom payment dates">
+          <PopoverTrigger
+            render={<Button variant="outline" size="sm" className="font-450" />}
+            aria-label="Choose custom payment dates"
+          >
             <CalendarIcon data-icon="inline-start" />
             {paymentDateFormatter.format(range.from)} – {paymentDateFormatter.format(range.to)}
           </PopoverTrigger>

@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, FilePlusIcon, SearchIcon, PlusIcon } from "@keyline-icons/react";
+import { ArrowLeftIcon, FilePlusIcon, PlusIcon } from "@keyline-icons/react";
 import { Link } from "@tanstack/react-router";
 
 import { Button, buttonVariants } from "@tenderlayer/ui/components/button";
@@ -16,6 +16,8 @@ import {
 import { Textarea } from "@tenderlayer/ui/components/textarea";
 
 import { DataCard, KeyValueGrid, MetricStrip, PageHeader, StaticStatus, StaticTable } from "../../-components/screen";
+
+import { ContractsTable } from "./contracts-table";
 
 const contracts = [
   {
@@ -67,67 +69,29 @@ const contracts = [
 
 export function ContractsScreen() {
   return (
-    <>
-      <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
+    <div
+      data-content-padding="false"
+      className="flex h-[calc(100dvh-var(--header-height))] min-h-0 min-w-0 flex-col gap-2 overflow-hidden"
+    >
+      <div className="flex shrink-0 flex-col gap-4 p-4 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
         <div className="flex flex-col gap-1">
-          <h1 className="text-3xl tracking-tighter leading-none">Contracts <span className="font-mono text-muted-foreground text-xl leading-none">[{contracts.length}]</span></h1>
-          <p className="text-sm text-muted-foreground">Track awarded work, delivery periods, assigned teams, and commercial records.</p>
+          <h1 className="text-3xl tracking-tighter leading-none">
+            Contracts <span className="font-mono text-muted-foreground text-xl leading-none">[{contracts.length}]</span>
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            Track awarded work, delivery periods, assigned teams, and commercial records.
+          </p>
         </div>
         <div className="flex shrink-0 flex-wrap items-center gap-2">
-          <Link to="/dashboard/contracts/new" className={buttonVariants()}>
+          <Link to="/dashboard/contracts/new" className={buttonVariants({ size: "sm" })}>
             <FilePlusIcon data-icon="inline-start" />
             New contract
           </Link>
         </div>
       </div>
 
-      <MetricStrip
-        items={[
-          { label: "Active", value: "12", detail: "₹2.84Cr awarded value" },
-          { label: "Ending soon", value: "3", detail: "Within 30 days" },
-          { label: "Draft", value: "4", detail: "2 awaiting review" },
-          { label: "Completed", value: "28", detail: "Current financial year" },
-        ]}
-      />
-
-      <DataCard
-        title="All contracts"
-        description="Static contract records for the selected organization."
-        action={
-          <div className="relative w-52">
-            <SearchIcon className="pointer-events-none absolute top-1/2 left-2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-            <Input className="pl-7" placeholder="Search contracts" />
-          </div>
-        }
-        contentClassName="px-0"
-      >
-        <StaticTable
-          rows={contracts}
-          columns={[
-            {
-              key: "name",
-              label: "Contract",
-              render: (value, row) => (
-                <div className="flex flex-col">
-                  <Link
-                    to="/dashboard/contracts/$contractId"
-                    params={{ contractId: row.id }}
-                    className="font-medium hover:underline"
-                  >
-                    {String(value)}
-                  </Link>
-                  <span className="text-xs text-muted-foreground">{row.reference}</span>
-                </div>
-              ),
-            },
-            { key: "authority", label: "Authority" },
-            { key: "status", label: "Status", render: (value) => <StaticStatus>{String(value)}</StaticStatus> },
-            { key: "value", label: "Value", className: "text-right tabular-nums" },
-            { key: "endDate", label: "Ends", className: "text-right tabular-nums" },
-          ]}
-        />
-      </DataCard>
-    </>
+      <ContractsTable contracts={contracts} />
+    </div>
   );
 }
 
@@ -171,9 +135,9 @@ export function NewContractScreen() {
                 <FieldLabel>Status</FieldLabel>
                 <Select defaultValue="draft">
                   <SelectTrigger className="w-full" aria-label="Contract status">
-                    <SelectValue />
+                    <SelectValue className="font-450" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="font-450">
                     <SelectGroup>
                       <SelectItem value="draft">Draft</SelectItem>
                       <SelectItem value="active">Active</SelectItem>

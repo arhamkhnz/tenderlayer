@@ -83,16 +83,20 @@ export function EmployeesScreen() {
   return (
     <section
       data-content-padding="false"
-      className="flex min-h-0 flex-col overflow-hidden bg-background"
-      style={{ height: "calc(100vh - env(titlebar-area-height, 3rem))" }}
+      className="flex h-[calc(100dvh-var(--header-height))] min-h-0 min-w-0 flex-col gap-2 overflow-hidden bg-background"
     >
       <header className="flex shrink-0 flex-col gap-4 px-4 py-4 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
         <div className="flex flex-col gap-1">
-          <h1 className="text-3xl tracking-tighter leading-none">Employees</h1>
+          <h1 className="text-3xl tracking-tighter leading-none">
+            Employees <span className="font-mono text-muted-foreground text-xl leading-none">[{employees.length}]</span>
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            Track employee records, contract assignments, and payroll details.
+          </p>
         </div>
-        <Link to="/dashboard/employees/new" className={buttonVariants({ variant: "ghost" })}>
+        <Link to="/dashboard/employees/new" className={buttonVariants({ size: "sm" })}>
           <PlusIcon data-icon="inline-start" />
-          Employee
+          Add employee
         </Link>
       </header>
 
@@ -146,9 +150,9 @@ export function NewEmployeeScreen() {
                 <FieldLabel>Employment type</FieldLabel>
                 <Select defaultValue="full-time">
                   <SelectTrigger className="w-full" aria-label="Employment type">
-                    <SelectValue />
+                    <SelectValue className="font-450" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="font-450">
                     <SelectGroup>
                       <SelectItem value="full-time">Full-time</SelectItem>
                       <SelectItem value="contract">Contract</SelectItem>

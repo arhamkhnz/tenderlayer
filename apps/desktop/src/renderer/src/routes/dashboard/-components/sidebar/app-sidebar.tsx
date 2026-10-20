@@ -42,7 +42,7 @@ export function AppSidebar() {
               >
                 {getInitials(name, 1)}
               </div>
-              <span className="truncate text-sm tracking-tight font-[450]">{name}</span>
+              <span className="truncate text-sm tracking-tight font-450">{name}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

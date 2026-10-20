@@ -48,15 +48,18 @@ function DashboardPage() {
         </div>
         <div className="flex shrink-0 flex-wrap items-center gap-2">
           <PeriodFilter value={period} onValueChange={setPeriod} />
-          <Link to="/dashboard/contracts/new" className={buttonVariants()}>
+          <Link to="/dashboard/contracts/new" className={buttonVariants({ size: "sm" })}>
             <FilePlusIcon data-icon="inline-start" />
             New contract
           </Link>
           <DropdownMenu>
-            <DropdownMenuTrigger render={<Button variant="outline" size="icon" />} aria-label="More dashboard actions">
+            <DropdownMenuTrigger
+              render={<Button variant="outline" size="icon-sm" />}
+              aria-label="More dashboard actions"
+            >
               <MoreVerticalIcon />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="min-w-40">
+            <DropdownMenuContent align="end" className="min-w-40 font-450">
               <DropdownMenuGroup>
                 <DropdownMenuItem render={<Link to="/dashboard/invoices/new" />}>
                   <ReceiptIcon />

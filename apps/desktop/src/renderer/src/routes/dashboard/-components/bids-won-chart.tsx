@@ -111,7 +111,7 @@ export function BidsWonChart({ today }: { today: Date }) {
   });
 
   return (
-    <Card size="sm" className="min-w-0 overflow-visible">
+    <Card size="sm" className="card-plain-footer min-w-0 overflow-visible">
       <CardHeader>
         <CardTitle className="leading-none text-muted-foreground font-normal">Bids won over time</CardTitle>
         <CardDescription className="flex flex-wrap items-baseline gap-1.5">

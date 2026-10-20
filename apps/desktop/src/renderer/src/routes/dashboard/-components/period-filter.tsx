@@ -25,11 +25,11 @@ export function PeriodFilter({
         if (next) onValueChange(next);
       }}
     >
-      <SelectTrigger className="w-36 bg-background dark:bg-background" aria-label="Reporting period">
+      <SelectTrigger size="sm" className="w-42 bg-background dark:bg-background" aria-label="Reporting period">
         <CalendarIcon aria-hidden="true" />
-        <SelectValue className="font-medium" placeholder="Select period" />
+        <SelectValue className="font-450" placeholder="Select period" />
       </SelectTrigger>
-      <SelectContent alignItemWithTrigger={false} side="bottom" align="end">
+      <SelectContent className="font-450" alignItemWithTrigger={false} side="bottom" align="end">
         <SelectGroup>
           {reportingPeriods.map((period) => (
             <SelectItem key={period.value} value={period.value}>
