@@ -2,6 +2,7 @@
   "name": "tenderlayer",
   "private": true,
   "type": "module",
+  "packageManager": "npm@11.16.0",
   "scripts": {
     "dev": "turbo run dev",
     "dev:desktop": "turbo run dev --filter=@tenderlayer/desktop",
@@ -35,12 +36,6 @@
   },
   "engines": {
     "node": ">=24.11.0"
-  },
-  "devEngines": {
-    "packageManager": {
-      "name": "npm",
-      "version": ">=10.9.2"
-    }
   },
   "workspaces": [
     "apps/*",
