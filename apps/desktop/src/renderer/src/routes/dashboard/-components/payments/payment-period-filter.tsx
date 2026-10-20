@@ -58,9 +58,9 @@ export function PaymentPeriodFilter({
           }
         }}
       >
-        <SelectTrigger aria-label="Payment period">
+        <SelectTrigger className="w-36 bg-background dark:bg-background" aria-label="Payment period">
           <CalendarIcon aria-hidden="true" />
-          <SelectValue />
+          <SelectValue className="font-medium" />
         </SelectTrigger>
         <SelectContent alignItemWithTrigger={false} align="start" className="min-w-40">
           <SelectGroup>

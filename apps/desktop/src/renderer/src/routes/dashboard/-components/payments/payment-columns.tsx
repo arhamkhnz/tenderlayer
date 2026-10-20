@@ -1,4 +1,5 @@
 import { createColumnHelper } from "@tanstack/react-table";
+import { cn } from "cn";
 
 import { Badge } from "@tenderlayer/ui/components/badge";
 import { Checkbox } from "@tenderlayer/ui/components/checkbox";
@@ -10,7 +11,6 @@ import type { PaymentTableFeatures } from "./payment-table-features";
 export const paymentColumnLabels: Record<string, string> = {
   name: "Particulars",
   id: "Reference",
-  direction: "Direction",
   category: "Category",
   dueDate: "Due date",
   status: "Status",
@@ -18,6 +18,22 @@ export const paymentColumnLabels: Record<string, string> = {
 };
 
 const columnHelper = createColumnHelper<PaymentTableFeatures, Payment>();
+
+const categoryColors: Record<string, string> = {
+  Invoice: "bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300",
+  Salaries: "bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-300",
+  PF: "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300",
+  ESIC: "bg-pink-100 text-pink-700 dark:bg-pink-500/20 dark:text-pink-300",
+  GST: "bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300",
+  "Vendor bill": "bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-300",
+  Rent: "bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-300",
+};
+
+const statusColors: Record<Payment["status"], string> = {
+  Overdue: "bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-300",
+  "Due today": "bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300",
+  Upcoming: "bg-sky-100 text-sky-700 dark:bg-sky-500/20 dark:text-sky-300",
+};
 
 export const paymentColumns = columnHelper.columns([
   columnHelper.display({
@@ -46,17 +62,18 @@ export const paymentColumns = columnHelper.columns([
   }),
   columnHelper.accessor("id", {
     header: "Reference",
-    cell: ({ getValue }) => <span className="text-muted-foreground tabular-nums">{getValue()}</span>,
-  }),
-  columnHelper.accessor("direction", {
-    header: "Direction",
-    cell: ({ getValue }) => (
-      <span className="text-muted-foreground">{getValue() === "collect" ? "To collect" : "To pay"}</span>
-    ),
+    cell: ({ getValue }) => <span className="text-muted-foreground font-mono">{getValue()}</span>,
   }),
   columnHelper.accessor("category", {
     header: "Category",
-    cell: ({ getValue }) => <span className="text-muted-foreground">{getValue()}</span>,
+    cell: ({ getValue }) => {
+      const category = getValue();
+      return (
+        <Badge variant="secondary" className={cn("rounded-md px-1.5", categoryColors[category])}>
+          {category}
+        </Badge>
+      );
+    },
   }),
   columnHelper.accessor("dueDate", {
     header: "Due date",
@@ -64,9 +81,14 @@ export const paymentColumns = columnHelper.columns([
   }),
   columnHelper.accessor("status", {
     header: "Status",
-    cell: ({ getValue }) => (
-      <Badge variant={getValue() === "Overdue" ? "destructive" : "secondary"}>{getValue()}</Badge>
-    ),
+    cell: ({ getValue }) => {
+      const status = getValue();
+      return (
+        <Badge variant="secondary" className={cn("rounded-md px-1.5", statusColors[status])}>
+          {status}
+        </Badge>
+      );
+    },
   }),
   columnHelper.accessor("amount", {
     header: () => <div className="text-right">Amount due</div>,

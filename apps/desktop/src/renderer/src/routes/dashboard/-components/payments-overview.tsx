@@ -171,8 +171,8 @@ export function PaymentsOverview({ today }: { today: Date }) {
                   if (value) setStatus(value);
                 }}
               >
-                <SelectTrigger aria-label="Filter payment status">
-                  <SelectValue />
+                <SelectTrigger className="w-36 bg-background dark:bg-background" aria-label="Filter payment status">
+                  <SelectValue className="font-medium" />
                 </SelectTrigger>
                 <SelectContent alignItemWithTrigger={false} align="start">
                   <SelectGroup>
@@ -191,8 +191,8 @@ export function PaymentsOverview({ today }: { today: Date }) {
                   if (value) setCategory(value);
                 }}
               >
-                <SelectTrigger aria-label="Filter payment category">
-                  <SelectValue />
+                <SelectTrigger className="w-36 bg-background dark:bg-background" aria-label="Filter payment category">
+                  <SelectValue className="font-medium" />
                 </SelectTrigger>
                 <SelectContent className="min-w-max" alignItemWithTrigger={false} align="start">
                   <SelectGroup>
@@ -246,14 +246,14 @@ export function PaymentsOverview({ today }: { today: Date }) {
             </div>
           </div>
           <TabsContent value={direction}>
-            <Table className="min-w-220" aria-label="Payments overview">
+            <Table className="min-w-220 text-sm" aria-label="Payments overview">
               <TableHeader className="border-t">
                 {table.getHeaderGroups().map((group) => (
                   <TableRow key={group.id} className="bg-muted hover:bg-muted">
                     {group.headers.map((header) => (
                       <TableHead
                         key={header.id}
-                        className="h-10 px-4 font-[450] text-muted-foreground first:w-10 first:pr-0"
+                        className="h-12 px-2 font-[450] text-foreground first:w-10 first:pl-3 first:pr-0 last:pr-3"
                       >
                         {header.isPlaceholder ? null : <table.FlexRender header={header} />}
                       </TableHead>
@@ -264,9 +264,16 @@ export function PaymentsOverview({ today }: { today: Date }) {
               <TableBody>
                 {rows.length ? (
                   rows.map((row) => (
-                    <TableRow key={row.id} data-state={row.getIsSelected() ? "selected" : undefined}>
+                    <TableRow
+                      key={row.id}
+                      className="bg-background hover:bg-muted/50 data-[state=selected]:bg-muted"
+                      data-state={row.getIsSelected() ? "selected" : undefined}
+                    >
                       {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id} className="h-12 px-4 py-3 first:w-10 first:pr-0">
+                        <TableCell
+                          key={cell.id}
+                          className="h-10 px-2 py-2.5 first:w-10 first:pl-3 first:pr-0 last:pr-3"
+                        >
                           <table.FlexRender cell={cell} />
                         </TableCell>
                       ))}
@@ -298,8 +305,8 @@ export function PaymentsOverview({ today }: { today: Date }) {
                 if (value) table.setPageSize(Number(value));
               }}
             >
-              <SelectTrigger size="sm" className="w-16" aria-label="Rows per page">
-                <SelectValue />
+              <SelectTrigger size="sm" className="w-16 bg-background dark:bg-background" aria-label="Rows per page">
+                <SelectValue className="font-medium" />
               </SelectTrigger>
               <SelectContent side="top" alignItemWithTrigger={false}>
                 <SelectGroup>
@@ -314,7 +321,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
           </div>
           <span aria-live="polite">
             {selectedCount ? `${selectedCount} selected · ` : ""}
-            {firstRow}–{lastRow} of {paymentCount} payments
+            {firstRow} – {lastRow} of {paymentCount} payments
           </span>
         </div>
         <nav aria-label="Payment pages" className="flex items-center gap-1">
