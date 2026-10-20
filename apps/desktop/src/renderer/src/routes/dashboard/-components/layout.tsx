@@ -12,7 +12,7 @@ function MainHeader() {
   const { isMobile, open } = useSidebar();
 
   return (
-    <div className="flex h-(--header-height) shrink-0 items-center border-b pr-4">
+    <div className="sticky top-0 z-40 flex h-(--header-height) shrink-0 items-center border-b bg-background pr-4">
       {(isMobile || !open) && <div aria-hidden="true" className="w-(--header-controls-width) shrink-0" />}
       <div className="h-full flex-1 [app-region:drag]" />
       <ThemeToggle />

@@ -35,7 +35,7 @@ export function AppHeader() {
     <header
       ref={headerRef}
       className={cn(
-        "absolute top-0 left-0 z-50 flex h-(--header-height) w-fit items-center [app-region:drag]",
+        "fixed top-0 left-0 z-50 flex h-(--header-height) w-fit items-center [app-region:drag]",
         !isMobile && open && "border-b",
       )}
     >
