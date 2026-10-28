@@ -29,9 +29,9 @@
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
-    "oxfmt": "^0.74.0",
-    "oxlint": "^1.89.0",
-    "turbo": "^2.11.9",
+    "oxfmt": "^0.75.0",
+    "oxlint": "^1.90.0",
+    "turbo": "^2.11.10",
     "typescript": "^6.0.3"
   },
   "engines": {

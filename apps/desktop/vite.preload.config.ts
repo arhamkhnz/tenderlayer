@@ -1,15 +1,6 @@
 import { defineConfig } from "vite";
 
-const sandboxExternals = new Set([
-  "electron",
-  "electron/renderer",
-  "events",
-  "node:events",
-  "node:timers",
-  "node:url",
-  "timers",
-  "url",
-]);
+const sandboxExternals = new Set(["electron", "electron/renderer"]);
 
 export default defineConfig(({ mode }) => ({
   build: {
