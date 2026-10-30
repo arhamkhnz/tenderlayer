@@ -4,6 +4,7 @@
   "type": "module",
   "private": true,
   "exports": {
+    "./assets/*": "./src/assets/*",
     "./globals.css": "./src/styles/globals.css",
     "./postcss.config": "./postcss.config.mjs",
     "./components/*": "./src/components/*.tsx",
