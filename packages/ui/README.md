@@ -17,10 +17,10 @@ The shared stylesheet registers this package's sources and the desktop app's sou
 Shared SVGs live in `src/assets` and are exported through `@tenderlayer/ui/assets/*`. Keep the originals here instead of copying them into each app.
 
 ```tsx
-import roundedLogo from "@tenderlayer/ui/assets/tenderlayer-rounded.svg";
+import icon from "@tenderlayer/ui/assets/icon.svg";
 ```
 
-In the Next.js site, use the imported asset's `.src` as the `<img>` source. In the Vite desktop renderer, the import is an image URL for an `<img>` element. The sharp variant is available as `@tenderlayer/ui/assets/tenderlayer-sharp.svg`.
+In the Next.js site, use the imported asset's `.src` as the `<img>` source. In the Vite desktop renderer, the import is an image URL for an `<img>` element.
 
 To add a component directly to this package from the repository root:
 

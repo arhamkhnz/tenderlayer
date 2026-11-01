@@ -1,7 +1,7 @@
 import { createIconImage } from "./_lib/icon-image";
 
 export function generateImageMetadata() {
-  return [32, 48].map((size) => ({
+  return [16, 32, 48, 128].map((size) => ({
     id: String(size),
     size: { width: size, height: size },
     contentType: "image/png",

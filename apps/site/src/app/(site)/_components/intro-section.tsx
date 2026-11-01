@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 
 import { CircleProgressQuarter } from "@keyline-icons/react";
-import tenderlayerRounded from "@tenderlayer/ui/assets/tenderlayer-rounded.svg";
+import tenderlayerIcon from "@tenderlayer/ui/assets/icon.svg";
 
 import GitHubStarCount from "./github-star-count";
 
@@ -10,13 +10,11 @@ export default function IntroSection({ repositoryUrl }: { repositoryUrl: string 
     <section className="flex flex-col gap-4" aria-label="About TenderLayer">
       <header className="flex items-start justify-between gap-4">
         <div className="flex flex-wrap items-center gap-3">
-          <h1 className="flex w-fit items-center gap-2.5">
-            <img
-              className="size-9 shrink-0 rounded-lg bg-foreground"
-              src={tenderlayerRounded.src}
-              alt=""
-              width={36}
-              height={36}
+          <h1 className="flex w-fit items-center gap-2">
+            <span
+              className="size-6 shrink-0 bg-foreground"
+              style={{ mask: `url("${tenderlayerIcon.src}") center / contain no-repeat` }}
+              aria-hidden="true"
             />
             <span className="brand-wordmark text-3xl leading-none">TenderLayer</span>
           </h1>

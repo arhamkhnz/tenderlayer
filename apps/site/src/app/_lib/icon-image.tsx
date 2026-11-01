@@ -1,11 +1,16 @@
 import { Buffer } from "node:buffer";
 import { ImageResponse } from "next/og";
 
-import roundedLogo from "@tenderlayer/ui/assets/tenderlayer-rounded.svg?raw";
+import icon from "@tenderlayer/ui/assets/icon.svg?raw";
 
-const logoSource = `data:image/svg+xml;base64,${Buffer.from(roundedLogo).toString("base64")}`;
+const faviconSvg = icon
+  .replace(/style="[^"]*"/, 'style="color: #ffffff;"')
+  .replace(/ color="[^"]*"/, ' color="#ffffff"');
+const logoSource = `data:image/svg+xml;base64,${Buffer.from(faviconSvg).toString("base64")}`;
 
 export function createIconImage(size: number) {
+  const iconSize = size * 0.6;
+
   return new ImageResponse(
     <div
       style={{
@@ -14,11 +19,10 @@ export function createIconImage(size: number) {
         justifyContent: "center",
         width: "100%",
         height: "100%",
-        // Matches the site's --foreground: oklch(26.9% 0 none).
-        background: "#262626",
+        background: "#000000",
       }}
     >
-      <img src={logoSource} alt="" width={size} height={size} />
+      <img src={logoSource} alt="" width={iconSize} height={iconSize} />
     </div>,
     { width: size, height: size },
   );
