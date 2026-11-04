@@ -8,7 +8,7 @@
     "./next": "./src/next.ts"
   },
   "peerDependencies": {
-    "next": "^16.4.3"
+    "next": "^16.4.5"
   },
   "peerDependenciesMeta": {
     "next": {

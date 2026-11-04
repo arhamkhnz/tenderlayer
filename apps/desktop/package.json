@@ -31,14 +31,14 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.2",
-    "@keyline-icons/react": "^2.3.0",
-    "@tailwindcss/vite": "^4.3.3",
+    "@keyline-icons/react": "^2.5.0",
+    "@tailwindcss/vite": "^4.3.4",
     "@tanstack/react-router": "^1.170.46",
     "@tanstack/react-table": "^9.3.1",
     "@tenderlayer/fonts": "^0.0.0",
     "@tenderlayer/ui": "^0.0.0",
     "better-sqlite3": "^13.0.3",
-    "cn": "^0.5.1",
+    "cn": "^0.5.2",
     "drizzle-orm": "^0.45.4",
     "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^12.0.0",
@@ -50,7 +50,7 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@babel/core": "^8.0.10",
+    "@babel/core": "^8.1.0",
     "@electron-forge/cli": "^8.0.1",
     "@electron-forge/maker-deb": "^8.0.1",
     "@electron-forge/maker-dmg": "^8.0.1",
@@ -68,10 +68,10 @@
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "@vitejs/plugin-react": "^6.1.2",
+    "@vitejs/plugin-react": "^6.2.1",
     "babel-plugin-react-compiler": "^1.0.0",
     "drizzle-kit": "^0.31.11",
-    "electron": "^45.2.1",
+    "electron": "^45.2.2",
     "typescript": "^6.0.3",
     "vite": "^8.3.5"
   }
