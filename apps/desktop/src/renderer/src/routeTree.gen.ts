@@ -16,6 +16,7 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardContractsIndexRouteImport } from './routes/dashboard/contracts/index'
 import { Route as DashboardContractsContractIdRouteRouteImport } from './routes/dashboard/contracts/$contractId/route'
 import { Route as DashboardContractsNewRouteImport } from './routes/dashboard/contracts/new'
+import { Route as DashboardDepartmentsIndexRouteImport } from './routes/dashboard/departments/index'
 import { Route as DashboardEmployeesIndexRouteImport } from './routes/dashboard/employees/index'
 import { Route as DashboardEmployeesEmployeeIdRouteImport } from './routes/dashboard/employees/$employeeId'
 import { Route as DashboardEmployeesNewRouteImport } from './routes/dashboard/employees/new'
@@ -71,6 +72,12 @@ const DashboardContractsNewRoute = DashboardContractsNewRouteImport.update({
   path: '/contracts/new',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
+const DashboardDepartmentsIndexRoute =
+  DashboardDepartmentsIndexRouteImport.update({
+    id: '/departments/',
+    path: '/departments/',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
 const DashboardEmployeesIndexRoute = DashboardEmployeesIndexRouteImport.update({
   id: '/employees/',
   path: '/employees/',
@@ -189,6 +196,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/settings/organization': typeof DashboardSettingsOrganizationRoute
   '/dashboard/settings/tax': typeof DashboardSettingsTaxRoute
   '/dashboard/contracts/': typeof DashboardContractsIndexRoute
+  '/dashboard/departments/': typeof DashboardDepartmentsIndexRoute
   '/dashboard/employees/': typeof DashboardEmployeesIndexRoute
   '/dashboard/invoices/': typeof DashboardInvoicesIndexRoute
   '/dashboard/payroll/': typeof DashboardPayrollIndexRoute
@@ -214,6 +222,7 @@ export interface FileRoutesByTo {
   '/dashboard/settings/organization': typeof DashboardSettingsOrganizationRoute
   '/dashboard/settings/tax': typeof DashboardSettingsTaxRoute
   '/dashboard/contracts': typeof DashboardContractsIndexRoute
+  '/dashboard/departments': typeof DashboardDepartmentsIndexRoute
   '/dashboard/employees': typeof DashboardEmployeesIndexRoute
   '/dashboard/invoices': typeof DashboardInvoicesIndexRoute
   '/dashboard/payroll': typeof DashboardPayrollIndexRoute
@@ -242,6 +251,7 @@ export interface FileRoutesById {
   '/dashboard/settings/organization': typeof DashboardSettingsOrganizationRoute
   '/dashboard/settings/tax': typeof DashboardSettingsTaxRoute
   '/dashboard/contracts/': typeof DashboardContractsIndexRoute
+  '/dashboard/departments/': typeof DashboardDepartmentsIndexRoute
   '/dashboard/employees/': typeof DashboardEmployeesIndexRoute
   '/dashboard/invoices/': typeof DashboardInvoicesIndexRoute
   '/dashboard/payroll/': typeof DashboardPayrollIndexRoute
@@ -271,6 +281,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings/organization'
     | '/dashboard/settings/tax'
     | '/dashboard/contracts/'
+    | '/dashboard/departments/'
     | '/dashboard/employees/'
     | '/dashboard/invoices/'
     | '/dashboard/payroll/'
@@ -296,6 +307,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings/organization'
     | '/dashboard/settings/tax'
     | '/dashboard/contracts'
+    | '/dashboard/departments'
     | '/dashboard/employees'
     | '/dashboard/invoices'
     | '/dashboard/payroll'
@@ -323,6 +335,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings/organization'
     | '/dashboard/settings/tax'
     | '/dashboard/contracts/'
+    | '/dashboard/departments/'
     | '/dashboard/employees/'
     | '/dashboard/invoices/'
     | '/dashboard/payroll/'
@@ -390,6 +403,13 @@ declare module '@tanstack/react-router' {
       path: '/contracts/new'
       fullPath: '/dashboard/contracts/new'
       preLoaderRoute: typeof DashboardContractsNewRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/departments/': {
+      id: '/dashboard/departments/'
+      path: '/departments'
+      fullPath: '/dashboard/departments/'
+      preLoaderRoute: typeof DashboardDepartmentsIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/employees/': {
@@ -567,6 +587,7 @@ interface DashboardRouteRouteChildren {
   DashboardSettingsOrganizationRoute: typeof DashboardSettingsOrganizationRoute
   DashboardSettingsTaxRoute: typeof DashboardSettingsTaxRoute
   DashboardContractsIndexRoute: typeof DashboardContractsIndexRoute
+  DashboardDepartmentsIndexRoute: typeof DashboardDepartmentsIndexRoute
   DashboardEmployeesIndexRoute: typeof DashboardEmployeesIndexRoute
   DashboardInvoicesIndexRoute: typeof DashboardInvoicesIndexRoute
   DashboardPayrollIndexRoute: typeof DashboardPayrollIndexRoute
@@ -586,6 +607,7 @@ const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardSettingsOrganizationRoute: DashboardSettingsOrganizationRoute,
   DashboardSettingsTaxRoute: DashboardSettingsTaxRoute,
   DashboardContractsIndexRoute: DashboardContractsIndexRoute,
+  DashboardDepartmentsIndexRoute: DashboardDepartmentsIndexRoute,
   DashboardEmployeesIndexRoute: DashboardEmployeesIndexRoute,
   DashboardInvoicesIndexRoute: DashboardInvoicesIndexRoute,
   DashboardPayrollIndexRoute: DashboardPayrollIndexRoute,

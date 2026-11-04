@@ -1,5 +1,6 @@
 import {
   BanknoteIcon,
+  BriefcaseIcon,
   BuildingsIcon,
   FileIcon,
   ReceiptIcon,
@@ -32,6 +33,7 @@ export const sidebarItems = [
     items: [
       { id: "overview", title: "Overview", url: "/dashboard", icon: BuildingsIcon, exact: true },
       { id: "contracts", title: "Contracts", url: "/dashboard/contracts", icon: FileIcon },
+      { id: "departments", title: "Departments", url: "/dashboard/departments", icon: BriefcaseIcon },
       { id: "employees", title: "Employees", url: "/dashboard/employees", icon: UsersIcon },
     ],
   },
