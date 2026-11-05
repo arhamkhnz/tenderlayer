@@ -47,8 +47,10 @@ export function AppHeader({ isFullscreen }: { isFullscreen: boolean }) {
       )}
       <div
         className={cn(
-          "flex shrink-0 items-center justify-between gap-1.5 pl-4 pr-2",
+          "flex shrink-0 items-center justify-between gap-1.5 pl-4",
+          isFullscreen && "pr-2",
           isFullscreen && !isMobile && open && "md:w-(--sidebar-width)",
+          isFullscreen && !isMobile && !open && "gap-4",
         )}
         style={{
           paddingLeft: isMacOS(window.electronAPI.platform) ? "max(1rem, env(titlebar-area-x, 0px))" : undefined,
@@ -60,7 +62,7 @@ export function AppHeader({ isFullscreen }: { isFullscreen: boolean }) {
           aria-label={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
           aria-pressed={isSidebarOpen}
           onClick={toggleSidebar}
-          className="-ml-2 [app-region:no-drag] [-webkit-app-region:no-drag]"
+          className={cn("[app-region:no-drag] [-webkit-app-region:no-drag]", isFullscreen && "-ml-2")}
         >
           {isSidebarOpen ? <PanelLeftIcon /> : <PanelLeftOpenIcon />}
         </Button>

@@ -1,6 +1,7 @@
 import { Outlet } from "@tanstack/react-router";
 import { SearchIcon } from "@keyline-icons/react";
 import type { CSSProperties } from "react";
+import { cn } from "cn";
 
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@tenderlayer/ui/components/input-group";
 import { SidebarProvider, useSidebar } from "@tenderlayer/ui/components/sidebar";
@@ -9,7 +10,7 @@ import { usePreferences } from "@/app/preferences";
 
 import { AppSidebar } from "./sidebar/app-sidebar";
 import { AppHeader } from "./app-header";
-import { ThemeToggle } from "./theme-toggle";
+import { HeaderActions } from "./header-actions";
 import { useWindowFullscreen } from "./use-window-fullscreen";
 
 function MainHeader({ isFullscreen }: { isFullscreen: boolean }) {
@@ -35,8 +36,10 @@ function MainHeader({ isFullscreen }: { isFullscreen: boolean }) {
           }}
         />
       )}
-      <div className="min-w-0 pl-4 [app-region:no-drag] [-webkit-app-region:no-drag]">
-        <InputGroup className="w-40 bg-background sm:w-64 dark:bg-background">
+      <div
+        className={cn("min-w-0 [app-region:no-drag] [-webkit-app-region:no-drag]", isFullscreen ? "pl-4" : "pl-1.5")}
+      >
+        <InputGroup className="w-40 border-transparent bg-muted/50 sm:w-56 dark:bg-muted/50">
           <InputGroupInput type="search" placeholder="Search…" aria-label="Search application" />
           <InputGroupAddon align="inline-start">
             <SearchIcon aria-hidden="true" />
@@ -44,7 +47,7 @@ function MainHeader({ isFullscreen }: { isFullscreen: boolean }) {
         </InputGroup>
       </div>
       <div className="h-full min-w-2 flex-1 [app-region:drag]" />
-      <ThemeToggle />
+      <HeaderActions />
     </div>
   );
 }
