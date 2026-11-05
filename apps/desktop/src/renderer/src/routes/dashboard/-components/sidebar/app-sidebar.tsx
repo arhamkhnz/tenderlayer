@@ -22,13 +22,20 @@ export function AppSidebar() {
   const avatarColors = getAvatarColors(name);
 
   return (
-    <Sidebar collapsible="offcanvas" className="**:data-[slot=sidebar-inner]:pt-(--header-height)">
+    <Sidebar
+      collapsible="icon"
+      className="top-(--sidebar-top) h-[calc(100svh-var(--sidebar-top))] **:data-[slot=sidebar-inner]:pt-[calc(var(--header-height)-var(--sidebar-top))]"
+    >
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton className="gap-1.5 text-foreground hover:bg-transparent hover:text-foreground active:bg-transparent active:text-foreground data-open:hover:bg-transparent data-open:hover:text-foreground px-1.5">
+            <SidebarMenuButton
+              aria-label={name}
+              tooltip={name}
+              className="gap-1.5 text-foreground hover:bg-transparent hover:text-foreground active:bg-transparent active:text-foreground data-open:hover:bg-transparent data-open:hover:text-foreground px-1.5"
+            >
               <div
-                className="size-4.5 grid place-items-center text-xs font-mono rounded-sm bg-(--avatar-bg) text-(--avatar-fg) ring-1 ring-inset ring-(--avatar-outline) dark:bg-(--avatar-dark-bg) dark:text-(--avatar-dark-fg) dark:ring-(--avatar-dark-outline)"
+                className="size-4.5 shrink-0 group-data-[collapsible=icon]:size-4 grid place-items-center text-xs font-mono rounded-sm bg-(--avatar-bg) text-(--avatar-fg) ring-1 ring-inset ring-(--avatar-outline) dark:bg-(--avatar-dark-bg) dark:text-(--avatar-dark-fg) dark:ring-(--avatar-dark-outline)"
                 style={
                   {
                     "--avatar-bg": avatarColors.light.background,

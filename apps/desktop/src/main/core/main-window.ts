@@ -1,6 +1,7 @@
 import { BrowserWindow, nativeTheme } from "electron/main";
 import { shell } from "electron";
 import { isMacOS } from "../../shared/platform.js";
+import { windowStateIpcChannels } from "../../shared/contracts/window-state.js";
 import { isTrustedRendererUrl, preloadPath, rendererPageUrl } from "./renderer-protocol.js";
 
 function isSafeExternalUrl(url: string) {
@@ -36,6 +37,15 @@ export function createMainWindow() {
       sandbox: true,
     },
   });
+
+  const notifyFullscreenChange = () => {
+    if (!mainWindow.webContents.isDestroyed()) {
+      mainWindow.webContents.send(windowStateIpcChannels.fullscreenChanged, mainWindow.isFullScreen());
+    }
+  };
+
+  mainWindow.on("enter-full-screen", notifyFullscreenChange);
+  mainWindow.on("leave-full-screen", notifyFullscreenChange);
 
   const showWindow = () => {
     if (!mainWindow.isDestroyed()) {

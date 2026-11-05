@@ -6,7 +6,7 @@ import { Button } from "@tenderlayer/ui/components/button";
 import { useSidebar } from "@tenderlayer/ui/components/sidebar";
 import { isMacOS } from "../../../../../shared/platform";
 
-export function AppHeader() {
+export function AppHeader({ isFullscreen }: { isFullscreen: boolean }) {
   const headerRef = useRef<HTMLElement>(null);
   const router = useRouter();
   const canGoBack = useCanGoBack();
@@ -34,15 +34,21 @@ export function AppHeader() {
   return (
     <header
       ref={headerRef}
-      className={cn(
-        "fixed top-0 left-0 z-50 flex h-(--header-height) w-fit items-center [app-region:drag]",
-        !isMobile && open && "border-b",
-      )}
+      className="fixed top-0 left-0 z-50 flex h-(--header-height) w-fit items-center [app-region:drag]"
     >
+      {isFullscreen && !isMobile && (
+        <div
+          aria-hidden="true"
+          className={cn(
+            "pointer-events-none absolute bottom-0 left-0 border-b border-sidebar-border transition-[width] duration-200 ease-linear",
+            open ? "w-(--sidebar-width)" : "w-(--sidebar-width-icon)",
+          )}
+        />
+      )}
       <div
         className={cn(
           "flex shrink-0 items-center justify-between gap-1.5 pl-4 pr-2",
-          !isMobile && open && "md:w-(--sidebar-width)",
+          isFullscreen && !isMobile && open && "md:w-(--sidebar-width)",
         )}
         style={{
           paddingLeft: isMacOS(window.electronAPI.platform) ? "max(1rem, env(titlebar-area-x, 0px))" : undefined,

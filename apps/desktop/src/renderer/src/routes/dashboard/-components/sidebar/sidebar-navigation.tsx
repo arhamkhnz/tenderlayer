@@ -23,7 +23,7 @@ function SidebarNavigationItem({ item, isActive }: { item: NavItem; isActive: bo
         className="gap-1.5 text-xs"
         isActive={isActive}
         tooltip={item.title}
-        render={<Link to={item.url} aria-current={isActive ? "page" : undefined} />}
+        render={<Link to={item.url} aria-label={item.title} aria-current={isActive ? "page" : undefined} />}
       >
         <Icon strokeWidth={1.75} />
         <span className="text-sm font-450">{item.title}</span>
@@ -38,7 +38,9 @@ export function SidebarNavigation({ items }: { items: readonly NavGroup[] }) {
   return items.map((group) => (
     <SidebarGroup key={group.id} className="py-1">
       {group.label ? (
-        <SidebarGroupLabel className="font-mono font-normal uppercase">{group.label}</SidebarGroupLabel>
+        <SidebarGroupLabel className="font-mono font-normal uppercase group-data-[collapsible=icon]:pointer-events-none">
+          {group.label}
+        </SidebarGroupLabel>
       ) : null}
       <SidebarGroupContent className="text-xs">
         <SidebarMenu className="gap-px">
