@@ -37,9 +37,12 @@ function MainHeader({ isFullscreen }: { isFullscreen: boolean }) {
         />
       )}
       <div
-        className={cn("min-w-0 [app-region:no-drag] [-webkit-app-region:no-drag]", isFullscreen ? "pl-4" : "pl-1.5")}
+        className={cn(
+          "w-48 min-w-0 shrink sm:w-72 [app-region:no-drag] [-webkit-app-region:no-drag]",
+          isFullscreen ? "pl-4" : "pl-1.5",
+        )}
       >
-        <InputGroup className="w-40 border-transparent bg-muted/50 sm:w-56 dark:bg-muted/50">
+        <InputGroup className="w-full border-transparent bg-muted/50 dark:bg-muted/50">
           <InputGroupInput type="search" placeholder="Search…" aria-label="Search application" />
           <InputGroupAddon align="inline-start">
             <SearchIcon aria-hidden="true" />

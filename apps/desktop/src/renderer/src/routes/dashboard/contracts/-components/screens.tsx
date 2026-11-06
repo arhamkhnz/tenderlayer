@@ -1,23 +1,11 @@
-import { ArrowLeftIcon, FilePlusIcon, PlusIcon } from "@keyline-icons/react";
-import { Link } from "@tanstack/react-router";
+import { PlusIcon } from "@keyline-icons/react";
 
-import { Button, buttonVariants } from "@tenderlayer/ui/components/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@tenderlayer/ui/components/card";
-import { Field, FieldGroup, FieldLabel } from "@tenderlayer/ui/components/field";
-import { Input } from "@tenderlayer/ui/components/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@tenderlayer/ui/components/select";
-import { Textarea } from "@tenderlayer/ui/components/textarea";
+import { Button } from "@tenderlayer/ui/components/button";
 
-import { DataCard, KeyValueGrid, MetricStrip, PageHeader, StaticStatus, StaticTable } from "../../-components/screen";
+import { DataCard, KeyValueGrid, MetricStrip, StaticStatus, StaticTable } from "../../-components/screen";
 
 import { ContractsTable } from "./contracts-table";
+import { NewContractDrawer } from "./new-contract-drawer";
 
 const contracts = [
   {
@@ -67,7 +55,7 @@ const contracts = [
   },
 ];
 
-export function ContractsScreen() {
+export function ContractsScreen({ openNewContract = false }: { openNewContract?: boolean } = {}) {
   return (
     <div
       data-content-padding="false"
@@ -83,97 +71,12 @@ export function ContractsScreen() {
           </p>
         </div>
         <div className="flex shrink-0 flex-wrap items-center gap-2">
-          <Link to="/dashboard/contracts/new" className={buttonVariants({ size: "sm" })}>
-            <FilePlusIcon data-icon="inline-start" />
-            New contract
-          </Link>
+          <NewContractDrawer defaultOpen={openNewContract} />
         </div>
       </div>
 
       <ContractsTable contracts={contracts} />
     </div>
-  );
-}
-
-export function NewContractScreen() {
-  return (
-    <>
-      <PageHeader
-        title="New contract"
-        description="Record the awarded contract and its delivery period."
-        action={
-          <Link to="/dashboard/contracts" className={buttonVariants({ variant: "outline" })}>
-            <ArrowLeftIcon data-icon="inline-start" />
-            Contracts
-          </Link>
-        }
-      />
-
-      <Card>
-        <CardHeader className="border-b">
-          <CardTitle>Contract information</CardTitle>
-          <CardDescription>
-            These details appear across employee, invoice, payroll, and compliance records.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FieldGroup>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field className="sm:col-span-2">
-                <FieldLabel htmlFor="contract-title">Contract title</FieldLabel>
-                <Input id="contract-title" placeholder="e.g. Regional IT support services" />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="contract-reference">Contract reference</FieldLabel>
-                <Input id="contract-reference" placeholder="GEM/2026/B/0000000" />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="awarding-authority">Awarding authority</FieldLabel>
-                <Input id="awarding-authority" placeholder="Organization or department" />
-              </Field>
-              <Field>
-                <FieldLabel>Status</FieldLabel>
-                <Select defaultValue="draft">
-                  <SelectTrigger className="w-full" aria-label="Contract status">
-                    <SelectValue className="font-450" />
-                  </SelectTrigger>
-                  <SelectContent className="font-450">
-                    <SelectGroup>
-                      <SelectItem value="draft">Draft</SelectItem>
-                      <SelectItem value="active">Active</SelectItem>
-                      <SelectItem value="completed">Completed</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="contract-value">Awarded value</FieldLabel>
-                <Input id="contract-value" placeholder="₹0.00" />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="contract-start">Start date</FieldLabel>
-                <Input id="contract-start" type="date" />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="contract-end">End date</FieldLabel>
-                <Input id="contract-end" type="date" />
-              </Field>
-              <Field className="sm:col-span-2">
-                <FieldLabel htmlFor="contract-notes">Internal notes</FieldLabel>
-                <Textarea id="contract-notes" placeholder="Scope summary, owners, or handover notes" />
-              </Field>
-            </div>
-          </FieldGroup>
-        </CardContent>
-      </Card>
-
-      <div className="flex justify-end gap-2">
-        <Link to="/dashboard/contracts" className={buttonVariants({ variant: "outline" })}>
-          Cancel
-        </Link>
-        <Button type="button">Create contract</Button>
-      </div>
-    </>
   );
 }
 
