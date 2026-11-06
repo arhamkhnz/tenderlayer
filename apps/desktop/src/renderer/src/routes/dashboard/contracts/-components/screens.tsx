@@ -4,56 +4,9 @@ import { Button } from "@tenderlayer/ui/components/button";
 
 import { DataCard, KeyValueGrid, MetricStrip, StaticStatus, StaticTable } from "../../-components/screen";
 
+import { contracts } from "./data";
 import { ContractsTable } from "./contracts-table";
 import { NewContractDrawer } from "./new-contract-drawer";
-
-const contracts = [
-  {
-    id: "gem-rail-2026",
-    name: "Railway signaling maintenance",
-    reference: "GEM/2026/B/4412081",
-    authority: "Indian Railways",
-    status: "Active",
-    value: "₹48,60,000",
-    endDate: "18 Dec 2026",
-  },
-  {
-    id: "nhai-support-2026",
-    name: "Regional IT support services",
-    reference: "NHAI/IT/2026/118",
-    authority: "NHAI",
-    status: "Active",
-    value: "₹31,20,000",
-    endDate: "02 Nov 2026",
-  },
-  {
-    id: "airport-facility-2026",
-    name: "Airport facility staffing",
-    reference: "AAI/OPS/2026/084",
-    authority: "Airports Authority of India",
-    status: "Draft",
-    value: "₹22,40,000",
-    endDate: "—",
-  },
-  {
-    id: "municipal-fleet-2025",
-    name: "Municipal fleet maintenance",
-    reference: "MC/TRANS/2025/304",
-    authority: "Pune Municipal Corporation",
-    status: "Ending soon",
-    value: "₹18,75,000",
-    endDate: "08 Sep 2026",
-  },
-  {
-    id: "warehouse-security-2025",
-    name: "Warehouse security services",
-    reference: "CWC/SEC/2025/091",
-    authority: "Central Warehousing Corporation",
-    status: "Completed",
-    value: "₹14,10,000",
-    endDate: "30 Jun 2026",
-  },
-];
 
 export function ContractsScreen({ openNewContract = false }: { openNewContract?: boolean } = {}) {
   return (

@@ -30,6 +30,7 @@ import { getInitials } from "@tenderlayer/ui/lib/utils";
 
 export type Employee = {
   id: string;
+  code: string;
   initials: string;
   name: string;
   role: string;

@@ -1,7 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { NewEmployeeScreen } from "./-components/screens";
+import { EmployeesScreen } from "./-components/screens";
 
 export const Route = createFileRoute("/dashboard/employees/new")({
-  component: NewEmployeeScreen,
+  component: NewEmployeeRoute,
 });
+
+function NewEmployeeRoute() {
+  return <EmployeesScreen openNewEmployee />;
+}

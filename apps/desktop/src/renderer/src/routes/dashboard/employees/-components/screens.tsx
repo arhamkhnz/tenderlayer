@@ -1,85 +1,15 @@
-import { ArrowLeftIcon, PlusIcon } from "@keyline-icons/react";
+import { ArrowLeftIcon } from "@keyline-icons/react";
 import { Link } from "@tanstack/react-router";
 
 import { Avatar, AvatarFallback } from "@tenderlayer/ui/components/avatar";
 import { Badge } from "@tenderlayer/ui/components/badge";
-import { Button, buttonVariants } from "@tenderlayer/ui/components/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@tenderlayer/ui/components/card";
-import { Field, FieldGroup, FieldLabel } from "@tenderlayer/ui/components/field";
-import { Input } from "@tenderlayer/ui/components/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@tenderlayer/ui/components/select";
-import { Textarea } from "@tenderlayer/ui/components/textarea";
-
-import type { Employee } from "./employee-columns";
+import { Button } from "@tenderlayer/ui/components/button";
 import { EmployeeDataTable } from "./employee-data-table";
-import { DataCard, KeyValueGrid, PageHeader, StaticStatus, StaticTable } from "../../-components/screen";
+import { employees } from "./data";
+import { NewEmployeeDrawer } from "./new-employee-drawer";
+import { DataCard, KeyValueGrid, StaticStatus, StaticTable } from "../../-components/screen";
 
-const employees: Employee[] = [
-  {
-    id: "ananya-sharma",
-    initials: "AS",
-    name: "Ananya Sharma",
-    role: "Site supervisor",
-    contract: "Railway signaling maintenance",
-    location: "Delhi",
-    status: "Active",
-    monthlyPay: 68000,
-    joiningDate: "2024-08-12",
-  },
-  {
-    id: "vikram-singh",
-    initials: "VS",
-    name: "Vikram Singh",
-    role: "Signal technician",
-    contract: "Railway signaling maintenance",
-    location: "Lucknow",
-    status: "Active",
-    monthlyPay: 48000,
-    joiningDate: "2025-02-03",
-  },
-  {
-    id: "meera-joshi",
-    initials: "MJ",
-    name: "Meera Joshi",
-    role: "Documentation lead",
-    contract: "Railway signaling maintenance",
-    location: "Pune",
-    status: "On leave",
-    monthlyPay: 62000,
-    joiningDate: "2024-11-18",
-  },
-  {
-    id: "kabir-verma",
-    initials: "KV",
-    name: "Kabir Verma",
-    role: "Support engineer",
-    contract: "Regional IT support services",
-    location: "Jaipur",
-    status: "Active",
-    monthlyPay: 55000,
-    joiningDate: "2026-01-08",
-  },
-  {
-    id: "sana-khan",
-    initials: "SK",
-    name: "Sana Khan",
-    role: "Payroll coordinator",
-    contract: "Airport facility staffing",
-    location: "Mumbai",
-    status: "Active",
-    monthlyPay: 52000,
-    joiningDate: "2025-07-22",
-  },
-];
-
-export function EmployeesScreen() {
+export function EmployeesScreen({ openNewEmployee = false }: { openNewEmployee?: boolean } = {}) {
   return (
     <section
       data-content-padding="false"
@@ -94,96 +24,11 @@ export function EmployeesScreen() {
             Track employee records, contract assignments, and payroll details.
           </p>
         </div>
-        <Link to="/dashboard/employees/new" className={buttonVariants({ size: "sm" })}>
-          <PlusIcon data-icon="inline-start" />
-          Add employee
-        </Link>
+        <NewEmployeeDrawer defaultOpen={openNewEmployee} />
       </header>
 
       <EmployeeDataTable data={employees} />
     </section>
-  );
-}
-
-export function NewEmployeeScreen() {
-  return (
-    <>
-      <PageHeader
-        title="New employee"
-        description="Create a workforce record before assigning the employee to a contract."
-        action={
-          <Link to="/dashboard/employees" className={buttonVariants({ variant: "outline" })}>
-            <ArrowLeftIcon data-icon="inline-start" />
-            Employees
-          </Link>
-        }
-      />
-      <Card>
-        <CardHeader className="border-b">
-          <CardTitle>Employee information</CardTitle>
-          <CardDescription>Personal, employment, and statutory details used in contract operations.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FieldGroup>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field>
-                <FieldLabel htmlFor="employee-name">Full name</FieldLabel>
-                <Input id="employee-name" placeholder="Employee name" />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="employee-code">Employee code</FieldLabel>
-                <Input id="employee-code" placeholder="EMP-000" />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="employee-email">Email address</FieldLabel>
-                <Input id="employee-email" type="email" placeholder="name@company.in" />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="employee-phone">Phone number</FieldLabel>
-                <Input id="employee-phone" placeholder="+91" />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="employee-role">Job title</FieldLabel>
-                <Input id="employee-role" placeholder="e.g. Site supervisor" />
-              </Field>
-              <Field>
-                <FieldLabel>Employment type</FieldLabel>
-                <Select defaultValue="full-time">
-                  <SelectTrigger className="w-full" aria-label="Employment type">
-                    <SelectValue className="font-450" />
-                  </SelectTrigger>
-                  <SelectContent className="font-450">
-                    <SelectGroup>
-                      <SelectItem value="full-time">Full-time</SelectItem>
-                      <SelectItem value="contract">Contract</SelectItem>
-                      <SelectItem value="temporary">Temporary</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="employee-joining">Joining date</FieldLabel>
-                <Input id="employee-joining" type="date" />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="employee-location">Work location</FieldLabel>
-                <Input id="employee-location" placeholder="City or site" />
-              </Field>
-              <Field className="sm:col-span-2">
-                <FieldLabel htmlFor="employee-address">Address</FieldLabel>
-                <Textarea id="employee-address" placeholder="Current residential address" />
-              </Field>
-            </div>
-          </FieldGroup>
-        </CardContent>
-      </Card>
-      <div className="flex justify-end gap-2">
-        <Link to="/dashboard/employees" className={buttonVariants({ variant: "outline" })}>
-          Cancel
-        </Link>
-        <Button type="button">Create employee</Button>
-      </div>
-    </>
   );
 }
 
