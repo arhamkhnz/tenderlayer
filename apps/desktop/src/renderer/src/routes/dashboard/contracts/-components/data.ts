@@ -1,6 +1,7 @@
 export const contracts = [
   {
     id: "gem-rail-2026",
+    location: { state: "Delhi", city: "Delhi", address: "" },
     departmentId: "railways",
     name: "Railway signaling maintenance",
     reference: "GEM/2026/B/4412081",
@@ -11,6 +12,7 @@ export const contracts = [
   },
   {
     id: "nhai-support-2026",
+    location: { state: "Rajasthan", city: "Jaipur", address: "" },
     departmentId: "nhai",
     name: "Regional IT support services",
     reference: "NHAI/IT/2026/118",
@@ -21,6 +23,7 @@ export const contracts = [
   },
   {
     id: "airport-facility-2026",
+    location: { state: "Maharashtra", city: "Mumbai", address: "" },
     departmentId: "airports",
     name: "Airport facility staffing",
     reference: "AAI/OPS/2026/084",
@@ -31,6 +34,7 @@ export const contracts = [
   },
   {
     id: "municipal-fleet-2025",
+    location: { state: "Maharashtra", city: "Pune", address: "" },
     departmentId: "municipal",
     name: "Municipal fleet maintenance",
     reference: "MC/TRANS/2025/304",
@@ -41,6 +45,7 @@ export const contracts = [
   },
   {
     id: "warehouse-security-2025",
+    location: { state: "Maharashtra", city: "Nagpur", address: "" },
     departmentId: "warehousing",
     name: "Warehouse security services",
     reference: "CWC/SEC/2025/091",

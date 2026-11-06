@@ -7,6 +7,7 @@ import { Controller, useForm, useWatch, type Control } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@tenderlayer/ui/components/button";
+import { Checkbox } from "@tenderlayer/ui/components/checkbox";
 import {
   Drawer,
   DrawerClose,
@@ -31,6 +32,7 @@ import {
 import { Separator } from "@tenderlayer/ui/components/separator";
 import { Textarea } from "@tenderlayer/ui/components/textarea";
 
+import { StatePicker, indianStatesAndUTs } from "../../-components/state-picker";
 import { contracts } from "../../contracts/-components/data";
 import { ContractDatePicker } from "../../contracts/-components/contract-date-picker";
 import { departments } from "../../departments/-components/data";
@@ -99,7 +101,10 @@ const employeeFormSchema = z
         (value) => /^\d+(\.\d{1,2})?$/.test(value) && Number.isFinite(Number(value)) && Number(value) > 0,
         "Enter a monthly wage greater than zero, with up to two decimal places.",
       ),
+    workState: z.string().refine((value) => !value || indianStatesAndUTs.includes(value), "Select a valid state / UT."),
+    workCity: z.string().trim(),
     siteLocation: z.string().trim(),
+    useContractLocation: z.boolean(),
     status: z.enum(["active", "on-leave", "inactive"]),
     pan: optionalPattern(/^[A-Z]{5}\d{4}[A-Z]$/, "Enter a PAN in the format ABCDE1234F."),
     uan: optionalPattern(/^\d{12}$/, "UAN must contain 12 digits."),
@@ -119,9 +124,26 @@ const employeeFormSchema = z
           message: "Choose a contract under the selected department.",
         });
       }
-      if (!values.siteLocation) {
-        context.addIssue({ code: "custom", path: ["siteLocation"], message: "Enter the employee's assigned site." });
-      }
+    }
+    const location = values.useContractLocation
+      ? contracts.find((contract) => contract.id === values.contractId)?.location
+      : { state: values.workState, city: values.workCity, address: values.siteLocation };
+    if (
+      values.contractId ||
+      (!values.useContractLocation && (values.workState || values.workCity || values.siteLocation))
+    ) {
+      if (!location?.state)
+        context.addIssue({
+          code: "custom",
+          path: ["workState"],
+          message: "Select a work state / UT, or enter a different work location.",
+        });
+      if (!location?.city?.trim())
+        context.addIssue({
+          code: "custom",
+          path: ["workCity"],
+          message: "Enter the work city / town, or enter a different work location.",
+        });
     }
     if (bankFields.some((name) => Boolean(values[name]))) {
       for (const [name, message] of [
@@ -132,12 +154,32 @@ const employeeFormSchema = z
         if (!values[name]) context.addIssue({ code: "custom", path: [name], message });
       }
     }
-  });
+  })
+  .transform((values) => ({
+    ...values,
+    workState: values.useContractLocation
+      ? (contracts.find((contract) => contract.id === values.contractId)?.location.state ?? "")
+      : values.workState,
+    workCity: values.useContractLocation
+      ? (contracts.find((contract) => contract.id === values.contractId)?.location.city ?? "")
+      : values.workCity,
+    siteLocation: values.useContractLocation
+      ? (contracts.find((contract) => contract.id === values.contractId)?.location.address ?? "")
+      : values.siteLocation,
+  }));
 
 type EmployeeFormValues = z.infer<typeof employeeFormSchema>;
 type TextFieldName = Exclude<
   keyof EmployeeFormValues,
-  "departmentId" | "contractId" | "employmentType" | "joiningDate" | "status" | "monthlyPay"
+  | "departmentId"
+  | "contractId"
+  | "employmentType"
+  | "joiningDate"
+  | "status"
+  | "monthlyPay"
+  | "useContractLocation"
+  | "workState"
+  | "workCity"
 >;
 
 function EmployeeTextField({
@@ -232,7 +274,10 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
       jobTitle: "",
       employmentType: "full-time",
       joiningDate: "",
+      workState: "",
+      workCity: "",
       siteLocation: "",
+      useContractLocation: true,
       status: "active",
       monthlyPay: "",
       pan: "",
@@ -245,6 +290,11 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
     },
   });
   const departmentId = useWatch({ control: form.control, name: "departmentId" });
+  const [contractId, useContractLocation] = useWatch({
+    control: form.control,
+    name: ["contractId", "useContractLocation"],
+  });
+  const selectedContract = contracts.find((contract) => contract.id === contractId);
   const contractOptions = [
     { value: "", label: departmentId ? "Select contract" : "Select a department first" },
     ...contracts
@@ -374,7 +424,7 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
               <Controller
                 name="contractId"
                 control={form.control}
-                rules={{ deps: ["siteLocation"] }}
+                rules={{ deps: ["workState", "workCity", "siteLocation"] }}
                 render={({ field, fieldState }) => (
                   <Field
                     className="gap-1 @sm/field-group:col-span-2"
@@ -412,6 +462,97 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
                       </SelectContent>
                     </Select>
                     {fieldState.invalid && <FieldError id="employee-contract-error" errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="useContractLocation"
+                control={form.control}
+                rules={{ deps: ["workState", "workCity", "siteLocation"] }}
+                render={({ field }) => (
+                  <Field orientation="horizontal" className="@sm/field-group:col-span-2">
+                    <Checkbox
+                      id="employee-use-contract-location"
+                      name={field.name}
+                      ref={field.ref}
+                      checked={field.value}
+                      onCheckedChange={changeValue(field.onChange)}
+                      onBlur={field.onBlur}
+                    />
+                    <FieldLabel className="font-normal" htmlFor="employee-use-contract-location">
+                      Same as contract location
+                    </FieldLabel>
+                  </Field>
+                )}
+              />
+              <Controller
+                name="workState"
+                control={form.control}
+                rules={{ deps: ["workCity"] }}
+                render={({ field, fieldState }) => (
+                  <Field className="gap-1" data-invalid={fieldState.invalid}>
+                    <FieldLabel className="font-normal" htmlFor="employee-work-state">
+                      Work state / UT
+                    </FieldLabel>
+                    <StatePicker
+                      id="employee-work-state"
+                      name={field.name}
+                      value={useContractLocation ? (selectedContract?.location.state ?? "") : field.value}
+                      readOnly={useContractLocation}
+                      onChange={changeValue(field.onChange)}
+                      onBlur={field.onBlur}
+                      inputRef={field.ref}
+                      invalid={fieldState.invalid}
+                      describedBy={fieldState.invalid ? "employee-work-state-error" : undefined}
+                    />
+                    {fieldState.invalid && <FieldError id="employee-work-state-error" errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="workCity"
+                control={form.control}
+                rules={{ deps: ["workState"] }}
+                render={({ field, fieldState }) => (
+                  <Field className="gap-1" data-invalid={fieldState.invalid}>
+                    <FieldLabel className="font-normal" htmlFor="employee-work-city">
+                      Work city / town
+                    </FieldLabel>
+                    <Input
+                      {...field}
+                      id="employee-work-city"
+                      value={useContractLocation ? (selectedContract?.location.city ?? "") : field.value}
+                      readOnly={useContractLocation}
+                      onChange={changeValue(field.onChange)}
+                      placeholder={useContractLocation ? "Select a contract first" : "e.g. Pune"}
+                      autoComplete="address-level2"
+                      aria-invalid={fieldState.invalid}
+                      aria-describedby={fieldState.invalid ? "employee-work-city-error" : undefined}
+                    />
+                    {fieldState.invalid && <FieldError id="employee-work-city-error" errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="siteLocation"
+                control={form.control}
+                rules={{ deps: ["workState", "workCity"] }}
+                render={({ field, fieldState }) => (
+                  <Field className="gap-1 @sm/field-group:col-span-2" data-invalid={fieldState.invalid}>
+                    <FieldLabel className="font-normal" htmlFor="employee-site-location">
+                      Work site / address <span className="text-muted-foreground">Optional</span>
+                    </FieldLabel>
+                    <Input
+                      {...field}
+                      id="employee-site-location"
+                      value={useContractLocation ? (selectedContract?.location.address ?? "") : field.value}
+                      readOnly={useContractLocation}
+                      onChange={changeValue(field.onChange)}
+                      placeholder={useContractLocation ? "Contract site / address" : "Office, site, or street address"}
+                      aria-invalid={fieldState.invalid}
+                      aria-describedby={fieldState.invalid ? "employee-site-location-error" : undefined}
+                    />
+                    {fieldState.invalid && <FieldError id="employee-site-location-error" errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
@@ -482,12 +623,6 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
                     {fieldState.invalid && <FieldError id="employee-joining-error" errors={[fieldState.error]} />}
                   </Field>
                 )}
-              />
-              <EmployeeTextField
-                {...textProps}
-                name="siteLocation"
-                label="Site location"
-                placeholder="e.g. Goa — Naval base"
               />
               <Controller
                 name="status"

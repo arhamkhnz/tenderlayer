@@ -30,6 +30,7 @@ import {
   SelectValue,
 } from "@tenderlayer/ui/components/select";
 import { Textarea } from "@tenderlayer/ui/components/textarea";
+import { StatePicker, indianStatesAndUTs } from "../../-components/state-picker";
 import { departments } from "../../departments/-components/data";
 import { ContractDatePicker } from "./contract-date-picker";
 
@@ -105,6 +106,11 @@ const contractFormSchema = z
         "Select a valid department.",
       ),
     gemReference: z.string().trim(),
+    locationState: z
+      .string()
+      .refine((value) => !value || indianStatesAndUTs.includes(value), "Select a valid state / UT."),
+    locationCity: z.string().trim(),
+    locationAddress: z.string().trim(),
     status: z.enum(["draft", "wo-received", "scheduled", "active", "on-hold", "completed", "terminated"]),
     value: optionalNumber(0),
     includesGst: z.boolean(),
@@ -136,6 +142,8 @@ const contractFormSchema = z
       for (const [name, message] of [
         ["department", "Select a department."],
         ["gemReference", "Enter the GeM reference number."],
+        ["locationState", "Select the contract state / UT."],
+        ["locationCity", "Enter the contract city / town."],
         ["value", "Enter the contract value."],
         ["startDate", "Choose the start date."],
         ["duration", "Enter the contract duration."],
@@ -157,6 +165,9 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
       title: "",
       department: null,
       gemReference: "",
+      locationState: "",
+      locationCity: "",
+      locationAddress: "",
       status: "draft",
       value: "",
       includesGst: false,
@@ -275,6 +286,73 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                 )}
               />
               <Controller
+                name="locationState"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field className="gap-1" data-invalid={fieldState.invalid}>
+                    <FieldLabel className="font-normal" htmlFor="contract-location-state">
+                      State / UT
+                    </FieldLabel>
+                    <StatePicker
+                      id="contract-location-state"
+                      name={field.name}
+                      value={field.value}
+                      onChange={handleFieldChange(field.onChange)}
+                      onBlur={field.onBlur}
+                      inputRef={field.ref}
+                      invalid={fieldState.invalid}
+                      describedBy={fieldState.invalid ? "contract-location-state-error" : undefined}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError id="contract-location-state-error" errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="locationCity"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field className="gap-1" data-invalid={fieldState.invalid}>
+                    <FieldLabel className="font-normal" htmlFor="contract-location-city">
+                      City / town
+                    </FieldLabel>
+                    <Input
+                      {...field}
+                      onChange={handleFieldChange(field.onChange)}
+                      id="contract-location-city"
+                      placeholder="e.g. Mumbai"
+                      autoComplete="address-level2"
+                      aria-invalid={fieldState.invalid}
+                      aria-describedby={fieldState.invalid ? "contract-location-city-error" : undefined}
+                    />
+                    {fieldState.invalid && <FieldError id="contract-location-city-error" errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="locationAddress"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field className="gap-1 @sm/field-group:col-span-2" data-invalid={fieldState.invalid}>
+                    <FieldLabel className="font-normal" htmlFor="contract-location-address">
+                      Site / address <span className="text-muted-foreground">Optional</span>
+                    </FieldLabel>
+                    <Input
+                      {...field}
+                      onChange={handleFieldChange(field.onChange)}
+                      id="contract-location-address"
+                      placeholder="Office, site, or street address"
+                      aria-invalid={fieldState.invalid}
+                      aria-describedby={fieldState.invalid ? "contract-location-address-error" : undefined}
+                    />
+                    {fieldState.invalid && (
+                      <FieldError id="contract-location-address-error" errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+              <Controller
                 name="gemReference"
                 control={form.control}
                 render={({ field, fieldState }) => (
@@ -296,7 +374,18 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
               />
               <Controller
                 name="status"
-                rules={{ deps: ["department", "gemReference", "value", "startDate", "duration", "required"] }}
+                rules={{
+                  deps: [
+                    "department",
+                    "gemReference",
+                    "locationState",
+                    "locationCity",
+                    "value",
+                    "startDate",
+                    "duration",
+                    "required",
+                  ],
+                }}
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field className="gap-1" data-invalid={fieldState.invalid}>
