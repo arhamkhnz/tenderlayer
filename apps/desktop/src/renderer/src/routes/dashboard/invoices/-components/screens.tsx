@@ -1,4 +1,13 @@
-import { ArrowLeftIcon, SearchIcon, PlusIcon, ReceiptIcon } from "@keyline-icons/react";
+import {
+  ArrowLeftIcon,
+  PlusIcon,
+  ReceiptIcon,
+  HashIcon,
+  BriefcaseIcon,
+  CalendarIcon,
+  IndianRupeeIcon,
+  TagIcon,
+} from "@keyline-icons/react";
 import { Link } from "@tanstack/react-router";
 
 import { Badge } from "@tenderlayer/ui/components/badge";
@@ -17,7 +26,9 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@tenderlayer/ui/components/table";
 import { Textarea } from "@tenderlayer/ui/components/textarea";
 
-import { DataCard, KeyValueGrid, MetricStrip, PageHeader, StaticStatus, StaticTable } from "../../-components/screen";
+import { DataCard, KeyValueGrid, PageHeader } from "../../-components/screen";
+
+import { RecordsTable, type RecordColumn } from "../../-components/records-table";
 
 const invoices = [
   {
@@ -67,63 +78,79 @@ const invoices = [
   },
 ];
 
+const invoiceColumns: RecordColumn<(typeof invoices)[number]>[] = [
+  {
+    id: "invoice",
+    label: "Invoice",
+    icon: HashIcon,
+    numeric: false,
+    cell: (record) => (
+      <Link
+        to="/dashboard/invoices/$invoiceId"
+        params={{ invoiceId: record.id }}
+        className="rounded-sm font-450 outline-none hover:text-primary focus-visible:ring-2 focus-visible:ring-ring"
+      >
+        {record.invoice}
+      </Link>
+    ),
+  },
+  { id: "contract", label: "Contract", icon: BriefcaseIcon, numeric: false, cell: (record) => record.contract },
+  {
+    id: "issued",
+    label: "Issued",
+    icon: CalendarIcon,
+    numeric: false,
+    cell: (record) => <span className="text-muted-foreground tabular-nums">{record.issued}</span>,
+  },
+  {
+    id: "due",
+    label: "Due",
+    icon: CalendarIcon,
+    numeric: false,
+    cell: (record) => <span className="text-muted-foreground tabular-nums">{record.due}</span>,
+  },
+  { id: "amount", label: "Amount", icon: IndianRupeeIcon, numeric: true, cell: (record) => record.amount },
+  {
+    id: "status",
+    label: "Status",
+    icon: TagIcon,
+    numeric: false,
+    cell: (record) => (
+      <Badge
+        variant={record.status === "Overdue" ? "destructive" : record.status === "Draft" ? "outline" : "secondary"}
+        className="rounded-md px-1.5 font-450"
+      >
+        {record.status}
+      </Badge>
+    ),
+  },
+];
+
 export function InvoicesScreen() {
   return (
-    <>
-      <PageHeader
-        title="Invoices"
-        description="Prepare and track invoices raised against awarded contracts."
-        action={
-          <Link to="/dashboard/invoices/new" className={buttonVariants()}>
-            <ReceiptIcon data-icon="inline-start" />
-            New invoice
-          </Link>
-        }
+    <section
+      data-content-padding="false"
+      className="flex h-[calc(100dvh-var(--header-height))] min-h-0 min-w-0 flex-col gap-2 overflow-hidden bg-background"
+    >
+      <header className="flex shrink-0 flex-col gap-4 px-4 py-4 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-3xl tracking-tighter leading-none">
+            Invoices <span className="font-mono text-muted-foreground text-xl leading-none">[{invoices.length}]</span>
+          </h1>
+          <p className="text-sm text-muted-foreground">Prepare and track invoices raised against awarded contracts.</p>
+        </div>
+        <Link to="/dashboard/invoices/new" className={buttonVariants({ size: "sm" })}>
+          <ReceiptIcon data-icon="inline-start" />
+          New invoice
+        </Link>
+      </header>
+      <RecordsTable
+        records={invoices}
+        columns={invoiceColumns}
+        label="Invoices"
+        searchText={(record) => Object.values(record).join(" ")}
       />
-      <MetricStrip
-        items={[
-          { label: "Outstanding", value: "₹7.8L", detail: "6 open invoices" },
-          { label: "Overdue", value: "₹2.6L", detail: "1 invoice" },
-          { label: "Draft", value: "₹4.05L", detail: "Ready for review" },
-          { label: "Paid this month", value: "₹11.4L", detail: "4 invoices" },
-        ]}
-      />
-      <DataCard
-        title="All invoices"
-        description="Static billing records for all contracts."
-        action={
-          <div className="relative w-52">
-            <SearchIcon className="pointer-events-none absolute top-1/2 left-2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-            <Input className="pl-7" placeholder="Search invoices" />
-          </div>
-        }
-        contentClassName="px-0"
-      >
-        <StaticTable
-          rows={invoices}
-          columns={[
-            {
-              key: "invoice",
-              label: "Invoice",
-              render: (value, row) => (
-                <Link
-                  to="/dashboard/invoices/$invoiceId"
-                  params={{ invoiceId: row.id }}
-                  className="font-medium hover:underline"
-                >
-                  {String(value)}
-                </Link>
-              ),
-            },
-            { key: "contract", label: "Contract" },
-            { key: "issued", label: "Issued", className: "tabular-nums" },
-            { key: "due", label: "Due", className: "tabular-nums" },
-            { key: "amount", label: "Amount", className: "text-right tabular-nums" },
-            { key: "status", label: "Status", render: (value) => <StaticStatus>{String(value)}</StaticStatus> },
-          ]}
-        />
-      </DataCard>
-    </>
+    </section>
   );
 }
 

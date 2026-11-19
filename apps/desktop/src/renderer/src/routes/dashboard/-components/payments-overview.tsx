@@ -218,7 +218,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
               </Select>
             </div>
             <div className="flex items-center gap-2">
-              <InputGroup className="h-7 w-52 bg-background dark:bg-background [&_[data-slot=input-group-control]]:h-7">
+              <InputGroup className="h-7 w-52 bg-background dark:bg-background **:data-[slot=input-group-control]:h-7">
                 <InputGroupAddon>
                   <SearchIcon aria-hidden="true" />
                 </InputGroupAddon>
@@ -265,7 +265,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
                     {group.headers.map((header) => (
                       <TableHead
                         key={header.id}
-                        className="h-10 border-r border-border/50 px-4.5 font-normal text-muted-foreground last:border-r-0 first:w-14 first:px-2.5 [&:has([role=checkbox])]:pr-2.5 [&_[role=checkbox]]:mx-auto"
+                        className="h-10 border-r border-border/50 px-4.5 font-normal text-muted-foreground last:border-r-0 first:w-14 first:px-2.5 has-[[role=checkbox]]:pr-2.5 **:[[role=checkbox]]:mx-auto"
                       >
                         {header.isPlaceholder ? null : <table.FlexRender header={header} />}
                       </TableHead>
@@ -284,7 +284,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
                       {row.getVisibleCells().map((cell) => (
                         <TableCell
                           key={cell.id}
-                          className="h-12 border-r border-border/50 px-4.5 py-2 last:border-r-0 first:w-14 first:px-2.5 [&:has([role=checkbox])]:pr-2.5 [&_[role=checkbox]]:mx-auto"
+                          className="h-12 border-r border-border/50 px-4.5 py-2 last:border-r-0 first:w-14 first:px-2.5 has-[[role=checkbox]]:pr-2.5 **:[[role=checkbox]]:mx-auto"
                         >
                           <table.FlexRender cell={cell} />
                         </TableCell>
@@ -306,7 +306,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
           </TabsContent>
         </Tabs>
       </CardContent>
-      <CardFooter className="flex min-h-[49px] flex-wrap items-center justify-between gap-3 px-4 py-2">
+      <CardFooter className="flex min-h-12.25 flex-wrap items-center justify-between gap-3 px-4 py-2">
         <div className="flex flex-wrap items-center gap-3 text-muted-foreground">
           <div className="flex items-center gap-2">
             <span>Rows per page</span>

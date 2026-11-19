@@ -1,4 +1,13 @@
-import { ArrowLeftIcon, BanknoteIcon, PlusIcon } from "@keyline-icons/react";
+import {
+  ArrowLeftIcon,
+  BanknoteIcon,
+  PlusIcon,
+  CalendarIcon,
+  BriefcaseIcon,
+  UsersIcon,
+  IndianRupeeIcon,
+  TagIcon,
+} from "@keyline-icons/react";
 import { Link } from "@tanstack/react-router";
 
 import { Badge } from "@tenderlayer/ui/components/badge";
@@ -15,7 +24,9 @@ import {
   SelectValue,
 } from "@tenderlayer/ui/components/select";
 
-import { DataCard, KeyValueGrid, MetricStrip, PageHeader, StaticStatus, StaticTable } from "../../-components/screen";
+import { DataCard, KeyValueGrid, PageHeader, StaticStatus, StaticTable } from "../../-components/screen";
+
+import { RecordsTable, type RecordColumn } from "../../-components/records-table";
 
 const payrollRuns = [
   {
@@ -56,57 +67,64 @@ const payrollRuns = [
   },
 ];
 
+const payrollColumns: RecordColumn<(typeof payrollRuns)[number]>[] = [
+  {
+    id: "period",
+    label: "Pay period",
+    icon: CalendarIcon,
+    numeric: false,
+    cell: (record) => (
+      <Link
+        to="/dashboard/payroll/$payrollId"
+        params={{ payrollId: record.id }}
+        className="rounded-sm font-450 outline-none hover:text-primary focus-visible:ring-2 focus-visible:ring-ring"
+      >
+        {record.period}
+      </Link>
+    ),
+  },
+  { id: "contracts", label: "Contracts", icon: BriefcaseIcon, numeric: true, cell: (record) => record.contracts },
+  { id: "employees", label: "Employees", icon: UsersIcon, numeric: true, cell: (record) => record.employees },
+  { id: "gross", label: "Gross pay", icon: IndianRupeeIcon, numeric: true, cell: (record) => record.gross },
+  { id: "deductions", label: "Deductions", icon: IndianRupeeIcon, numeric: true, cell: (record) => record.deductions },
+  {
+    id: "status",
+    label: "Status",
+    icon: TagIcon,
+    numeric: false,
+    cell: (record) => (
+      <Badge variant={record.status === "Review" ? "outline" : "secondary"} className="rounded-md px-1.5 font-450">
+        {record.status}
+      </Badge>
+    ),
+  },
+];
+
 export function PayrollScreen() {
   return (
-    <>
-      <PageHeader
-        title="Payroll"
-        description="Review monthly employee pay across active contracts."
-        action={
-          <Link to="/dashboard/payroll/new" className={buttonVariants()}>
-            <BanknoteIcon data-icon="inline-start" />
-            New payroll run
-          </Link>
-        }
+    <section
+      data-content-padding="false"
+      className="flex h-[calc(100dvh-var(--header-height))] min-h-0 min-w-0 flex-col gap-2 overflow-hidden bg-background"
+    >
+      <header className="flex shrink-0 flex-col gap-4 px-4 py-4 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-3xl tracking-tighter leading-none">
+            Payroll <span className="font-mono text-muted-foreground text-xl leading-none">[{payrollRuns.length}]</span>
+          </h1>
+          <p className="text-sm text-muted-foreground">Review monthly employee pay across active contracts.</p>
+        </div>
+        <Link to="/dashboard/payroll/new" className={buttonVariants({ size: "sm" })}>
+          <BanknoteIcon data-icon="inline-start" />
+          New payroll run
+        </Link>
+      </header>
+      <RecordsTable
+        records={payrollRuns}
+        columns={payrollColumns}
+        label="Payroll runs"
+        searchText={(record) => Object.values(record).join(" ")}
       />
-      <MetricStrip
-        items={[
-          { label: "Current gross pay", value: "₹14.82L", detail: "August 2026" },
-          { label: "Net payable", value: "₹13.57L", detail: "After deductions" },
-          { label: "Employees", value: "38", detail: "Across 6 contracts" },
-          { label: "Requires review", value: "3", detail: "Employee records" },
-        ]}
-      />
-      <DataCard
-        title="Payroll history"
-        description="Static monthly payroll runs for this organization."
-        contentClassName="px-0"
-      >
-        <StaticTable
-          rows={payrollRuns}
-          columns={[
-            {
-              key: "period",
-              label: "Pay period",
-              render: (value, row) => (
-                <Link
-                  to="/dashboard/payroll/$payrollId"
-                  params={{ payrollId: row.id }}
-                  className="font-medium hover:underline"
-                >
-                  {String(value)}
-                </Link>
-              ),
-            },
-            { key: "contracts", label: "Contracts", className: "text-right tabular-nums" },
-            { key: "employees", label: "Employees", className: "text-right tabular-nums" },
-            { key: "gross", label: "Gross pay", className: "text-right tabular-nums" },
-            { key: "deductions", label: "Deductions", className: "text-right tabular-nums" },
-            { key: "status", label: "Status", render: (value) => <StaticStatus>{String(value)}</StaticStatus> },
-          ]}
-        />
-      </DataCard>
-    </>
+    </section>
   );
 }
 

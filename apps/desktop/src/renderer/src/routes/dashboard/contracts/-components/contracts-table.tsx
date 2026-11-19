@@ -90,10 +90,10 @@ export function ContractsTable({ contracts }: { contracts: ContractRecord[] }) {
   return (
     <section
       aria-label="Contracts list"
-      className="flex min-h-0 min-w-0 flex-1 flex-col [&>[data-slot=table-container]]:min-h-0 [&>[data-slot=table-container]]:flex-1 [&>[data-slot=table-container]]:overflow-auto"
+      className="flex min-h-0 min-w-0 flex-1 flex-col *:data-[slot=table-container]:min-h-0 *:data-[slot=table-container]:flex-1 *:data-[slot=table-container]:overflow-auto"
     >
       <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 px-4 pb-3">
-        <InputGroup className="h-7 w-64 bg-background [&_[data-slot=input-group-control]]:h-7 dark:bg-background">
+        <InputGroup className="h-7 w-64 bg-background **:data-[slot=input-group-control]:h-7 dark:bg-background">
           <InputGroupInput type="search" placeholder="Search contracts…" aria-label="Search contracts" />
           <InputGroupAddon align="inline-start">
             <SearchIcon aria-hidden="true" />
@@ -141,7 +141,7 @@ export function ContractsTable({ contracts }: { contracts: ContractRecord[] }) {
       <Table className="min-w-260 border-y border-border/60" aria-label="Contracts">
         <TableHeader>
           <TableRow className="border-border/60 hover:bg-transparent">
-            <TableHead className="h-10 w-14 border-r border-border/50 px-2.5 [&:has([role=checkbox])]:pr-2.5">
+            <TableHead className="h-10 w-14 border-r border-border/50 px-2.5 has-[[role=checkbox]]:pr-2.5">
               <Checkbox
                 className="mx-auto"
                 aria-label="Select all contracts on this page"
@@ -177,7 +177,7 @@ export function ContractsTable({ contracts }: { contracts: ContractRecord[] }) {
         <TableBody>
           {visibleContracts.map((contract) => (
             <TableRow key={contract.id} className="border-border/60 hover:bg-muted/30">
-              <TableCell className="h-12 w-14 border-r border-border/50 px-2.5 py-2 [&:has([role=checkbox])]:pr-2.5">
+              <TableCell className="h-12 w-14 border-r border-border/50 px-2.5 py-2 has-[[role=checkbox]]:pr-2.5">
                 <Checkbox
                   className="mx-auto"
                   aria-label={`Select ${contract.name}`}
@@ -259,7 +259,7 @@ export function ContractsTable({ contracts }: { contracts: ContractRecord[] }) {
           ) : null}
         </TableBody>
       </Table>
-      <footer className="flex min-h-[49px] shrink-0 flex-wrap items-center justify-between gap-3 border-t bg-background px-4 py-2 text-sm sm:h-[49px] sm:py-0">
+      <footer className="flex min-h-12.25 shrink-0 flex-wrap items-center justify-between gap-3 border-t bg-background px-4 py-2 text-sm sm:h-12.25 sm:py-0">
         <div className="flex flex-wrap items-center gap-4 text-muted-foreground">
           <span className="tabular-nums" aria-live="polite">
             {contracts.length ? start + 1 : 0} – {Math.min(start + pageSize, contracts.length)} of {contracts.length}{" "}

@@ -1,6 +1,7 @@
+import { BanknoteIcon, Building, FileIcon, ReceiptIcon } from "@keyline-icons/react";
+
 import { Button } from "@tenderlayer/ui/components/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@tenderlayer/ui/components/card";
-import { Field, FieldDescription, FieldGroup, FieldLabel } from "@tenderlayer/ui/components/field";
+import { Field, FieldGroup, FieldLabel } from "@tenderlayer/ui/components/field";
 import { Input } from "@tenderlayer/ui/components/input";
 import {
   Select,
@@ -11,227 +12,365 @@ import {
   SelectValue,
 } from "@tenderlayer/ui/components/select";
 import { Textarea } from "@tenderlayer/ui/components/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@tenderlayer/ui/components/tabs";
 
-import { PageHeader } from "../../-components/screen";
+const organizationTypes = [
+  { value: null, label: "Select organization type" },
+  { value: "sole-proprietorship", label: "Sole proprietorship" },
+  { value: "partnership", label: "Partnership" },
+  { value: "llp", label: "LLP" },
+  { value: "private-limited", label: "Private limited company" },
+  { value: "public-limited", label: "Public limited company" },
+  { value: "other", label: "Other" },
+];
 
 export function OrganizationSettingsScreen() {
   return (
-    <>
-      <PageHeader
-        title="Organization"
-        description="Company details, statutory registrations, and defaults used across contracts, invoices, and payroll."
-      />
-      <Card>
-        <CardHeader className="border-b">
-          <CardTitle>Organization profile</CardTitle>
-          <CardDescription>Legal and operational information for TenderLayer Services Private Limited.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FieldGroup>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field className="sm:col-span-2">
-                <FieldLabel htmlFor="org-name">Legal name</FieldLabel>
-                <Input id="org-name" defaultValue="TenderLayer Services Private Limited" />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="org-short-name">Display name</FieldLabel>
-                <Input id="org-short-name" defaultValue="TenderLayer Services" />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="org-registration">Company registration number</FieldLabel>
-                <Input id="org-registration" defaultValue="U74999DL2024PTC482910" />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="org-email">Primary email</FieldLabel>
-                <Input id="org-email" type="email" defaultValue="operations@tenderlayer.in" />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="org-phone">Phone number</FieldLabel>
-                <Input id="org-phone" defaultValue="+91 11 4182 6400" />
-              </Field>
-              <Field className="sm:col-span-2">
-                <FieldLabel htmlFor="org-address">Registered address</FieldLabel>
-                <Textarea
-                  id="org-address"
-                  defaultValue="214, Okhla Industrial Estate, Phase III, New Delhi, Delhi 110020"
-                />
-              </Field>
-              <Field>
-                <FieldLabel>Default currency</FieldLabel>
-                <Select defaultValue="inr">
-                  <SelectTrigger className="w-full" aria-label="Default currency">
-                    <SelectValue className="font-450" />
-                  </SelectTrigger>
-                  <SelectContent className="font-450">
-                    <SelectGroup>
-                      <SelectItem value="inr">INR — Indian Rupee</SelectItem>
-                      <SelectItem value="usd">USD — US Dollar</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </Field>
-              <Field>
-                <FieldLabel>Financial year starts</FieldLabel>
-                <Select defaultValue="april">
-                  <SelectTrigger className="w-full" aria-label="Financial year start">
-                    <SelectValue className="font-450" />
-                  </SelectTrigger>
-                  <SelectContent className="font-450">
-                    <SelectGroup>
-                      <SelectItem value="april">April</SelectItem>
-                      <SelectItem value="january">January</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </Field>
-            </div>
-          </FieldGroup>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="border-b">
-          <CardTitle>Authorized signatory</CardTitle>
-          <CardDescription>Default signatory shown on invoices and contract correspondence.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FieldGroup>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field>
-                <FieldLabel htmlFor="signatory-name">Name</FieldLabel>
-                <Input id="signatory-name" defaultValue="Arham Khan" />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="signatory-title">Designation</FieldLabel>
-                <Input id="signatory-title" defaultValue="Director" />
-              </Field>
-            </div>
-          </FieldGroup>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="border-b">
-          <CardTitle>GST registration</CardTitle>
-          <CardDescription>Registration information displayed on tax invoices.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FieldGroup>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field>
-                <FieldLabel htmlFor="gstin">GSTIN</FieldLabel>
-                <Input id="gstin" defaultValue="07AABCT4829Q1Z6" />
-                <FieldDescription>15-character Goods and Services Tax Identification Number.</FieldDescription>
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="pan">PAN</FieldLabel>
-                <Input id="pan" defaultValue="AABCT4829Q" />
-              </Field>
-              <Field>
-                <FieldLabel>State of registration</FieldLabel>
-                <Select defaultValue="delhi">
-                  <SelectTrigger className="w-full" aria-label="State of registration">
-                    <SelectValue className="font-450" />
-                  </SelectTrigger>
-                  <SelectContent className="font-450">
-                    <SelectGroup>
-                      <SelectItem value="delhi">Delhi</SelectItem>
-                      <SelectItem value="maharashtra">Maharashtra</SelectItem>
-                      <SelectItem value="uttar-pradesh">Uttar Pradesh</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="state-code">State code</FieldLabel>
-                <Input id="state-code" defaultValue="07" />
-              </Field>
-            </div>
-          </FieldGroup>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="border-b">
-          <CardTitle>Invoice defaults</CardTitle>
-          <CardDescription>Default tax rate and invoice classification for new billing records.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FieldGroup>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field>
-                <FieldLabel>Default GST rate</FieldLabel>
-                <Select defaultValue="18">
-                  <SelectTrigger className="w-full" aria-label="Default GST rate">
-                    <SelectValue className="font-450" />
-                  </SelectTrigger>
-                  <SelectContent className="font-450">
-                    <SelectGroup>
-                      <SelectItem value="0">0%</SelectItem>
-                      <SelectItem value="5">5%</SelectItem>
-                      <SelectItem value="12">12%</SelectItem>
-                      <SelectItem value="18">18%</SelectItem>
-                      <SelectItem value="28">28%</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="sac-code">Default SAC code</FieldLabel>
-                <Input id="sac-code" defaultValue="998599" />
-              </Field>
-              <Field>
-                <FieldLabel>Place of supply</FieldLabel>
-                <Select defaultValue="contract">
-                  <SelectTrigger className="w-full" aria-label="Place of supply">
-                    <SelectValue className="font-450" />
-                  </SelectTrigger>
-                  <SelectContent className="font-450">
-                    <SelectGroup>
-                      <SelectItem value="contract">Use contract location</SelectItem>
-                      <SelectItem value="organization">Use organization state</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </Field>
-              <Field>
-                <FieldLabel>Tax calculation</FieldLabel>
-                <Select defaultValue="exclusive">
-                  <SelectTrigger className="w-full" aria-label="Tax calculation">
-                    <SelectValue className="font-450" />
-                  </SelectTrigger>
-                  <SelectContent className="font-450">
-                    <SelectGroup>
-                      <SelectItem value="exclusive">Tax exclusive</SelectItem>
-                      <SelectItem value="inclusive">Tax inclusive</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </Field>
-            </div>
-          </FieldGroup>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="border-b">
-          <CardTitle>Payroll statutory references</CardTitle>
-          <CardDescription>Organization registrations used for payroll reporting.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FieldGroup>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field>
-                <FieldLabel htmlFor="epfo-number">EPFO establishment ID</FieldLabel>
-                <Input id="epfo-number" defaultValue="DLCPM1234567000" />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="esic-number">ESIC employer code</FieldLabel>
-                <Input id="esic-number" defaultValue="11001234560001099" />
-              </Field>
-            </div>
-          </FieldGroup>
-        </CardContent>
-      </Card>
-      <div className="flex justify-end">
-        <Button type="button">Save changes</Button>
-      </div>
-    </>
+    <section
+      data-content-padding="false"
+      className="flex h-[calc(100dvh-var(--header-height))] min-h-0 min-w-0 flex-col gap-2 overflow-hidden bg-background"
+      aria-labelledby="organization-settings-title"
+    >
+      <header className="flex shrink-0 flex-col gap-4 px-4 py-4 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-1">
+          <h1 id="organization-settings-title" className="text-3xl tracking-tighter leading-none">
+            Organization
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            Manage your company information, registrations, invoicing, and payroll settings.
+          </p>
+        </div>
+      </header>
+      <Tabs
+        orientation="vertical"
+        defaultValue="company"
+        className="min-h-0 flex-1 flex-col gap-0 overflow-hidden border-t border-border/60 md:flex-row"
+      >
+        <aside className="shrink-0 border-b border-border/60 px-2 py-4 md:w-56 md:border-r md:border-b-0 md:pt-4.5">
+          <TabsList variant="navigation" className="h-auto w-full items-stretch" aria-label="Organization settings">
+            <TabsTrigger
+              value="company"
+              className="grid h-8 flex-none grid-cols-[1rem_minmax(0,1fr)] items-center justify-start gap-2 border-0 px-2 text-left"
+            >
+              <Building aria-hidden="true" />
+              Company details
+            </TabsTrigger>
+            <TabsTrigger
+              value="registrations"
+              className="grid h-8 flex-none grid-cols-[1rem_minmax(0,1fr)] items-center justify-start gap-2 border-0 px-2 text-left"
+            >
+              <FileIcon aria-hidden="true" />
+              Registrations
+            </TabsTrigger>
+            <TabsTrigger
+              value="invoices"
+              className="grid h-8 flex-none grid-cols-[1rem_minmax(0,1fr)] items-center justify-start gap-2 border-0 px-2 text-left"
+            >
+              <ReceiptIcon aria-hidden="true" />
+              Invoicing
+            </TabsTrigger>
+            <TabsTrigger
+              value="payroll"
+              className="grid h-8 flex-none grid-cols-[1rem_minmax(0,1fr)] items-center justify-start gap-2 border-0 px-2 text-left"
+            >
+              <BanknoteIcon aria-hidden="true" />
+              Payroll
+            </TabsTrigger>
+          </TabsList>
+        </aside>
+        <TabsContent value="company" keepMounted className="min-h-0 min-w-0 overflow-y-auto px-4 py-4.5">
+          <div className="flex w-full flex-col">
+            <section
+              aria-label="Company details"
+              className="flex min-w-0 flex-col gap-5 border-b border-border/60 py-6 first:pt-0 last-of-type:border-b-0"
+            >
+              <FieldGroup className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal" htmlFor="org-name">
+                    Legal name
+                  </FieldLabel>
+                  <Input id="org-name" defaultValue="TenderLayer Services Private Limited" />
+                </Field>
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal" htmlFor="org-type">
+                    Organization type
+                  </FieldLabel>
+                  <Select items={organizationTypes} defaultValue="private-limited">
+                    <SelectTrigger id="org-type" className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {organizationTypes.map((option) => (
+                          <SelectItem key={option.value ?? "placeholder"} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </Field>
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal" htmlFor="org-email">
+                    Primary email
+                  </FieldLabel>
+                  <Input id="org-email" type="email" defaultValue="operations@tenderlayer.in" />
+                </Field>
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal" htmlFor="org-phone">
+                    Phone number
+                  </FieldLabel>
+                  <Input id="org-phone" defaultValue="+91 11 4182 6400" />
+                </Field>
+                <Field className="gap-1 sm:col-span-2">
+                  <FieldLabel className="font-normal" htmlFor="org-address">
+                    Registered address
+                  </FieldLabel>
+                  <Textarea
+                    id="org-address"
+                    defaultValue="214, Okhla Industrial Estate, Phase III, New Delhi, Delhi 110020"
+                  />
+                </Field>
+              </FieldGroup>
+            </section>
+          </div>
+        </TabsContent>
+        <TabsContent value="registrations" keepMounted className="min-h-0 min-w-0 overflow-y-auto px-4 py-4.5">
+          <div className="flex w-full flex-col">
+            <section
+              aria-label="Tax registrations"
+              className="flex min-w-0 flex-col gap-5 border-b border-border/60 py-6 first:pt-0 last-of-type:border-b-0"
+            >
+              <FieldGroup className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal" htmlFor="gstin">
+                    GSTIN
+                  </FieldLabel>
+                  <Input id="gstin" defaultValue="07AABCT4829Q1Z6" />
+                </Field>
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal" htmlFor="pan">
+                    PAN
+                  </FieldLabel>
+                  <Input id="pan" defaultValue="AABCT4829Q" />
+                </Field>
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal">State of registration</FieldLabel>
+                  <Select
+                    items={[
+                      { value: "delhi", label: "Delhi" },
+                      { value: "maharashtra", label: "Maharashtra" },
+                      { value: "uttar-pradesh", label: "Uttar Pradesh" },
+                    ]}
+                    defaultValue="delhi"
+                  >
+                    <SelectTrigger className="w-full" aria-label="State of registration">
+                      <SelectValue className="font-450" />
+                    </SelectTrigger>
+                    <SelectContent className="font-450">
+                      <SelectGroup>
+                        <SelectItem value="delhi">Delhi</SelectItem>
+                        <SelectItem value="maharashtra">Maharashtra</SelectItem>
+                        <SelectItem value="uttar-pradesh">Uttar Pradesh</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </Field>
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal" htmlFor="state-code">
+                    State code
+                  </FieldLabel>
+                  <Input id="state-code" defaultValue="07" />
+                </Field>
+              </FieldGroup>
+            </section>
+          </div>
+        </TabsContent>
+        <TabsContent value="invoices" keepMounted className="min-h-0 min-w-0 overflow-y-auto px-4 py-4.5">
+          <div className="flex w-full flex-col">
+            <section
+              aria-labelledby="organization-invoice-defaults"
+              className="flex min-w-0 flex-col gap-5 border-b border-border/60 py-6 first:pt-0 last-of-type:border-b-0"
+            >
+              <h2 id="organization-invoice-defaults" className="text-base font-medium leading-none">
+                Invoice defaults
+              </h2>
+              <FieldGroup className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal">Default GST rate</FieldLabel>
+                  <Select
+                    items={[
+                      { value: "0", label: "0%" },
+                      { value: "5", label: "5%" },
+                      { value: "12", label: "12%" },
+                      { value: "18", label: "18%" },
+                      { value: "28", label: "28%" },
+                    ]}
+                    defaultValue="18"
+                  >
+                    <SelectTrigger className="w-full" aria-label="Default GST rate">
+                      <SelectValue className="font-450" />
+                    </SelectTrigger>
+                    <SelectContent className="font-450">
+                      <SelectGroup>
+                        <SelectItem value="0">0%</SelectItem>
+                        <SelectItem value="5">5%</SelectItem>
+                        <SelectItem value="12">12%</SelectItem>
+                        <SelectItem value="18">18%</SelectItem>
+                        <SelectItem value="28">28%</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </Field>
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal" htmlFor="sac-code">
+                    Default SAC code
+                  </FieldLabel>
+                  <Input id="sac-code" defaultValue="998599" />
+                </Field>
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal">Place of supply</FieldLabel>
+                  <Select
+                    items={[
+                      { value: "contract", label: "Use contract location" },
+                      { value: "organization", label: "Use organization state" },
+                    ]}
+                    defaultValue="contract"
+                  >
+                    <SelectTrigger className="w-full" aria-label="Place of supply">
+                      <SelectValue className="font-450" />
+                    </SelectTrigger>
+                    <SelectContent className="font-450">
+                      <SelectGroup>
+                        <SelectItem value="contract">Use contract location</SelectItem>
+                        <SelectItem value="organization">Use organization state</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </Field>
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal">Tax calculation</FieldLabel>
+                  <Select
+                    items={[
+                      { value: "exclusive", label: "Tax exclusive" },
+                      { value: "inclusive", label: "Tax inclusive" },
+                    ]}
+                    defaultValue="exclusive"
+                  >
+                    <SelectTrigger className="w-full" aria-label="Tax calculation">
+                      <SelectValue className="font-450" />
+                    </SelectTrigger>
+                    <SelectContent className="font-450">
+                      <SelectGroup>
+                        <SelectItem value="exclusive">Tax exclusive</SelectItem>
+                        <SelectItem value="inclusive">Tax inclusive</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </Field>
+              </FieldGroup>
+            </section>
+            <section
+              aria-labelledby="organization-bank-details"
+              className="flex min-w-0 flex-col gap-5 border-b border-border/60 py-6 first:pt-0 last-of-type:border-b-0"
+            >
+              <header className="flex flex-col gap-1">
+                <h2 id="organization-bank-details" className="text-base font-medium leading-none">
+                  Bank details
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  Account details shown on invoices for receiving payments.
+                </p>
+              </header>
+              <FieldGroup className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal" htmlFor="org-account-holder">
+                    Account holder name
+                  </FieldLabel>
+                  <Input id="org-account-holder" placeholder="Name as registered with the bank" />
+                </Field>
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal" htmlFor="org-bank-name">
+                    Bank name
+                  </FieldLabel>
+                  <Input id="org-bank-name" placeholder="Enter bank name" />
+                </Field>
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal" htmlFor="org-account-number">
+                    Account number
+                  </FieldLabel>
+                  <Input id="org-account-number" inputMode="numeric" placeholder="Enter account number" />
+                </Field>
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal" htmlFor="org-ifsc">
+                    IFSC
+                  </FieldLabel>
+                  <Input
+                    id="org-ifsc"
+                    autoCapitalize="characters"
+                    spellCheck={false}
+                    maxLength={11}
+                    placeholder="e.g. SBIN0001234"
+                  />
+                </Field>
+              </FieldGroup>
+            </section>
+            <section
+              aria-labelledby="authorized-signatory"
+              className="flex min-w-0 flex-col gap-5 border-b border-border/60 py-6 first:pt-0 last-of-type:border-b-0"
+            >
+              <header className="flex flex-col gap-1">
+                <h2 id="authorized-signatory" className="text-base font-medium leading-none">
+                  Authorized signatory
+                </h2>
+                <p className="text-sm text-muted-foreground">Default name and designation shown on invoices.</p>
+              </header>
+              <FieldGroup className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal" htmlFor="signatory-name">
+                    Name
+                  </FieldLabel>
+                  <Input id="signatory-name" defaultValue="Arham Khan" />
+                </Field>
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal" htmlFor="signatory-title">
+                    Designation
+                  </FieldLabel>
+                  <Input id="signatory-title" defaultValue="Director" />
+                </Field>
+              </FieldGroup>
+            </section>
+          </div>
+        </TabsContent>
+        <TabsContent value="payroll" keepMounted className="min-h-0 min-w-0 overflow-y-auto px-4 py-4.5">
+          <div className="flex w-full flex-col">
+            <section
+              aria-label="Payroll statutory references"
+              className="flex min-w-0 flex-col gap-5 border-b border-border/60 py-6 first:pt-0 last-of-type:border-b-0"
+            >
+              <FieldGroup className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal" htmlFor="epfo-number">
+                    EPFO establishment ID
+                  </FieldLabel>
+                  <Input id="epfo-number" defaultValue="DLCPM1234567000" />
+                </Field>
+                <Field className="gap-1">
+                  <FieldLabel className="font-normal" htmlFor="esic-number">
+                    ESIC employer code
+                  </FieldLabel>
+                  <Input id="esic-number" defaultValue="11001234560001099" />
+                </Field>
+              </FieldGroup>
+            </section>
+          </div>
+        </TabsContent>
+      </Tabs>
+      <footer className="flex h-12.25 shrink-0 items-center justify-end border-t border-border/60 bg-background px-4">
+        <Button type="button" size="sm">
+          Save changes
+        </Button>
+      </footer>
+    </section>
   );
 }
