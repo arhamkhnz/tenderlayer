@@ -1,10 +1,14 @@
 import {
   BriefcaseIcon,
+  BinIcon,
   Building,
   ChevronLeftIcon,
   ChevronRightIcon,
   HashIcon,
+  EyeIcon,
   IndianRupeeIcon,
+  MoreHorizontalIcon,
+  PenLineIcon,
   SearchIcon,
 } from "@keyline-icons/react";
 import { useState } from "react";
@@ -12,6 +16,14 @@ import { useState } from "react";
 import { Badge } from "@tenderlayer/ui/components/badge";
 import { Button } from "@tenderlayer/ui/components/button";
 import { Checkbox } from "@tenderlayer/ui/components/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@tenderlayer/ui/components/dropdown-menu";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@tenderlayer/ui/components/input-group";
 import {
   Select,
@@ -93,6 +105,7 @@ export function DepartmentsTable({ departments }: { departments: DepartmentRecor
           <col className="w-32 lg:w-40" />
           <col className="w-48" />
           <col className="w-52" />
+          <col className="w-14" />
         </colgroup>
         <TableHeader>
           <TableRow className="border-border/60 hover:bg-transparent">
@@ -126,6 +139,9 @@ export function DepartmentsTable({ departments }: { departments: DepartmentRecor
                 </div>
               </TableHead>
             ))}
+            <TableHead className="h-10 w-14 px-2.5">
+              <span className="sr-only">Actions</span>
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -169,7 +185,7 @@ export function DepartmentsTable({ departments }: { departments: DepartmentRecor
                   <span className="font-mono">{department.activeContractCount}</span>
                 )}
               </TableCell>
-              <TableCell className="px-4.5 py-2 font-mono tabular-nums">
+              <TableCell className="border-r border-border/50 px-4.5 py-2 font-mono tabular-nums">
                 {department.activeContractValue === undefined ? (
                   <span className="text-muted-foreground" aria-label="Active contract value unavailable">
                     —
@@ -178,11 +194,41 @@ export function DepartmentsTable({ departments }: { departments: DepartmentRecor
                   currencyFormatter.format(department.activeContractValue)
                 )}
               </TableCell>
+              <TableCell className="w-14 px-2.5 py-2">
+                <div className="flex justify-center">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger
+                      render={<Button variant="ghost" size="icon-sm" aria-label={`Actions for ${department.name}`} />}
+                    >
+                      <MoreHorizontalIcon />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-36 font-450">
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem>
+                          <EyeIcon aria-hidden="true" />
+                          View
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <PenLineIcon aria-hidden="true" />
+                          Edit
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem variant="destructive">
+                          <BinIcon aria-hidden="true" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </TableCell>
             </TableRow>
           ))}
           {filteredDepartments.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={columns.length + 1} className="h-24 text-center text-muted-foreground">
+              <TableCell colSpan={columns.length + 2} className="h-24 text-center text-muted-foreground">
                 {departments.length ? "No departments match your search." : "No departments yet."}
               </TableCell>
             </TableRow>
