@@ -12,6 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarSeparator,
+  useSidebar,
 } from "@tenderlayer/ui/components/sidebar";
 import {
   DropdownMenu,
@@ -29,6 +30,8 @@ import { sidebarFooterItems, sidebarItems } from "@/navigation/sidebar/sidebar-i
 import { SidebarFooterNavigation, SidebarNavigation } from "./sidebar-navigation";
 
 export function AppSidebar() {
+  const { state, isMobile } = useSidebar();
+  const isCollapsed = state === "collapsed" && !isMobile;
   const { organization } = useLoaderData({ from: "/dashboard" });
   const name = organization?.name ?? "TenderLayer";
   const avatarColors = getAvatarColors(name);
@@ -75,7 +78,11 @@ export function AppSidebar() {
                   <ChevronsUpDownIcon aria-hidden="true" className="translate-x-0.5" />
                 </div>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="min-w-64">
+              <DropdownMenuContent
+                side={isCollapsed ? "right" : "bottom"}
+                align="start"
+                className={isCollapsed ? "w-64" : "min-w-0"}
+              >
                 <DropdownMenuGroup>
                   <DropdownMenuLabel>Organizations</DropdownMenuLabel>
                   <DropdownMenuRadioGroup value="current">
