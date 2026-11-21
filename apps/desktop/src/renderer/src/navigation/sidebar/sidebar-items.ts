@@ -5,6 +5,7 @@ import {
   FileIcon,
   ReceiptIcon,
   SettingsIcon,
+  ShoppingBagIcon,
   UsersIcon,
   type IconProps,
 } from "@keyline-icons/react";
@@ -43,6 +44,7 @@ export const sidebarItems = [
     items: [
       { id: "payroll", title: "Payroll", url: "/dashboard/payroll", icon: BanknoteIcon },
       { id: "invoices", title: "Invoices", url: "/dashboard/invoices", icon: ReceiptIcon },
+      { id: "purchases", title: "Purchases", url: "/dashboard/purchases", icon: ShoppingBagIcon },
     ],
   },
 ] as const satisfies readonly NavGroup[];

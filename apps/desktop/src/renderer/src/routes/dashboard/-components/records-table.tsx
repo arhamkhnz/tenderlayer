@@ -182,7 +182,7 @@ export function RecordsTable<T extends { id: string; status: string }>({
           )}
         </TableBody>
       </Table>
-      <footer className="flex min-h-12.15 shrink-0 flex-wrap items-center justify-between gap-3 border-t bg-background px-4 py-2 text-sm sm:h-12.15 sm:py-0">
+      <footer className="flex min-h-12.25 shrink-0 flex-wrap items-center justify-between gap-3 border-t bg-background px-4 py-2 text-sm sm:h-12.25 sm:py-0">
         <div className="flex flex-wrap items-center gap-4 text-muted-foreground">
           <span className="tabular-nums" aria-live="polite">
             {filtered.length ? start + 1 : 0} – {Math.min(start + pageSize, filtered.length)} of {filtered.length}{" "}
