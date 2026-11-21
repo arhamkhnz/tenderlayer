@@ -153,7 +153,8 @@ export function BidsWonChart({ today }: { today: Date }) {
             <ChartTooltip
               cursor={false}
               content={({ active, payload }) => {
-                const cycle = payload?.[0]?.payload as WeeklyWins | undefined;
+                const item = payload?.[0];
+                const cycle = item?.payload as WeeklyWins | undefined;
                 return (
                   <ChartTooltipContent
                     className="min-w-36"
@@ -161,10 +162,10 @@ export function BidsWonChart({ today }: { today: Date }) {
                     label={cycle?.tooltip}
                     hideIndicator
                     payload={
-                      cycle
+                      cycle && item
                         ? [
-                            { name: "count", dataKey: "count", value: cycle.count },
-                            { name: "value", dataKey: "value", value: currency.format(cycle.value) },
+                            { ...item, name: "count", dataKey: "count", value: cycle.count },
+                            { ...item, name: "value", dataKey: "value", value: currency.format(cycle.value) },
                           ]
                         : []
                     }
