@@ -18,6 +18,7 @@ const config = {
     {
       name: "@electron-forge/maker-squirrel",
       config: {
+        name: "TenderLayer",
         setupIcon: "assets/tenderlayer.ico",
       },
     },
