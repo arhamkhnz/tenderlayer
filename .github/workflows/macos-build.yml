@@ -1,0 +1,189 @@
+name: macOS unsigned build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - apps/desktop/package.json
+    tags:
+      - "v[0-9]*.[0-9]*.[0-9]*"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: macos-build-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    name: Determine build and release
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      build: ${{ steps.version.outputs.build }}
+      release: ${{ steps.version.outputs.release }}
+      version: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.version.outputs.tag }}
+    steps:
+      - name: Check out source and version history
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          package-manager-cache: false
+
+      - name: Detect desktop version change
+        id: version
+        run: |
+          node --input-type=module <<'NODE'
+          import { appendFileSync, readFileSync } from "node:fs";
+          import { execFileSync } from "node:child_process";
+
+          const path = "apps/desktop/package.json";
+          const event = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, "utf8"));
+          const manual = process.env.GITHUB_EVENT_NAME === "workflow_dispatch";
+          const tagged = !manual && process.env.GITHUB_REF_TYPE === "tag";
+          let version = JSON.parse(readFileSync(path, "utf8")).version;
+          let changed = false;
+
+          if (tagged) {
+            version = process.env.GITHUB_REF_NAME.slice(1);
+          } else if (!manual && event.before && !/^0+$/.test(event.before)) {
+            const previous = JSON.parse(execFileSync("git", ["show", `${event.before}:${path}`], { encoding: "utf8" }));
+            changed = previous.version !== version;
+          }
+
+          // Keep version strings safe for filenames and workflow outputs.
+          if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/.test(version)) {
+            throw new Error(`Invalid desktop release version: ${version}`);
+          }
+
+          appendFileSync(process.env.GITHUB_OUTPUT, [
+            `build=${manual || tagged || changed}`,
+            `release=${tagged || changed}`,
+            `version=${version}`,
+            `tag=v${version}`,
+            "",
+          ].join("\n"));
+          console.log(changed ? `Desktop version changed to ${version}` : `Desktop version: ${version}`);
+          NODE
+
+  build:
+    name: Build macOS arm64
+    needs: prepare
+    if: needs.prepare.outputs.build == 'true'
+    runs-on: macos-26
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Set up npm
+        run: npm install --global npm@11.16.0
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Set app build version
+        env:
+          APP_VERSION: ${{ needs.prepare.outputs.version }}
+        run: |
+          npm version "$APP_VERSION" \
+            --workspace=@tenderlayer/desktop \
+            --no-git-tag-version --ignore-scripts --allow-same-version
+
+      # The root make task builds the desktop workspace before invoking Forge.
+      # No signing or notarization credentials are configured.
+      - name: Build unsigned DMG and ZIP
+        run: npm run make -- -- --platform=darwin --arch=arm64
+
+      - name: Collect installers
+        run: |
+          version=$(node -p "require('./apps/desktop/package.json').version")
+          mkdir -p release
+          for extension in dmg zip; do
+            installer=$(find apps/desktop/out/make -type f -name "*.$extension" -print -quit)
+            if [[ -z "$installer" ]]; then
+              echo "::error::Missing $extension installer"
+              exit 1
+            fi
+            cp "$installer" "release/TenderLayer-$version-macos-arm64.$extension"
+          done
+
+      - name: Upload installers
+        uses: actions/upload-artifact@v7
+        with:
+          name: tenderlayer-macos-arm64-${{ github.run_number }}
+          path: release/*
+          if-no-files-found: error
+          retention-days: 14
+          overwrite: true
+
+  release:
+    name: Publish testing pre-release
+    if: needs.prepare.outputs.release == 'true'
+    needs: [prepare, build]
+    concurrency:
+      group: macos-release-${{ needs.prepare.outputs.tag }}
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Check out source and tags
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Download installers
+        uses: actions/download-artifact@v8
+        with:
+          name: tenderlayer-macos-arm64-${{ github.run_number }}
+          path: release
+
+      - name: Publish installers to GitHub Releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.prepare.outputs.tag }}
+        shell: bash
+        run: |
+          if tag_commit=$(git rev-parse --verify "refs/tags/$RELEASE_TAG^{commit}" 2>/dev/null); then
+            if [[ "$tag_commit" != "$GITHUB_SHA" ]]; then
+              echo "::error::Release tag already points to a different commit; use a new version"
+              exit 1
+            fi
+          fi
+          if is_draft=$(gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft); then
+            if [[ "$is_draft" != "true" ]]; then
+              echo "Release $RELEASE_TAG is already published; keeping existing assets"
+              exit 0
+            fi
+          else
+            gh release create "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+              --draft --prerelease --target "$GITHUB_SHA" --title "TenderLayer $RELEASE_TAG" \
+              --notes "Unsigned macOS build for Apple Silicon (arm64), intended for testing. This build is not notarized."
+          fi
+          gh release upload "$RELEASE_TAG" release/* --repo "$GITHUB_REPOSITORY" --clobber
+          gh release edit "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" --draft=false --prerelease

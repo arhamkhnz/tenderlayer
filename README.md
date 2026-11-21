@@ -51,3 +51,24 @@ App scripts remain in their workspace packages. Root commands delegate through T
 ## Deployment
 
 Cloudflare deployment settings need to target `apps/site`.
+
+## macOS builds
+
+The **macOS unsigned build** GitHub Actions workflow creates DMG and ZIP installers for Apple Silicon (`arm64`). It runs manually, when the version in `apps/desktop/package.json` changes on `main`, or when a version tag is pushed. Other package changes do not start installer builds.
+
+For a test build, open **Actions → macOS unsigned build → Run workflow**, select a branch, and run it. Download the installers from the completed run's **Artifacts** section. Workflow artifacts are retained for 14 days. The workflow must be present on the default branch before the manual trigger is available.
+
+For a testing release, bump the desktop version and commit both the manifest and lockfile. For example:
+
+```sh
+npm version 0.1.0-beta.1 --workspace=@tenderlayer/desktop --no-git-tag-version --ignore-scripts
+git add apps/desktop/package.json package-lock.json
+git commit -m "chore: release desktop v0.1.0-beta.1"
+git push origin main
+```
+
+After packaging succeeds, the workflow creates the matching Git tag at the built commit, attaches both installers, and publishes a **GitHub pre-release**. These release assets stay available until the release or assets are deleted; the 14-day workflow artifact retention does not apply to them. Users can download the installers from the repository's **Releases** page. Installers are not committed into Git.
+
+Pushing an explicit tag such as `v0.1.0-beta.1` also builds and publishes a pre-release, using the tag's version inside the runner without committing manifest changes. Manual runs only upload workflow artifacts and do not publish releases. All automated releases are marked as pre-releases while builds remain unsigned, even if the version has no `beta` suffix. Re-running a published release keeps its existing assets; use a new version for updated builds. Existing tags pointing to a different commit are never moved.
+
+These builds are unsigned and not notarized, so macOS may block them from opening normally. No Apple signing secrets are needed. The workflow uses the repository's automatic `GITHUB_TOKEN` to create tags and publish pre-releases.
