@@ -18,9 +18,9 @@
 
 ## Why TenderLayer
 
-Running a business around tenders involves more than submitting bids. Each awarded contract brings locations, employees, payroll, invoices, and deadlines to manage. TenderLayer is being built to connect that work in one place, reducing the need to track it across spreadsheets and separate tools.
+TenderLayer grew out of a family-run outsourcing business in India. As the business took on more contracts, employee records, payroll, invoices, and payments became harder to manage. Free and paid tools helped with parts of the work, but much of it still depended on spreadsheets and separate records.
 
-The project grew out of my family's outsourcing business in India. We tried free and paid tools, and I built an early web version myself. TenderLayer builds on that experience, with a desktop app that keeps business data on your computer.
+An earlier web application was built for the business. TenderLayer takes that experience further as a desktop application, bringing related work together and keeping business data on the user’s computer.
 
 ## Current status
 
