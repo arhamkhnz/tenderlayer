@@ -4,7 +4,7 @@
   "description": "A production-ready Electron, React, TypeScript, and Vite foundation.",
   "author": "Arham Khan",
   "private": true,
-  "version": "0.1.0-alpha.4",
+  "version": "0.1.0-alpha.5",
   "type": "module",
   "main": "dist/main/index.js",
   "engines": {
