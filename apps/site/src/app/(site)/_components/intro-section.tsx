@@ -4,6 +4,7 @@ import { CircleProgressQuarter } from "@keyline-icons/react";
 import tenderlayerIcon from "@tenderlayer/ui/assets/icon.svg";
 
 import GitHubStarCount from "./github-star-count";
+import { productTagline } from "../../_lib/product-metadata";
 
 export default function IntroSection({ repositoryUrl }: { repositoryUrl: string }) {
   return (
@@ -36,10 +37,7 @@ export default function IntroSection({ repositoryUrl }: { repositoryUrl: string 
           </Suspense>
         </a>
       </header>
-      <p className="text-pretty font-normal text-muted-foreground leading-6">
-        An open-source, local-first desktop app for managing tenders and contracts, designed to keep your business data
-        on your computer.
-      </p>
+      <p className="text-pretty font-normal text-muted-foreground leading-6">{productTagline}</p>
     </section>
   );
 }

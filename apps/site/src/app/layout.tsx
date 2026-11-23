@@ -1,12 +1,9 @@
 import { fontMono, fontSans, fontSerif } from "@tenderlayer/fonts/next";
 
 import type { Metadata } from "next";
+import { seoDescription as description, seoTitle as title } from "./_lib/product-metadata";
 
 import "@tenderlayer/ui/globals.css";
-
-const title = "TenderLayer | Tender and Contract Management";
-const description =
-  "An open-source, local-first desktop app for managing tenders, contracts, employee records, invoices, and payroll while keeping business data on your computer.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tenderlayer.com"),

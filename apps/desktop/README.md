@@ -1,54 +1,6 @@
-# TenderLayer
+# Desktop development
 
-TenderLayer is an open-source, local-first desktop application for managing tender and bid operations. It brings ongoing tenders, upcoming opportunities, application progress, and historical records into one workspace.
-
-> TenderLayer is in early development. The first phase focuses on managing active tenders and contracts.
-
-## Why I am building it
-
-My father runs an outsourcing agency that primarily handles government and private-sector contracts across India, with many tenders sourced through the Government e-Marketplace (GeM) and state-specific procurement portals. Managing more than 500 employees and over 70 active contracts every month has become a tedious task.
-
-We tried free & paid tools, and I also built a web version during the early days of my career. However, this workflow does not need to depend entirely on a web application. TenderLayer is my attempt to build a focused desktop application that keeps day-to-day tender and contract management simple and local-first.
-
-## Development plan
-
-### Phase 1: Ongoing tenders and contracts
-
-The first phase focuses on managing active work after a tender has been awarded:
-
-- Tender and contract details
-- Employee records and contract assignments
-- Invoice generation and payment status
-- Tax and GST details
-- Payroll and payslip records
-- Documents, notes, deadlines, and contract history
-
-### Phase 2: Upcoming bids
-
-The second phase will focus on opportunities the organization is planning to apply for:
-
-- Upcoming tender and bid opportunities
-- Eligibility and requirement tracking
-- Go or no-go decisions
-- Bid preparation and submission status
-- Important dates, documents, and reminders
-- Submitted, won, lost, and archived bid history
-
-## Planned features
-
-- Optional cloud and local network sync
-- Role-based access control (RBAC)
-- Multi-user workspaces and collaboration
-- Automated backups, import, and export
-- Notifications and deadline reminders
-- Reports and operational dashboards
-- Country-specific tax support, including GST, VAT, and other regional tax requirements
-- Optional procurement portal integrations
-- An autonomous bid agent for preparing and submitting tender applications automatically
-
-## Foundation
-
-TenderLayer is built on [Electron Vite Starter](https://github.com/arhamkhnz/electron-vite-starter). Refer to the starter repository for details about the Electron architecture, development workflow, security baseline, and packaging setup.
+This guide covers local setup and commands for the Electron application. See the [main README](../../README.md) for the project background, current status, roadmap, and contribution guidelines.
 
 ## Getting started
 
@@ -60,7 +12,7 @@ Requirements:
 - npm `11.16.0`
 
 ```bash
-npm install
+npm ci
 npm run dev:desktop
 ```
 
@@ -85,7 +37,7 @@ npm run lint -- --filter=@tenderlayer/desktop
 npm run lint:fix:desktop  # Apply desktop lint fixes
 npm run format           # Format the repository with Oxfmt
 npm run format:check     # Check repository formatting
-npm run fix:desktop       # Apply desktop lint fixes and format desktop
+npm run fix:desktop      # Apply desktop lint fixes and format desktop
 npm run build:desktop    # Build the application
 npm run start:desktop    # Run an existing production build
 npm run preview:renderer # Serve built renderer assets (requires Electron's preload)
@@ -95,6 +47,10 @@ npm run make             # Build and create platform distributables
 
 Root `package` and `make` commands build through Turbo first. When invoking electron-builder scripts directly inside `apps/desktop`, build the app beforehand.
 
-## Contributions
+After packaging, run the smoke test from the repository root:
 
-Contributions are welcome. Feel free to open an issue or reach out to me if you have a specific requirement, use case, or idea for TenderLayer.
+```bash
+node apps/desktop/scripts/smoke-test.mjs
+```
+
+It launches a copy of the packaged app with temporary databases to check startup, renderer communication, database upgrades, and rollback. It does not use your development database.

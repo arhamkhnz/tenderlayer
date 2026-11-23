@@ -1,7 +1,7 @@
 {
   "name": "@tenderlayer/desktop",
   "productName": "TenderLayer",
-  "description": "A production-ready Electron, React, TypeScript, and Vite foundation.",
+  "description": "Manage tenders, contracts, employees, payroll, and invoices with TenderLayer. A desktop app that keeps your business data on your computer.",
   "author": "Arham Khan",
   "private": true,
   "version": "0.1.0-alpha.5",
