@@ -76,3 +76,11 @@ The workflow calls CI for the same commit while the macOS and Windows builds run
 Pushing an explicit tag such as `v0.1.0-beta.1` also builds and publishes a pre-release, using the tag's version inside the runner without committing manifest changes. Manual runs only upload workflow artifacts and do not publish releases. All automated releases are marked as pre-releases while builds remain unsigned, even if the version has no `beta` suffix. Re-running a published release keeps its existing assets; use a new version for updated builds. Existing tags pointing to a different commit are never moved.
 
 These builds are unsigned, and the macOS build is not notarized, so macOS Gatekeeper or Windows SmartScreen may display warnings. No signing secrets are needed. The workflow uses the repository's automatic `GITHUB_TOKEN` to create tags and publish pre-releases.
+
+### App icons
+
+Keep the macOS Icon Composer project at `apps/desktop/assets/tenderlayer.icon`. After changing it, export a PNG using **macOS pre-Tahoe → Default → 1024pt → 1×** and save it as `apps/desktop/assets/tenderlayer-macos-legacy.png`. Preserve the export's transparency and padding.
+
+Before macOS packaging, Forge uses the built-in `sips` and `iconutil` tools to generate all standard icon sizes and their Retina variants, then writes `apps/desktop/assets/tenderlayer.icns`. This generated file is ignored by Git. Commit the `.icon` project and source PNG together. Modern macOS uses the `.icon` asset; older macOS uses the generated `.icns`. Packaging the modern icon still requires macOS 26 and Xcode 26 or newer. Windows uses the separately maintained `apps/desktop/assets/tenderlayer.ico`.
+
+To verify locally on a Mac, run `npm run package`. Inspect `TenderLayer.app` under `apps/desktop/out`, then use **Show Package Contents → Contents → Resources** to confirm it contains both `Assets.car` and the `.icns` file named by `CFBundleIconFile` in `Contents/Info.plist`. Open the `.icns` in Preview to inspect its sizes and appearance. Check Finder and Dock rendering on macOS 26+ and, when available, an older Mac. For installers from GitHub Actions, run **Actions → Publish → Run workflow**, download the macOS artifact, and inspect the app inside its ZIP in the same way.
