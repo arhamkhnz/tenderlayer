@@ -1,5 +1,6 @@
 import {
   BanknoteIcon,
+  BotIcon,
   BriefcaseIcon,
   BuildingsIcon,
   FileIcon,
@@ -46,6 +47,11 @@ export const sidebarItems = [
       { id: "invoices", title: "Invoices", url: "/dashboard/invoices", icon: ReceiptIcon },
       { id: "purchases", title: "Purchases", url: "/dashboard/purchases", icon: ShoppingBagIcon },
     ],
+  },
+  {
+    id: "automation",
+    label: "Automation",
+    items: [{ id: "agent", title: "Agent", url: "/dashboard/agent", icon: BotIcon }],
   },
 ] as const satisfies readonly NavGroup[];
 

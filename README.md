@@ -1,4 +1,14 @@
-# TenderLayer
+<p align="center">
+  <img src="apps/desktop/assets/tenderlayer-macos-legacy.png" alt="TenderLayer logo" width="96" height="96" />
+</p>
+
+<h1 align="center">TenderLayer</h1>
+
+<p align="center">A workspace for businesses managing tenders, contracts, and the teams delivering them.</p>
+
+<p align="center">
+  <img src="docs/assets/dashboard.png" alt="TenderLayer dashboard with sample data" />
+</p>
 
 TenderLayer contains the desktop application and landing site in an npm workspace managed by Turborepo.
 

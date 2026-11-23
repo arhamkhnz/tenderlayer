@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardAgentRouteImport } from './routes/dashboard/agent'
 import { Route as DashboardContractsIndexRouteImport } from './routes/dashboard/contracts/index'
 import { Route as DashboardContractsContractIdRouteRouteImport } from './routes/dashboard/contracts/$contractId/route'
 import { Route as DashboardContractsNewRouteImport } from './routes/dashboard/contracts/new'
@@ -55,6 +56,11 @@ const WelcomeRoute = WelcomeRouteImport.update({
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardAgentRoute = DashboardAgentRouteImport.update({
+  id: '/agent',
+  path: '/agent',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardContractsIndexRoute = DashboardContractsIndexRouteImport.update({
@@ -190,6 +196,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/welcome': typeof WelcomeRoute
+  '/dashboard/agent': typeof DashboardAgentRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/contracts/$contractId': typeof DashboardContractsContractIdRouteRouteWithChildren
   '/dashboard/contracts/new': typeof DashboardContractsNewRoute
@@ -218,6 +225,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/welcome': typeof WelcomeRoute
+  '/dashboard/agent': typeof DashboardAgentRoute
   '/dashboard': typeof DashboardIndexRoute
   '/dashboard/contracts/new': typeof DashboardContractsNewRoute
   '/dashboard/employees/$employeeId': typeof DashboardEmployeesEmployeeIdRoute
@@ -247,6 +255,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/welcome': typeof WelcomeRoute
+  '/dashboard/agent': typeof DashboardAgentRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/contracts/$contractId': typeof DashboardContractsContractIdRouteRouteWithChildren
   '/dashboard/contracts/new': typeof DashboardContractsNewRoute
@@ -278,6 +287,7 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/welcome'
+    | '/dashboard/agent'
     | '/dashboard/'
     | '/dashboard/contracts/$contractId'
     | '/dashboard/contracts/new'
@@ -306,6 +316,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/welcome'
+    | '/dashboard/agent'
     | '/dashboard'
     | '/dashboard/contracts/new'
     | '/dashboard/employees/$employeeId'
@@ -334,6 +345,7 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/welcome'
+    | '/dashboard/agent'
     | '/dashboard/'
     | '/dashboard/contracts/$contractId'
     | '/dashboard/contracts/new'
@@ -394,6 +406,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/dashboard/'
       preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/agent': {
+      id: '/dashboard/agent'
+      path: '/agent'
+      fullPath: '/dashboard/agent'
+      preLoaderRoute: typeof DashboardAgentRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/contracts/': {
@@ -594,6 +613,7 @@ const DashboardContractsContractIdRouteRouteWithChildren =
   )
 
 interface DashboardRouteRouteChildren {
+  DashboardAgentRoute: typeof DashboardAgentRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardContractsContractIdRouteRoute: typeof DashboardContractsContractIdRouteRouteWithChildren
   DashboardContractsNewRoute: typeof DashboardContractsNewRoute
@@ -614,6 +634,7 @@ interface DashboardRouteRouteChildren {
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardAgentRoute: DashboardAgentRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardContractsContractIdRouteRoute:
     DashboardContractsContractIdRouteRouteWithChildren,
