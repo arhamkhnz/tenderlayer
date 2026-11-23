@@ -71,11 +71,11 @@ git commit -m "chore: release desktop v0.1.0-beta.1"
 git push origin main
 ```
 
-The workflow calls CI for the same commit while the macOS and Windows builds run in parallel. Publishing requires CI and both platform builds to succeed. It then creates the matching Git tag at the built commit, attaches all platform artifacts, and publishes a **GitHub pre-release**. These release assets stay available until the release or assets are deleted; the 14-day workflow artifact retention does not apply to them. Users can download the installers from the repository's **Releases** page. Installers are not committed into Git.
+The workflow calls CI for the same commit while the macOS and Windows builds run in parallel. Publishing requires CI and both platform builds, including packaged-app smoke tests, to succeed. It then creates the matching Git tag at the built commit, attaches all platform artifacts, and publishes a **GitHub Release**. These release assets stay available until the release or assets are deleted; the 14-day workflow artifact retention does not apply to them. Users can download the installers from the repository's **Releases** page. Installers are not committed into Git.
 
-Pushing an explicit tag such as `v0.1.0-beta.1` also builds and publishes a pre-release, using the tag's version inside the runner without committing manifest changes. Manual runs only upload workflow artifacts and do not publish releases. All automated releases are marked as pre-releases while builds remain unsigned, even if the version has no `beta` suffix. Re-running a published release keeps its existing assets; use a new version for updated builds. Existing tags pointing to a different commit are never moved.
+Pushing an explicit tag such as `v0.1.0-beta.1` also builds and publishes a release, using the tag's version inside the runner without committing manifest changes. Manual runs only upload workflow artifacts and do not publish releases. Versions with an alpha, beta, RC, or other pre-release suffix are marked as pre-releases; plain versions such as `0.1.0` are stable releases. Build metadata does not affect this classification. Re-running a published release keeps its existing assets; use a new version for updated builds. Existing tags pointing to a different commit are never moved.
 
-These builds are unsigned, and the macOS build is not notarized, so macOS Gatekeeper or Windows SmartScreen may display warnings. No signing secrets are needed. The workflow uses the repository's automatic `GITHUB_TOKEN` to create tags and publish pre-releases.
+These builds are unsigned, and the macOS build is not notarized, so macOS Gatekeeper or Windows SmartScreen may display warnings. No signing secrets are needed. The workflow uses the repository's automatic `GITHUB_TOKEN` to create tags and publish releases.
 
 ### App icons
 

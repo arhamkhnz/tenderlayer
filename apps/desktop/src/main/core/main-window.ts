@@ -76,4 +76,6 @@ export function createMainWindow() {
     mainWindow.removeListener("ready-to-show", showWindow);
     showWindow();
   });
+
+  return mainWindow;
 }

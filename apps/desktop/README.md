@@ -76,7 +76,7 @@ Run desktop workflows from the repository root:
 
 ```bash
 npm run dev:desktop      # Start the desktop development environment
-npm run dev:renderer     # Start only the renderer in a browser
+npm run dev:renderer     # Start the renderer dev server (requires Electron's preload)
 npm run db:generate      # Generate SQLite migrations from the Drizzle schema
 npm run db:studio        # Open Drizzle Studio with the local development database
 npm run rebuild:native   # Rebuild native dependencies for Electron
@@ -88,12 +88,12 @@ npm run format:check     # Check repository formatting
 npm run fix:desktop       # Apply desktop lint fixes and format desktop
 npm run build:desktop    # Build the application
 npm run start:desktop    # Run an existing production build
-npm run preview:renderer # Preview the built renderer
+npm run preview:renderer # Serve built renderer assets (requires Electron's preload)
 npm run package          # Build and create an unpacked application
 npm run make             # Build and create platform distributables
 ```
 
-Root `package` and `make` commands build through Turbo first. When invoking Electron Forge scripts directly inside `apps/desktop`, build the app beforehand.
+Root `package` and `make` commands build through Turbo first. When invoking electron-builder scripts directly inside `apps/desktop`, build the app beforehand.
 
 ## Contributions
 

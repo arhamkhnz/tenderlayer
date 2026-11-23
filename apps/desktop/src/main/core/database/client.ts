@@ -1,9 +1,9 @@
 import Database from "better-sqlite3";
 import { app } from "electron/main";
 import { drizzle, type BetterSQLite3Database } from "drizzle-orm/better-sqlite3";
-import { migrate } from "drizzle-orm/better-sqlite3/migrator";
 import path from "node:path";
 import * as schema from "./schema/index.js";
+import { migrateDatabase } from "./migrate.js";
 
 export type DatabaseClient = BetterSQLite3Database<typeof schema>;
 
@@ -25,7 +25,7 @@ export function initializeDatabase(): DatabaseClient {
     const database = drizzle(sqlite, { schema });
     const migrationsFolder = path.join(app.getAppPath(), "drizzle");
 
-    migrate(database, { migrationsFolder });
+    migrateDatabase(sqlite, migrationsFolder);
 
     sqliteClient = sqlite;
     databaseClient = database;

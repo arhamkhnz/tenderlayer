@@ -46,7 +46,6 @@
     "@tanstack/router-plugin": "^1.169.0",
     "@tenderlayer/fonts": "^0.0.0",
     "@tenderlayer/ui": "^0.0.0",
-    "@types/babel__core": "^7.20.5",
     "@types/better-sqlite3": "^9.6.0",
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",

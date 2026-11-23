@@ -7,7 +7,7 @@ CREATE TABLE `__new_organizations` (
 	`updated_at` integer DEFAULT (unixepoch() * 1000) NOT NULL,
 	`deleted_at` integer,
 	`revision` integer DEFAULT 1 NOT NULL,
-	CONSTRAINT "organizations_name_check" CHECK(length("__new_organizations"."name") between 3 and 120 and "__new_organizations"."name" = trim("__new_organizations"."name")),
+	CONSTRAINT "organizations_name_check" CHECK(length("__new_organizations"."name") between 2 and 120 and "__new_organizations"."name" = trim("__new_organizations"."name")),
 	CONSTRAINT "organizations_slug_check" CHECK(length("__new_organizations"."slug") between 1 and 80 and "__new_organizations"."slug" not glob '*[^a-z0-9-]*' and substr("__new_organizations"."slug", 1, 1) <> '-' and substr("__new_organizations"."slug", -1, 1) <> '-' and instr("__new_organizations"."slug", '--') = 0)
 );
 --> statement-breakpoint

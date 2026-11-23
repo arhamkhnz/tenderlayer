@@ -139,6 +139,9 @@ jobs:
           BUILD_ARCH: ${{ matrix.arch }}
         run: npm run make -- -- "--$BUILD_PLATFORM" "--$BUILD_ARCH"
 
+      - name: Smoke test packaged app and database upgrades
+        run: node apps/desktop/scripts/smoke-test.mjs
+
       - name: Collect installers
         env:
           BUILD_PLATFORM: ${{ matrix.platform }}
@@ -228,7 +231,7 @@ jobs:
           else
             gh release create "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
               --draft --prerelease="$prerelease" --target "$GITHUB_SHA" --title "TenderLayer $RELEASE_TAG" \
-              --notes "Unsigned testing builds for macOS Apple Silicon (arm64) and Windows (x64). The macOS build is not notarized."
+              --notes "Unsigned testing builds for macOS Apple Silicon (arm64) and Windows (x64). The macOS build is not notarized. Windows users upgrading from alpha.3 or earlier should uninstall the previous Squirrel installation before installing this NSIS build to avoid duplicate installations."
           fi
           gh release upload "$RELEASE_TAG" release/* --repo "$GITHUB_REPOSITORY" --clobber
           gh release edit "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \

@@ -26,7 +26,8 @@ const config: Configuration = {
     icon: "assets/tenderlayer.icon",
     artifactName: "TenderLayer-${version}-macos-${arch}.${ext}",
     category: "public.app-category.business",
-    identity: null,
+    // Fuse changes invalidate Electron's original signature; re-sign without a developer certificate.
+    identity: "-",
     hardenedRuntime: false,
     notarize: false,
   },

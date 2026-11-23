@@ -22,6 +22,13 @@
       "when": 1786821868222,
       "tag": "0002_curious_korvac",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1795392000000,
+      "tag": "0003_preserve_organization_names",
+      "breakpoints": true
     }
   ]
 }
