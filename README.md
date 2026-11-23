@@ -4,89 +4,65 @@
 
 <h1 align="center">TenderLayer</h1>
 
-<p align="center">A workspace for businesses managing tenders, contracts, and the teams delivering them.</p>
+<p align="center">Manage tenders, contracts, employees, and finances in one workspace.</p>
+
+<p align="center">
+  <a href="https://github.com/arhamkhnz/tenderlayer/releases">Download</a> ·
+  <a href="https://tenderlayer.com">Website</a> ·
+  <a href="https://github.com/arhamkhnz/tenderlayer/issues">Report an issue</a>
+</p>
 
 <p align="center">
   <img src="docs/assets/dashboard.png" alt="TenderLayer dashboard with sample data" />
 </p>
 
-TenderLayer contains the desktop application and landing site in an npm workspace managed by Turborepo.
+## Why TenderLayer
 
-## Repository structure
+Running a business around tenders involves more than submitting bids. Each awarded contract brings locations, employees, payroll, invoices, and deadlines to manage. TenderLayer is being built to connect that work in one place, reducing the need to track it across spreadsheets and separate tools.
 
-- [apps/desktop](apps/desktop): Electron, React, and Vite desktop application. Its README covers the product and desktop development.
-- [apps/site](apps/site): Next.js landing site for [tenderlayer.com](https://tenderlayer.com).
-- [packages/ui](packages/ui): Shared shadcn components, hooks, utilities, and theme used by the desktop app.
+The project grew out of my family's outsourcing business in India. We tried free and paid tools, and I built an early web version myself. TenderLayer builds on that experience, with a desktop app that keeps business data on your computer.
 
-Oxlint and Oxfmt are configured at the repository root.
+## Current status
 
-Development requires Node.js `>=24.11.0` and npm `11.16.0`.
+TenderLayer is in early alpha. Several screens still use sample data, and some forms are previews. The dashboard screenshot above shows demonstration data.
 
-## Commands
+The first phase focuses on work after a tender has been awarded:
 
-Run commands from the repository root:
+- **Departments and contracts:** contract details, locations, dates, and the departments they belong to.
+- **Employees:** employee records, contract assignments, site locations, and monthly wages.
+- **Finance:** payroll, payslips, invoices, purchases, GST details, and payment tracking.
+- **Records:** documents, notes, deadlines, and contract history.
 
-```sh
-npm run dev              # Start desktop and site
-npm run dev:desktop      # Start Electron desktop development
-npm run dev:site         # Start the landing site
-npm run dev:renderer     # Start the desktop renderer in a browser
-npm run build            # Build desktop and site
-npm run build:desktop    # Build desktop only
-npm run build:site       # Build site only
-npm run start:desktop    # Run an existing desktop production build
-npm run start:site       # Serve an existing site production build
-npm run preview:renderer # Preview the built desktop renderer
-npm run check-types      # Check all workspace types
-npm run lint             # Lint all workspaces
-npm run lint:fix:desktop  # Apply desktop lint fixes
-npm run fix:desktop       # Apply desktop lint fixes and format desktop
-npm run format           # Format the repository
-npm run format:check     # Check repository formatting
-npm run fix              # Apply repository-wide lint fixes, then format
-```
+These features are being developed and are not all functional yet.
 
-Desktop database and packaging workflows:
+## Roadmap
 
-```sh
-npm run db:generate      # Generate SQLite migrations
-npm run db:studio        # Open Drizzle Studio
-npm run rebuild:native   # Rebuild native dependencies for Electron
-npm run package          # Build and create an unpacked desktop app
-npm run make             # Build and create desktop installers
-```
+- **Upcoming bids:** tender opportunities, eligibility checks, bid preparation, submission tracking, and outcomes.
+- **Agent:** help with routine tasks and tender preparation, with human review before critical declarations or submissions.
+- **Sync and collaboration:** optional cloud and local network sync, shared access, and backups.
 
-App scripts remain in their workspace packages. Root commands delegate through Turbo; formatting runs centrally through Oxfmt. The root `fix` command runs workspace lint fixes and a separate root TypeScript lint-fix task through Turbo before formatting. Packaging and installer tasks depend on the desktop build. Database tools, native rebuilds, and packaging run without caching.
+## Download
 
-## Deployment
+Download a testing build from [GitHub Releases](https://github.com/arhamkhnz/tenderlayer/releases):
 
-Cloudflare deployment settings need to target `apps/site`.
+- **macOS:** Apple Silicon (arm64), available as DMG and ZIP.
+- **Windows:** x64 installer.
 
-## CI
+The macOS builds are not notarized, and Windows installers are unsigned, so your operating system may show a security warning.
 
-The **Checks** workflow runs on pull requests and pushes to `main`, and can also be started manually or called by the release workflow. It installs dependencies, checks formatting with Oxfmt, runs Oxlint and TypeScript checks, and builds the desktop app and website using the existing workspace scripts. It does not package installers or publish releases.
+## Development
 
-## Desktop releases
-
-The **Publish** GitHub Actions workflow builds unsigned macOS DMG and ZIP installers for Apple Silicon (`arm64`) and a Windows NSIS installer (`x64`) using electron-builder. It runs manually, when the version in `apps/desktop/package.json` changes on `main`, or when a version tag is pushed. Other package changes do not start installer builds.
-
-For a test build, open **Actions → Publish → Run workflow**, select a branch, and run it. Download the platform-specific installers from the completed run's **Artifacts** section. Workflow artifacts are retained for 14 days. The workflow must be present on the default branch before the manual trigger is available.
-
-For a testing release, bump the desktop version and commit both the manifest and lockfile. For example:
+Requires Node.js `>=24.11.0` and npm `11.16.0`.
 
 ```sh
-npm version 0.1.0-beta.1 --workspace=@tenderlayer/desktop --no-git-tag-version --ignore-scripts
-git add apps/desktop/package.json package-lock.json
-git commit -m "chore: release desktop v0.1.0-beta.1"
-git push origin main
+git clone https://github.com/arhamkhnz/tenderlayer.git
+cd tenderlayer
+npm ci
+npm run dev:desktop
 ```
 
-The workflow calls CI for the same commit while the macOS and Windows builds run in parallel. Publishing requires CI and both platform builds, including packaged-app smoke tests, to succeed. It then creates the matching Git tag at the built commit, attaches all platform artifacts, and publishes a **GitHub Release**. These release assets stay available until the release or assets are deleted; the 14-day workflow artifact retention does not apply to them. Users can download the installers from the repository's **Releases** page. Installers are not committed into Git.
+To work on the website, run `npm run dev:site`. See the [desktop guide](apps/desktop/README.md#getting-started) and [website guide](apps/site/README.md#getting-started) for more setup details and commands.
 
-Pushing an explicit tag such as `v0.1.0-beta.1` also builds and publishes a release, using the tag's version inside the runner without committing manifest changes. Manual runs only upload workflow artifacts and do not publish releases. Versions with an alpha, beta, RC, or other pre-release suffix are marked as pre-releases; plain versions such as `0.1.0` are stable releases. Build metadata does not affect this classification. Re-running a published release keeps its existing assets; use a new version for updated builds. Existing tags pointing to a different commit are never moved.
+## Contributing
 
-These builds are unsigned, and the macOS build is not notarized, so macOS Gatekeeper or Windows SmartScreen may display warnings. No signing secrets are needed. The workflow uses the repository's automatic `GITHUB_TOKEN` to create tags and publish releases.
-
-### App icons
-
-macOS uses `apps/desktop/assets/tenderlayer.icon`; electron-builder compiles both the asset catalog and `.icns` fallback automatically. This requires macOS 26 and Xcode 26 or newer. Windows uses `apps/desktop/assets/tenderlayer.ico`.
+Bug reports, feedback, and pull requests are welcome. For larger changes, open an issue first so we can discuss the approach. Keep pull requests focused and explain what changed and how you checked it.
