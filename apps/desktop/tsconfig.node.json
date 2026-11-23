@@ -9,5 +9,5 @@
     "allowImportingTsExtensions": true,
     "noEmit": true
   },
-  "include": ["drizzle.config.ts", "forge.config.ts", "vite.config.ts", "vite.*.config.ts"]
+  "include": ["drizzle.config.ts", "electron-builder.ts", "vite.config.ts", "vite.*.config.ts"]
 }

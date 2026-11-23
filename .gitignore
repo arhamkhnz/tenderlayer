@@ -26,9 +26,6 @@ dist-ssr
 
 out/
 
-# Generated from the pre-Tahoe PNG before macOS packaging
-apps/desktop/assets/tenderlayer.icns
-
 # Monorepo
 .pnp
 .pnp.js

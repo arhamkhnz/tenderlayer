@@ -58,7 +58,7 @@ The **Checks** workflow runs on pull requests and pushes to `main`, and can also
 
 ## Desktop releases
 
-The **Publish** GitHub Actions workflow builds unsigned macOS DMG and ZIP installers for Apple Silicon (`arm64`) and a Windows installer (`x64`). Windows artifacts also include the Squirrel `.nupkg` and `RELEASES` files. It runs manually, when the version in `apps/desktop/package.json` changes on `main`, or when a version tag is pushed. Other package changes do not start installer builds.
+The **Publish** GitHub Actions workflow builds unsigned macOS DMG and ZIP installers for Apple Silicon (`arm64`) and a Windows NSIS installer (`x64`) using electron-builder. It runs manually, when the version in `apps/desktop/package.json` changes on `main`, or when a version tag is pushed. Other package changes do not start installer builds.
 
 For a test build, open **Actions → Publish → Run workflow**, select a branch, and run it. Download the platform-specific installers from the completed run's **Artifacts** section. Workflow artifacts are retained for 14 days. The workflow must be present on the default branch before the manual trigger is available.
 
@@ -79,8 +79,4 @@ These builds are unsigned, and the macOS build is not notarized, so macOS Gateke
 
 ### App icons
 
-Keep the macOS Icon Composer project at `apps/desktop/assets/tenderlayer.icon`. After changing it, export a PNG using **macOS pre-Tahoe → Default → 1024pt → 1×** and save it as `apps/desktop/assets/tenderlayer-macos-legacy.png`. Preserve the export's transparency and padding.
-
-Before macOS packaging, Forge uses the built-in `sips` and `iconutil` tools to generate all standard icon sizes and their Retina variants, then writes `apps/desktop/assets/tenderlayer.icns`. This generated file is ignored by Git. Commit the `.icon` project and source PNG together. Modern macOS uses the `.icon` asset; older macOS uses the generated `.icns`. Packaging the modern icon still requires macOS 26 and Xcode 26 or newer. Windows uses the separately maintained `apps/desktop/assets/tenderlayer.ico`.
-
-To verify locally on a Mac, run `npm run package`. Inspect `TenderLayer.app` under `apps/desktop/out`, then use **Show Package Contents → Contents → Resources** to confirm it contains both `Assets.car` and the `.icns` file named by `CFBundleIconFile` in `Contents/Info.plist`. Open the `.icns` in Preview to inspect its sizes and appearance. Check Finder and Dock rendering on macOS 26+ and, when available, an older Mac. For installers from GitHub Actions, run **Actions → Publish → Run workflow**, download the macOS artifact, and inspect the app inside its ZIP in the same way.
+macOS uses `apps/desktop/assets/tenderlayer.icon`; electron-builder compiles both the asset catalog and `.icns` fallback automatically. This requires macOS 26 and Xcode 26 or newer. Windows uses `apps/desktop/assets/tenderlayer.ico`.

@@ -14,7 +14,7 @@ export const preloadPath = path.join(currentDirectory, "../preload/index.cjs");
 export const rendererPageUrl = rendererDevUrl ?? rendererUrl;
 
 const productionContentSecurityPolicy =
-  "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'none'";
+  "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'none'";
 
 function parseUrl(url: string) {
   try {
