@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron/main";
+import { app, BrowserWindow, dialog } from "electron/main";
 import { isMacOS } from "../shared/platform.js";
 import { closeDatabase, initializeDatabase } from "./core/database/client.js";
 import { createMainWindow } from "./core/main-window.js";
@@ -12,7 +12,14 @@ registerRendererScheme();
 app
   .whenReady()
   .then(async () => {
-    initializeDatabase();
+    try {
+      initializeDatabase();
+    } catch (error) {
+      if (!isSmokeTest) {
+        dialog.showErrorBox("TenderLayer couldn’t start", "The local database couldn’t be opened or prepared.");
+      }
+      throw error;
+    }
     registerRendererProtocol();
     registerIpcHandlers();
     const window = createMainWindow();

@@ -24,6 +24,11 @@ export function registerOrganizationIpcHandlers() {
 
   ipcMain.handle(organizationIpcChannels.list, (event): OrganizationRecord[] => {
     assertTrustedSender(event);
-    return listOrganizations().map(toOrganizationRecord);
+    try {
+      return listOrganizations().map(toOrganizationRecord);
+    } catch (error) {
+      console.error("[organizations] failed to list organizations", error);
+      throw new Error("Could not load organizations");
+    }
   });
 }

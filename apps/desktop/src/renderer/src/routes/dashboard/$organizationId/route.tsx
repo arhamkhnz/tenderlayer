@@ -1,14 +1,22 @@
-import { createFileRoute, Link, notFound, useRouteContext } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, useLoaderData } from "@tanstack/react-router";
 
 import { buttonVariants } from "@tenderlayer/ui/components/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@tenderlayer/ui/components/card";
 import { DashboardLayout } from "./-components/layout";
 
 export const Route = createFileRoute("/dashboard/$organizationId")({
-  loader: ({ context, params }) => {
-    const organization = context.organizations.find((item) => item.id === params.organizationId);
-    if (!organization) throw notFound();
-    return { organization, organizations: context.organizations };
+  loader: {
+    staleReloadMode: "blocking",
+    handler: async ({ parentMatchPromise, params }) => {
+      const parentMatch = await parentMatchPromise;
+      if (parentMatch.status === "error") throw parentMatch.error;
+      if (!parentMatch.loaderData) throw new Error("Organization list is unavailable");
+
+      const { organizations } = parentMatch.loaderData;
+      const organization = organizations.find((item) => item.id === params.organizationId);
+      if (!organization) throw notFound();
+      return { organization, organizations };
+    },
   },
   component: OrganizationDashboard,
   notFoundComponent: OrganizationNotFound,
@@ -20,7 +28,7 @@ function OrganizationDashboard() {
 }
 
 function OrganizationNotFound() {
-  const { organizations } = useRouteContext({ from: "/dashboard" });
+  const { organizations } = useLoaderData({ from: "/dashboard" });
 
   return (
     <div className="grid min-h-screen place-items-center p-6">

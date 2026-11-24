@@ -11,7 +11,7 @@ const rendererUrl = `${rendererScheme}://${rendererHost}/index.html`;
 const rendererDevUrl = app.isPackaged ? undefined : process.env.VITE_DEV_SERVER_URL;
 
 export const preloadPath = path.join(currentDirectory, "../preload/index.cjs");
-export const rendererPageUrl = rendererDevUrl ?? rendererUrl;
+export const rendererPageUrl = new URL("#/dashboard", rendererDevUrl ?? rendererUrl).href;
 
 const productionContentSecurityPolicy =
   "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'none'";

@@ -2,9 +2,12 @@ import { BrowserWindow, nativeTheme } from "electron/main";
 import { shell } from "electron";
 import { isMacOS } from "../../shared/platform.js";
 import { windowStateIpcChannels } from "../../shared/contracts/window-state.js";
+import { supportEmail } from "../../shared/support.js";
 import { isTrustedRendererUrl, preloadPath, rendererPageUrl } from "./renderer-protocol.js";
 
 function isSafeExternalUrl(url: string) {
+  if (url === `mailto:${supportEmail}`) return true;
+
   try {
     return new URL(url).protocol === "https:";
   } catch {
