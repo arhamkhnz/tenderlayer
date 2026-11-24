@@ -7,6 +7,7 @@ export const router = createRouter({
   routeTree,
   history: hashHistory,
   defaultPreload: false,
+  notFoundMode: "root",
 });
 
 declare module "@tanstack/react-router" {
