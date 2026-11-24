@@ -35,6 +35,8 @@ import {
 } from "@tenderlayer/ui/components/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@tenderlayer/ui/components/table";
 
+import { pageSizeOptions } from "@/lib/data-table-constants";
+
 type DepartmentRecord = {
   id: string;
   name: string;
@@ -55,8 +57,6 @@ const currencyFormatter = new Intl.NumberFormat("en-IN", {
   currency: "INR",
   maximumFractionDigits: 0,
 });
-
-const pageSizeOptions = [10, 25, 50, 100].map((size) => ({ value: String(size), label: String(size) }));
 
 export function DepartmentsTable({ departments }: { departments: DepartmentRecord[] }) {
   const [search, setSearch] = useState("");
@@ -109,7 +109,7 @@ export function DepartmentsTable({ departments }: { departments: DepartmentRecor
         </colgroup>
         <TableHeader>
           <TableRow className="border-border/60 hover:bg-transparent">
-            <TableHead className="h-10 w-14 border-r border-border/50 px-2.5 has-[[role=checkbox]]:pr-2.5">
+            <TableHead className="h-10 w-14 border-r border-border/50 px-0">
               <Checkbox
                 className="mx-auto"
                 aria-label="Select all departments on this page"
@@ -147,7 +147,7 @@ export function DepartmentsTable({ departments }: { departments: DepartmentRecor
         <TableBody>
           {visibleDepartments.map((department) => (
             <TableRow key={department.id} className="border-border/60 hover:bg-muted/30">
-              <TableCell className="h-12 w-14 border-r border-border/50 px-2.5 py-2 has-[[role=checkbox]]:pr-2.5">
+              <TableCell className="h-12 w-14 border-r border-border/50 px-0 py-2">
                 <Checkbox
                   className="mx-auto"
                   aria-label={`Select ${department.name}`}

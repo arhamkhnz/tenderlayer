@@ -47,9 +47,8 @@ import {
 } from "./payments/payment-data";
 import { getPaymentMonthRange, type PaymentDateRange, type PaymentPeriod } from "./payments/payment-date-range";
 import { PaymentPeriodFilter } from "./payments/payment-period-filter";
+import { pageSizeOptions } from "@/lib/data-table-constants";
 import { dataTableFeatures } from "@/lib/data-table-features";
-
-const pageSizes = [10, 25, 50, 100].map((size) => ({ value: String(size), label: String(size) }));
 
 export function PaymentsOverview({ today }: { today: Date }) {
   const [period, setPeriod] = useState<PaymentPeriod>("this-month");
@@ -265,7 +264,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
                     {group.headers.map((header) => (
                       <TableHead
                         key={header.id}
-                        className="h-10 border-r border-border/50 px-4.5 font-normal text-muted-foreground last:border-r-0 first:w-14 first:px-2.5 has-[[role=checkbox]]:pr-2.5 **:[[role=checkbox]]:mx-auto"
+                        className="h-10 border-r border-border/50 px-4.5 font-normal text-muted-foreground last:border-r-0 first:w-14 first:px-0 **:[[role=checkbox]]:mx-auto"
                       >
                         {header.isPlaceholder ? null : <table.FlexRender header={header} />}
                       </TableHead>
@@ -284,7 +283,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
                       {row.getVisibleCells().map((cell) => (
                         <TableCell
                           key={cell.id}
-                          className="h-12 border-r border-border/50 px-4.5 py-2 last:border-r-0 first:w-14 first:px-2.5 has-[[role=checkbox]]:pr-2.5 **:[[role=checkbox]]:mx-auto"
+                          className="h-12 border-r border-border/50 px-4.5 py-2 last:border-r-0 first:w-14 first:px-0 **:[[role=checkbox]]:mx-auto"
                         >
                           <table.FlexRender cell={cell} />
                         </TableCell>
@@ -311,7 +310,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
           <div className="flex items-center gap-2">
             <span>Rows per page</span>
             <Select
-              items={pageSizes}
+              items={pageSizeOptions}
               value={String(table.state.pagination.pageSize)}
               onValueChange={(value) => {
                 if (value) table.setPageSize(Number(value));
@@ -322,7 +321,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
               </SelectTrigger>
               <SelectContent className="font-450" side="top" alignItemWithTrigger={false}>
                 <SelectGroup>
-                  {pageSizes.map((item) => (
+                  {pageSizeOptions.map((item) => (
                     <SelectItem key={item.value} value={item.value} className="pr-8">
                       {item.label}
                     </SelectItem>

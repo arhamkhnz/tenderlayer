@@ -38,6 +38,8 @@ import {
 } from "@tenderlayer/ui/components/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@tenderlayer/ui/components/table";
 
+import { pageSizeOptions } from "@/lib/data-table-constants";
+
 type ContractRecord = {
   id: string;
   name: string;
@@ -63,8 +65,6 @@ const columns = [
   { label: "Value", icon: IndianRupeeIcon, right: true },
   { label: "Ends", icon: CalendarIcon, right: true },
 ];
-
-const pageSizeOptions = [10, 25, 50, 100].map((size) => ({ value: String(size), label: String(size) }));
 
 export function ContractsTable({ contracts }: { contracts: ContractRecord[] }) {
   const [pageSize, setPageSize] = useState(10);
@@ -141,7 +141,7 @@ export function ContractsTable({ contracts }: { contracts: ContractRecord[] }) {
       <Table className="min-w-260 border-y border-border/60" aria-label="Contracts">
         <TableHeader>
           <TableRow className="border-border/60 hover:bg-transparent">
-            <TableHead className="h-10 w-14 border-r border-border/50 px-2.5 has-[[role=checkbox]]:pr-2.5">
+            <TableHead className="h-10 w-14 border-r border-border/50 px-0">
               <Checkbox
                 className="mx-auto"
                 aria-label="Select all contracts on this page"
@@ -177,7 +177,7 @@ export function ContractsTable({ contracts }: { contracts: ContractRecord[] }) {
         <TableBody>
           {visibleContracts.map((contract) => (
             <TableRow key={contract.id} className="border-border/60 hover:bg-muted/30">
-              <TableCell className="h-12 w-14 border-r border-border/50 px-2.5 py-2 has-[[role=checkbox]]:pr-2.5">
+              <TableCell className="h-12 w-14 border-r border-border/50 px-0 py-2">
                 <Checkbox
                   className="mx-auto"
                   aria-label={`Select ${contract.name}`}
