@@ -10,7 +10,6 @@ import {
 } from "@keyline-icons/react";
 import { Link } from "@tanstack/react-router";
 
-import { Badge } from "@tenderlayer/ui/components/badge";
 import { Button, buttonVariants } from "@tenderlayer/ui/components/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@tenderlayer/ui/components/card";
 import { Field, FieldGroup, FieldLabel } from "@tenderlayer/ui/components/field";
@@ -24,7 +23,8 @@ import {
   SelectValue,
 } from "@tenderlayer/ui/components/select";
 
-import { DataCard, KeyValueGrid, PageHeader, StaticStatus, StaticTable } from "../../-components/screen";
+import { FinanceStatusBadge } from "../../-components/finance-status-badge";
+import { DataCard, KeyValueGrid, PageHeader, StaticTable } from "../../-components/screen";
 
 import { RecordsTable, type RecordColumn } from "../../-components/records-table";
 
@@ -93,11 +93,7 @@ const payrollColumns: RecordColumn<(typeof payrollRuns)[number]>[] = [
     label: "Status",
     icon: TagIcon,
     numeric: false,
-    cell: (record) => (
-      <Badge variant={record.status === "Review" ? "outline" : "secondary"} className="rounded-md px-1.5 font-450">
-        {record.status}
-      </Badge>
-    ),
+    cell: (record) => <FinanceStatusBadge status={record.status} />,
   },
 ];
 
@@ -335,7 +331,7 @@ export function PayrollDetailsScreen() {
           </Link>
           <div className="flex items-center gap-2">
             <h1 className="text-3xl tracking-tighter leading-none">August 2026 payroll</h1>
-            <Badge variant="outline">Review</Badge>
+            <FinanceStatusBadge status="Review" />
           </div>
           <p className="text-sm text-muted-foreground">PAY-AUG-2026 · Payment date 31 August 2026</p>
         </div>
@@ -375,7 +371,7 @@ export function PayrollDetailsScreen() {
             { key: "gross", label: "Gross", className: "text-right tabular-nums" },
             { key: "deductions", label: "Deductions", className: "text-right tabular-nums" },
             { key: "net", label: "Net pay", className: "text-right font-medium tabular-nums" },
-            { key: "status", label: "Status", render: (value) => <StaticStatus>{String(value)}</StaticStatus> },
+            { key: "status", label: "Status", render: (value) => <FinanceStatusBadge status={String(value)} /> },
           ]}
         />
       </DataCard>

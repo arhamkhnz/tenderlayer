@@ -10,7 +10,6 @@ import {
 } from "@keyline-icons/react";
 import { Link } from "@tanstack/react-router";
 
-import { Badge } from "@tenderlayer/ui/components/badge";
 import { Button, buttonVariants } from "@tenderlayer/ui/components/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@tenderlayer/ui/components/card";
 import { Field, FieldGroup, FieldLabel } from "@tenderlayer/ui/components/field";
@@ -26,6 +25,7 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@tenderlayer/ui/components/table";
 import { Textarea } from "@tenderlayer/ui/components/textarea";
 
+import { FinanceStatusBadge } from "../../-components/finance-status-badge";
 import { DataCard, KeyValueGrid, PageHeader } from "../../-components/screen";
 
 import { RecordsTable, type RecordColumn } from "../../-components/records-table";
@@ -89,7 +89,7 @@ const invoiceColumns: RecordColumn<(typeof invoices)[number]>[] = [
         from="/dashboard/$organizationId"
         to="/dashboard/$organizationId/invoices/$invoiceId"
         params={{ invoiceId: record.id }}
-        className="rounded-sm font-450 outline-none hover:text-primary focus-visible:ring-2 focus-visible:ring-ring"
+        className="rounded-sm font-mono outline-none hover:text-primary focus-visible:ring-2 focus-visible:ring-ring"
       >
         {record.invoice}
       </Link>
@@ -116,14 +116,7 @@ const invoiceColumns: RecordColumn<(typeof invoices)[number]>[] = [
     label: "Status",
     icon: TagIcon,
     numeric: false,
-    cell: (record) => (
-      <Badge
-        variant={record.status === "Overdue" ? "destructive" : record.status === "Draft" ? "outline" : "secondary"}
-        className="rounded-md px-1.5 font-450"
-      >
-        {record.status}
-      </Badge>
-    ),
+    cell: (record) => <FinanceStatusBadge status={record.status} />,
   },
 ];
 
@@ -333,7 +326,7 @@ export function InvoiceDetailsScreen() {
           </Link>
           <div className="flex items-center gap-2">
             <h1 className="text-3xl tracking-tighter leading-none">INV-2026-042</h1>
-            <Badge variant="outline">Draft</Badge>
+            <FinanceStatusBadge status="Draft" />
           </div>
           <p className="text-sm text-muted-foreground">Railway signaling maintenance · August 2026</p>
         </div>

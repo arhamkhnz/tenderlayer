@@ -8,8 +8,7 @@ import {
   TagIcon,
 } from "@keyline-icons/react";
 
-import { Badge } from "@tenderlayer/ui/components/badge";
-
+import { FinanceStatusBadge } from "../../-components/finance-status-badge";
 import { RecordsTable, type RecordColumn } from "../../-components/records-table";
 import { formatAmount, purchases } from "./data";
 import { NewPurchaseDrawer } from "./new-purchase-drawer";
@@ -47,11 +46,7 @@ const columns: RecordColumn<(typeof purchases)[number]>[] = [
     id: "status",
     label: "Payment",
     icon: ReceiptIcon,
-    cell: (record) => (
-      <Badge variant={record.status === "Unpaid" ? "outline" : "secondary"} className="rounded-md px-1.5 font-450">
-        {record.status}
-      </Badge>
-    ),
+    cell: (record) => <FinanceStatusBadge status={record.status} />,
   },
 ];
 
