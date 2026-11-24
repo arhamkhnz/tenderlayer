@@ -38,8 +38,8 @@ function WelcomePage() {
     }
 
     try {
-      await window.electronAPI.organizations.create(result.data);
-      await navigate({ to: "/dashboard" });
+      const organization = await window.electronAPI.organizations.create(result.data);
+      await navigate({ to: "/dashboard/$organizationId", params: { organizationId: organization.id } });
     } catch (creationError) {
       const message = creationError instanceof Error ? creationError.message : "";
       form.setError(
@@ -100,7 +100,8 @@ function WelcomePage() {
                       <FieldError id="organization-name-error" errors={[fieldState.error]} />
                     ) : (
                       <FieldDescription id="organization-name-description">
-                        Use the name shown on your contracts and invoices. You can change it later.
+                        Choose a workspace name. A short name or abbreviation is fine. You can add your legal name in
+                        settings.
                       </FieldDescription>
                     )}
                   </Field>

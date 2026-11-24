@@ -12,31 +12,32 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as WelcomeRouteImport } from './routes/welcome'
-import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
-import { Route as DashboardAgentRouteImport } from './routes/dashboard/agent'
-import { Route as DashboardContractsIndexRouteImport } from './routes/dashboard/contracts/index'
-import { Route as DashboardContractsContractIdRouteRouteImport } from './routes/dashboard/contracts/$contractId/route'
-import { Route as DashboardContractsNewRouteImport } from './routes/dashboard/contracts/new'
-import { Route as DashboardDepartmentsIndexRouteImport } from './routes/dashboard/departments/index'
-import { Route as DashboardEmployeesIndexRouteImport } from './routes/dashboard/employees/index'
-import { Route as DashboardEmployeesEmployeeIdRouteImport } from './routes/dashboard/employees/$employeeId'
-import { Route as DashboardEmployeesNewRouteImport } from './routes/dashboard/employees/new'
-import { Route as DashboardInvoicesIndexRouteImport } from './routes/dashboard/invoices/index'
-import { Route as DashboardInvoicesInvoiceIdRouteImport } from './routes/dashboard/invoices/$invoiceId'
-import { Route as DashboardInvoicesNewRouteImport } from './routes/dashboard/invoices/new'
-import { Route as DashboardPayrollIndexRouteImport } from './routes/dashboard/payroll/index'
-import { Route as DashboardPayrollPayrollIdRouteImport } from './routes/dashboard/payroll/$payrollId'
-import { Route as DashboardPayrollNewRouteImport } from './routes/dashboard/payroll/new'
-import { Route as DashboardPurchasesIndexRouteImport } from './routes/dashboard/purchases/index'
-import { Route as DashboardSettingsOrganizationRouteImport } from './routes/dashboard/settings/organization'
-import { Route as DashboardSettingsTaxRouteImport } from './routes/dashboard/settings/tax'
-import { Route as DashboardContractsContractIdIndexRouteImport } from './routes/dashboard/contracts/$contractId/index'
-import { Route as DashboardContractsContractIdActivityRouteImport } from './routes/dashboard/contracts/$contractId/activity'
-import { Route as DashboardContractsContractIdDeadlinesRouteImport } from './routes/dashboard/contracts/$contractId/deadlines'
-import { Route as DashboardContractsContractIdDocumentsRouteImport } from './routes/dashboard/contracts/$contractId/documents'
-import { Route as DashboardContractsContractIdEmployeesRouteImport } from './routes/dashboard/contracts/$contractId/employees'
-import { Route as DashboardContractsContractIdInvoicesRouteImport } from './routes/dashboard/contracts/$contractId/invoices'
-import { Route as DashboardContractsContractIdPayrollRouteImport } from './routes/dashboard/contracts/$contractId/payroll'
+import { Route as DashboardOrganizationIdRouteRouteImport } from './routes/dashboard/$organizationId/route'
+import { Route as DashboardOrganizationIdIndexRouteImport } from './routes/dashboard/$organizationId/index'
+import { Route as DashboardOrganizationIdAgentRouteImport } from './routes/dashboard/$organizationId/agent'
+import { Route as DashboardOrganizationIdContractsIndexRouteImport } from './routes/dashboard/$organizationId/contracts/index'
+import { Route as DashboardOrganizationIdContractsContractIdRouteRouteImport } from './routes/dashboard/$organizationId/contracts/$contractId/route'
+import { Route as DashboardOrganizationIdContractsNewRouteImport } from './routes/dashboard/$organizationId/contracts/new'
+import { Route as DashboardOrganizationIdDepartmentsIndexRouteImport } from './routes/dashboard/$organizationId/departments/index'
+import { Route as DashboardOrganizationIdEmployeesIndexRouteImport } from './routes/dashboard/$organizationId/employees/index'
+import { Route as DashboardOrganizationIdEmployeesEmployeeIdRouteImport } from './routes/dashboard/$organizationId/employees/$employeeId'
+import { Route as DashboardOrganizationIdEmployeesNewRouteImport } from './routes/dashboard/$organizationId/employees/new'
+import { Route as DashboardOrganizationIdInvoicesIndexRouteImport } from './routes/dashboard/$organizationId/invoices/index'
+import { Route as DashboardOrganizationIdInvoicesInvoiceIdRouteImport } from './routes/dashboard/$organizationId/invoices/$invoiceId'
+import { Route as DashboardOrganizationIdInvoicesNewRouteImport } from './routes/dashboard/$organizationId/invoices/new'
+import { Route as DashboardOrganizationIdPayrollIndexRouteImport } from './routes/dashboard/$organizationId/payroll/index'
+import { Route as DashboardOrganizationIdPayrollPayrollIdRouteImport } from './routes/dashboard/$organizationId/payroll/$payrollId'
+import { Route as DashboardOrganizationIdPayrollNewRouteImport } from './routes/dashboard/$organizationId/payroll/new'
+import { Route as DashboardOrganizationIdPurchasesIndexRouteImport } from './routes/dashboard/$organizationId/purchases/index'
+import { Route as DashboardOrganizationIdSettingsOrganizationRouteImport } from './routes/dashboard/$organizationId/settings/organization'
+import { Route as DashboardOrganizationIdSettingsTaxRouteImport } from './routes/dashboard/$organizationId/settings/tax'
+import { Route as DashboardOrganizationIdContractsContractIdIndexRouteImport } from './routes/dashboard/$organizationId/contracts/$contractId/index'
+import { Route as DashboardOrganizationIdContractsContractIdActivityRouteImport } from './routes/dashboard/$organizationId/contracts/$contractId/activity'
+import { Route as DashboardOrganizationIdContractsContractIdDeadlinesRouteImport } from './routes/dashboard/$organizationId/contracts/$contractId/deadlines'
+import { Route as DashboardOrganizationIdContractsContractIdDocumentsRouteImport } from './routes/dashboard/$organizationId/contracts/$contractId/documents'
+import { Route as DashboardOrganizationIdContractsContractIdEmployeesRouteImport } from './routes/dashboard/$organizationId/contracts/$contractId/employees'
+import { Route as DashboardOrganizationIdContractsContractIdInvoicesRouteImport } from './routes/dashboard/$organizationId/contracts/$contractId/invoices'
+import { Route as DashboardOrganizationIdContractsContractIdPayrollRouteImport } from './routes/dashboard/$organizationId/contracts/$contractId/payroll'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -53,233 +54,254 @@ const WelcomeRoute = WelcomeRouteImport.update({
   path: '/welcome',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardIndexRoute = DashboardIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardAgentRoute = DashboardAgentRouteImport.update({
-  id: '/agent',
-  path: '/agent',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardContractsIndexRoute = DashboardContractsIndexRouteImport.update({
-  id: '/contracts/',
-  path: '/contracts/',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardContractsContractIdRouteRoute =
-  DashboardContractsContractIdRouteRouteImport.update({
-    id: '/contracts/$contractId',
-    path: '/contracts/$contractId',
+const DashboardOrganizationIdRouteRoute =
+  DashboardOrganizationIdRouteRouteImport.update({
+    id: '/$organizationId',
+    path: '/$organizationId',
     getParentRoute: () => DashboardRouteRoute,
   } as any)
-const DashboardContractsNewRoute = DashboardContractsNewRouteImport.update({
-  id: '/contracts/new',
-  path: '/contracts/new',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardDepartmentsIndexRoute =
-  DashboardDepartmentsIndexRouteImport.update({
-    id: '/departments/',
-    path: '/departments/',
-    getParentRoute: () => DashboardRouteRoute,
-  } as any)
-const DashboardEmployeesIndexRoute = DashboardEmployeesIndexRouteImport.update({
-  id: '/employees/',
-  path: '/employees/',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardEmployeesEmployeeIdRoute =
-  DashboardEmployeesEmployeeIdRouteImport.update({
-    id: '/employees/$employeeId',
-    path: '/employees/$employeeId',
-    getParentRoute: () => DashboardRouteRoute,
-  } as any)
-const DashboardEmployeesNewRoute = DashboardEmployeesNewRouteImport.update({
-  id: '/employees/new',
-  path: '/employees/new',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardInvoicesIndexRoute = DashboardInvoicesIndexRouteImport.update({
-  id: '/invoices/',
-  path: '/invoices/',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardInvoicesInvoiceIdRoute =
-  DashboardInvoicesInvoiceIdRouteImport.update({
-    id: '/invoices/$invoiceId',
-    path: '/invoices/$invoiceId',
-    getParentRoute: () => DashboardRouteRoute,
-  } as any)
-const DashboardInvoicesNewRoute = DashboardInvoicesNewRouteImport.update({
-  id: '/invoices/new',
-  path: '/invoices/new',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardPayrollIndexRoute = DashboardPayrollIndexRouteImport.update({
-  id: '/payroll/',
-  path: '/payroll/',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardPayrollPayrollIdRoute =
-  DashboardPayrollPayrollIdRouteImport.update({
-    id: '/payroll/$payrollId',
-    path: '/payroll/$payrollId',
-    getParentRoute: () => DashboardRouteRoute,
-  } as any)
-const DashboardPayrollNewRoute = DashboardPayrollNewRouteImport.update({
-  id: '/payroll/new',
-  path: '/payroll/new',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardPurchasesIndexRoute = DashboardPurchasesIndexRouteImport.update({
-  id: '/purchases/',
-  path: '/purchases/',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardSettingsOrganizationRoute =
-  DashboardSettingsOrganizationRouteImport.update({
-    id: '/settings/organization',
-    path: '/settings/organization',
-    getParentRoute: () => DashboardRouteRoute,
-  } as any)
-const DashboardSettingsTaxRoute = DashboardSettingsTaxRouteImport.update({
-  id: '/settings/tax',
-  path: '/settings/tax',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
-const DashboardContractsContractIdIndexRoute =
-  DashboardContractsContractIdIndexRouteImport.update({
+const DashboardOrganizationIdIndexRoute =
+  DashboardOrganizationIdIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => DashboardContractsContractIdRouteRoute,
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
   } as any)
-const DashboardContractsContractIdActivityRoute =
-  DashboardContractsContractIdActivityRouteImport.update({
+const DashboardOrganizationIdAgentRoute =
+  DashboardOrganizationIdAgentRouteImport.update({
+    id: '/agent',
+    path: '/agent',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdContractsIndexRoute =
+  DashboardOrganizationIdContractsIndexRouteImport.update({
+    id: '/contracts/',
+    path: '/contracts/',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdContractsContractIdRouteRoute =
+  DashboardOrganizationIdContractsContractIdRouteRouteImport.update({
+    id: '/contracts/$contractId',
+    path: '/contracts/$contractId',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdContractsNewRoute =
+  DashboardOrganizationIdContractsNewRouteImport.update({
+    id: '/contracts/new',
+    path: '/contracts/new',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdDepartmentsIndexRoute =
+  DashboardOrganizationIdDepartmentsIndexRouteImport.update({
+    id: '/departments/',
+    path: '/departments/',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdEmployeesIndexRoute =
+  DashboardOrganizationIdEmployeesIndexRouteImport.update({
+    id: '/employees/',
+    path: '/employees/',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdEmployeesEmployeeIdRoute =
+  DashboardOrganizationIdEmployeesEmployeeIdRouteImport.update({
+    id: '/employees/$employeeId',
+    path: '/employees/$employeeId',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdEmployeesNewRoute =
+  DashboardOrganizationIdEmployeesNewRouteImport.update({
+    id: '/employees/new',
+    path: '/employees/new',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdInvoicesIndexRoute =
+  DashboardOrganizationIdInvoicesIndexRouteImport.update({
+    id: '/invoices/',
+    path: '/invoices/',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdInvoicesInvoiceIdRoute =
+  DashboardOrganizationIdInvoicesInvoiceIdRouteImport.update({
+    id: '/invoices/$invoiceId',
+    path: '/invoices/$invoiceId',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdInvoicesNewRoute =
+  DashboardOrganizationIdInvoicesNewRouteImport.update({
+    id: '/invoices/new',
+    path: '/invoices/new',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdPayrollIndexRoute =
+  DashboardOrganizationIdPayrollIndexRouteImport.update({
+    id: '/payroll/',
+    path: '/payroll/',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdPayrollPayrollIdRoute =
+  DashboardOrganizationIdPayrollPayrollIdRouteImport.update({
+    id: '/payroll/$payrollId',
+    path: '/payroll/$payrollId',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdPayrollNewRoute =
+  DashboardOrganizationIdPayrollNewRouteImport.update({
+    id: '/payroll/new',
+    path: '/payroll/new',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdPurchasesIndexRoute =
+  DashboardOrganizationIdPurchasesIndexRouteImport.update({
+    id: '/purchases/',
+    path: '/purchases/',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdSettingsOrganizationRoute =
+  DashboardOrganizationIdSettingsOrganizationRouteImport.update({
+    id: '/settings/organization',
+    path: '/settings/organization',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdSettingsTaxRoute =
+  DashboardOrganizationIdSettingsTaxRouteImport.update({
+    id: '/settings/tax',
+    path: '/settings/tax',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdContractsContractIdIndexRoute =
+  DashboardOrganizationIdContractsContractIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => DashboardOrganizationIdContractsContractIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdContractsContractIdActivityRoute =
+  DashboardOrganizationIdContractsContractIdActivityRouteImport.update({
     id: '/activity',
     path: '/activity',
-    getParentRoute: () => DashboardContractsContractIdRouteRoute,
+    getParentRoute: () => DashboardOrganizationIdContractsContractIdRouteRoute,
   } as any)
-const DashboardContractsContractIdDeadlinesRoute =
-  DashboardContractsContractIdDeadlinesRouteImport.update({
+const DashboardOrganizationIdContractsContractIdDeadlinesRoute =
+  DashboardOrganizationIdContractsContractIdDeadlinesRouteImport.update({
     id: '/deadlines',
     path: '/deadlines',
-    getParentRoute: () => DashboardContractsContractIdRouteRoute,
+    getParentRoute: () => DashboardOrganizationIdContractsContractIdRouteRoute,
   } as any)
-const DashboardContractsContractIdDocumentsRoute =
-  DashboardContractsContractIdDocumentsRouteImport.update({
+const DashboardOrganizationIdContractsContractIdDocumentsRoute =
+  DashboardOrganizationIdContractsContractIdDocumentsRouteImport.update({
     id: '/documents',
     path: '/documents',
-    getParentRoute: () => DashboardContractsContractIdRouteRoute,
+    getParentRoute: () => DashboardOrganizationIdContractsContractIdRouteRoute,
   } as any)
-const DashboardContractsContractIdEmployeesRoute =
-  DashboardContractsContractIdEmployeesRouteImport.update({
+const DashboardOrganizationIdContractsContractIdEmployeesRoute =
+  DashboardOrganizationIdContractsContractIdEmployeesRouteImport.update({
     id: '/employees',
     path: '/employees',
-    getParentRoute: () => DashboardContractsContractIdRouteRoute,
+    getParentRoute: () => DashboardOrganizationIdContractsContractIdRouteRoute,
   } as any)
-const DashboardContractsContractIdInvoicesRoute =
-  DashboardContractsContractIdInvoicesRouteImport.update({
+const DashboardOrganizationIdContractsContractIdInvoicesRoute =
+  DashboardOrganizationIdContractsContractIdInvoicesRouteImport.update({
     id: '/invoices',
     path: '/invoices',
-    getParentRoute: () => DashboardContractsContractIdRouteRoute,
+    getParentRoute: () => DashboardOrganizationIdContractsContractIdRouteRoute,
   } as any)
-const DashboardContractsContractIdPayrollRoute =
-  DashboardContractsContractIdPayrollRouteImport.update({
+const DashboardOrganizationIdContractsContractIdPayrollRoute =
+  DashboardOrganizationIdContractsContractIdPayrollRouteImport.update({
     id: '/payroll',
     path: '/payroll',
-    getParentRoute: () => DashboardContractsContractIdRouteRoute,
+    getParentRoute: () => DashboardOrganizationIdContractsContractIdRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/welcome': typeof WelcomeRoute
-  '/dashboard/agent': typeof DashboardAgentRoute
-  '/dashboard/': typeof DashboardIndexRoute
-  '/dashboard/contracts/$contractId': typeof DashboardContractsContractIdRouteRouteWithChildren
-  '/dashboard/contracts/new': typeof DashboardContractsNewRoute
-  '/dashboard/employees/$employeeId': typeof DashboardEmployeesEmployeeIdRoute
-  '/dashboard/employees/new': typeof DashboardEmployeesNewRoute
-  '/dashboard/invoices/$invoiceId': typeof DashboardInvoicesInvoiceIdRoute
-  '/dashboard/invoices/new': typeof DashboardInvoicesNewRoute
-  '/dashboard/payroll/$payrollId': typeof DashboardPayrollPayrollIdRoute
-  '/dashboard/payroll/new': typeof DashboardPayrollNewRoute
-  '/dashboard/settings/organization': typeof DashboardSettingsOrganizationRoute
-  '/dashboard/settings/tax': typeof DashboardSettingsTaxRoute
-  '/dashboard/contracts/': typeof DashboardContractsIndexRoute
-  '/dashboard/departments/': typeof DashboardDepartmentsIndexRoute
-  '/dashboard/employees/': typeof DashboardEmployeesIndexRoute
-  '/dashboard/invoices/': typeof DashboardInvoicesIndexRoute
-  '/dashboard/payroll/': typeof DashboardPayrollIndexRoute
-  '/dashboard/purchases/': typeof DashboardPurchasesIndexRoute
-  '/dashboard/contracts/$contractId/activity': typeof DashboardContractsContractIdActivityRoute
-  '/dashboard/contracts/$contractId/deadlines': typeof DashboardContractsContractIdDeadlinesRoute
-  '/dashboard/contracts/$contractId/documents': typeof DashboardContractsContractIdDocumentsRoute
-  '/dashboard/contracts/$contractId/employees': typeof DashboardContractsContractIdEmployeesRoute
-  '/dashboard/contracts/$contractId/invoices': typeof DashboardContractsContractIdInvoicesRoute
-  '/dashboard/contracts/$contractId/payroll': typeof DashboardContractsContractIdPayrollRoute
-  '/dashboard/contracts/$contractId/': typeof DashboardContractsContractIdIndexRoute
+  '/dashboard/$organizationId': typeof DashboardOrganizationIdRouteRouteWithChildren
+  '/dashboard/$organizationId/agent': typeof DashboardOrganizationIdAgentRoute
+  '/dashboard/$organizationId/': typeof DashboardOrganizationIdIndexRoute
+  '/dashboard/$organizationId/contracts/$contractId': typeof DashboardOrganizationIdContractsContractIdRouteRouteWithChildren
+  '/dashboard/$organizationId/contracts/new': typeof DashboardOrganizationIdContractsNewRoute
+  '/dashboard/$organizationId/employees/$employeeId': typeof DashboardOrganizationIdEmployeesEmployeeIdRoute
+  '/dashboard/$organizationId/employees/new': typeof DashboardOrganizationIdEmployeesNewRoute
+  '/dashboard/$organizationId/invoices/$invoiceId': typeof DashboardOrganizationIdInvoicesInvoiceIdRoute
+  '/dashboard/$organizationId/invoices/new': typeof DashboardOrganizationIdInvoicesNewRoute
+  '/dashboard/$organizationId/payroll/$payrollId': typeof DashboardOrganizationIdPayrollPayrollIdRoute
+  '/dashboard/$organizationId/payroll/new': typeof DashboardOrganizationIdPayrollNewRoute
+  '/dashboard/$organizationId/settings/organization': typeof DashboardOrganizationIdSettingsOrganizationRoute
+  '/dashboard/$organizationId/settings/tax': typeof DashboardOrganizationIdSettingsTaxRoute
+  '/dashboard/$organizationId/contracts/': typeof DashboardOrganizationIdContractsIndexRoute
+  '/dashboard/$organizationId/departments/': typeof DashboardOrganizationIdDepartmentsIndexRoute
+  '/dashboard/$organizationId/employees/': typeof DashboardOrganizationIdEmployeesIndexRoute
+  '/dashboard/$organizationId/invoices/': typeof DashboardOrganizationIdInvoicesIndexRoute
+  '/dashboard/$organizationId/payroll/': typeof DashboardOrganizationIdPayrollIndexRoute
+  '/dashboard/$organizationId/purchases/': typeof DashboardOrganizationIdPurchasesIndexRoute
+  '/dashboard/$organizationId/contracts/$contractId/activity': typeof DashboardOrganizationIdContractsContractIdActivityRoute
+  '/dashboard/$organizationId/contracts/$contractId/deadlines': typeof DashboardOrganizationIdContractsContractIdDeadlinesRoute
+  '/dashboard/$organizationId/contracts/$contractId/documents': typeof DashboardOrganizationIdContractsContractIdDocumentsRoute
+  '/dashboard/$organizationId/contracts/$contractId/employees': typeof DashboardOrganizationIdContractsContractIdEmployeesRoute
+  '/dashboard/$organizationId/contracts/$contractId/invoices': typeof DashboardOrganizationIdContractsContractIdInvoicesRoute
+  '/dashboard/$organizationId/contracts/$contractId/payroll': typeof DashboardOrganizationIdContractsContractIdPayrollRoute
+  '/dashboard/$organizationId/contracts/$contractId/': typeof DashboardOrganizationIdContractsContractIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/welcome': typeof WelcomeRoute
-  '/dashboard/agent': typeof DashboardAgentRoute
-  '/dashboard': typeof DashboardIndexRoute
-  '/dashboard/contracts/new': typeof DashboardContractsNewRoute
-  '/dashboard/employees/$employeeId': typeof DashboardEmployeesEmployeeIdRoute
-  '/dashboard/employees/new': typeof DashboardEmployeesNewRoute
-  '/dashboard/invoices/$invoiceId': typeof DashboardInvoicesInvoiceIdRoute
-  '/dashboard/invoices/new': typeof DashboardInvoicesNewRoute
-  '/dashboard/payroll/$payrollId': typeof DashboardPayrollPayrollIdRoute
-  '/dashboard/payroll/new': typeof DashboardPayrollNewRoute
-  '/dashboard/settings/organization': typeof DashboardSettingsOrganizationRoute
-  '/dashboard/settings/tax': typeof DashboardSettingsTaxRoute
-  '/dashboard/contracts': typeof DashboardContractsIndexRoute
-  '/dashboard/departments': typeof DashboardDepartmentsIndexRoute
-  '/dashboard/employees': typeof DashboardEmployeesIndexRoute
-  '/dashboard/invoices': typeof DashboardInvoicesIndexRoute
-  '/dashboard/payroll': typeof DashboardPayrollIndexRoute
-  '/dashboard/purchases': typeof DashboardPurchasesIndexRoute
-  '/dashboard/contracts/$contractId/activity': typeof DashboardContractsContractIdActivityRoute
-  '/dashboard/contracts/$contractId/deadlines': typeof DashboardContractsContractIdDeadlinesRoute
-  '/dashboard/contracts/$contractId/documents': typeof DashboardContractsContractIdDocumentsRoute
-  '/dashboard/contracts/$contractId/employees': typeof DashboardContractsContractIdEmployeesRoute
-  '/dashboard/contracts/$contractId/invoices': typeof DashboardContractsContractIdInvoicesRoute
-  '/dashboard/contracts/$contractId/payroll': typeof DashboardContractsContractIdPayrollRoute
-  '/dashboard/contracts/$contractId': typeof DashboardContractsContractIdIndexRoute
+  '/dashboard/$organizationId/agent': typeof DashboardOrganizationIdAgentRoute
+  '/dashboard/$organizationId': typeof DashboardOrganizationIdIndexRoute
+  '/dashboard/$organizationId/contracts/new': typeof DashboardOrganizationIdContractsNewRoute
+  '/dashboard/$organizationId/employees/$employeeId': typeof DashboardOrganizationIdEmployeesEmployeeIdRoute
+  '/dashboard/$organizationId/employees/new': typeof DashboardOrganizationIdEmployeesNewRoute
+  '/dashboard/$organizationId/invoices/$invoiceId': typeof DashboardOrganizationIdInvoicesInvoiceIdRoute
+  '/dashboard/$organizationId/invoices/new': typeof DashboardOrganizationIdInvoicesNewRoute
+  '/dashboard/$organizationId/payroll/$payrollId': typeof DashboardOrganizationIdPayrollPayrollIdRoute
+  '/dashboard/$organizationId/payroll/new': typeof DashboardOrganizationIdPayrollNewRoute
+  '/dashboard/$organizationId/settings/organization': typeof DashboardOrganizationIdSettingsOrganizationRoute
+  '/dashboard/$organizationId/settings/tax': typeof DashboardOrganizationIdSettingsTaxRoute
+  '/dashboard/$organizationId/contracts': typeof DashboardOrganizationIdContractsIndexRoute
+  '/dashboard/$organizationId/departments': typeof DashboardOrganizationIdDepartmentsIndexRoute
+  '/dashboard/$organizationId/employees': typeof DashboardOrganizationIdEmployeesIndexRoute
+  '/dashboard/$organizationId/invoices': typeof DashboardOrganizationIdInvoicesIndexRoute
+  '/dashboard/$organizationId/payroll': typeof DashboardOrganizationIdPayrollIndexRoute
+  '/dashboard/$organizationId/purchases': typeof DashboardOrganizationIdPurchasesIndexRoute
+  '/dashboard/$organizationId/contracts/$contractId/activity': typeof DashboardOrganizationIdContractsContractIdActivityRoute
+  '/dashboard/$organizationId/contracts/$contractId/deadlines': typeof DashboardOrganizationIdContractsContractIdDeadlinesRoute
+  '/dashboard/$organizationId/contracts/$contractId/documents': typeof DashboardOrganizationIdContractsContractIdDocumentsRoute
+  '/dashboard/$organizationId/contracts/$contractId/employees': typeof DashboardOrganizationIdContractsContractIdEmployeesRoute
+  '/dashboard/$organizationId/contracts/$contractId/invoices': typeof DashboardOrganizationIdContractsContractIdInvoicesRoute
+  '/dashboard/$organizationId/contracts/$contractId/payroll': typeof DashboardOrganizationIdContractsContractIdPayrollRoute
+  '/dashboard/$organizationId/contracts/$contractId': typeof DashboardOrganizationIdContractsContractIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/welcome': typeof WelcomeRoute
-  '/dashboard/agent': typeof DashboardAgentRoute
-  '/dashboard/': typeof DashboardIndexRoute
-  '/dashboard/contracts/$contractId': typeof DashboardContractsContractIdRouteRouteWithChildren
-  '/dashboard/contracts/new': typeof DashboardContractsNewRoute
-  '/dashboard/employees/$employeeId': typeof DashboardEmployeesEmployeeIdRoute
-  '/dashboard/employees/new': typeof DashboardEmployeesNewRoute
-  '/dashboard/invoices/$invoiceId': typeof DashboardInvoicesInvoiceIdRoute
-  '/dashboard/invoices/new': typeof DashboardInvoicesNewRoute
-  '/dashboard/payroll/$payrollId': typeof DashboardPayrollPayrollIdRoute
-  '/dashboard/payroll/new': typeof DashboardPayrollNewRoute
-  '/dashboard/settings/organization': typeof DashboardSettingsOrganizationRoute
-  '/dashboard/settings/tax': typeof DashboardSettingsTaxRoute
-  '/dashboard/contracts/': typeof DashboardContractsIndexRoute
-  '/dashboard/departments/': typeof DashboardDepartmentsIndexRoute
-  '/dashboard/employees/': typeof DashboardEmployeesIndexRoute
-  '/dashboard/invoices/': typeof DashboardInvoicesIndexRoute
-  '/dashboard/payroll/': typeof DashboardPayrollIndexRoute
-  '/dashboard/purchases/': typeof DashboardPurchasesIndexRoute
-  '/dashboard/contracts/$contractId/activity': typeof DashboardContractsContractIdActivityRoute
-  '/dashboard/contracts/$contractId/deadlines': typeof DashboardContractsContractIdDeadlinesRoute
-  '/dashboard/contracts/$contractId/documents': typeof DashboardContractsContractIdDocumentsRoute
-  '/dashboard/contracts/$contractId/employees': typeof DashboardContractsContractIdEmployeesRoute
-  '/dashboard/contracts/$contractId/invoices': typeof DashboardContractsContractIdInvoicesRoute
-  '/dashboard/contracts/$contractId/payroll': typeof DashboardContractsContractIdPayrollRoute
-  '/dashboard/contracts/$contractId/': typeof DashboardContractsContractIdIndexRoute
+  '/dashboard/$organizationId': typeof DashboardOrganizationIdRouteRouteWithChildren
+  '/dashboard/$organizationId/agent': typeof DashboardOrganizationIdAgentRoute
+  '/dashboard/$organizationId/': typeof DashboardOrganizationIdIndexRoute
+  '/dashboard/$organizationId/contracts/$contractId': typeof DashboardOrganizationIdContractsContractIdRouteRouteWithChildren
+  '/dashboard/$organizationId/contracts/new': typeof DashboardOrganizationIdContractsNewRoute
+  '/dashboard/$organizationId/employees/$employeeId': typeof DashboardOrganizationIdEmployeesEmployeeIdRoute
+  '/dashboard/$organizationId/employees/new': typeof DashboardOrganizationIdEmployeesNewRoute
+  '/dashboard/$organizationId/invoices/$invoiceId': typeof DashboardOrganizationIdInvoicesInvoiceIdRoute
+  '/dashboard/$organizationId/invoices/new': typeof DashboardOrganizationIdInvoicesNewRoute
+  '/dashboard/$organizationId/payroll/$payrollId': typeof DashboardOrganizationIdPayrollPayrollIdRoute
+  '/dashboard/$organizationId/payroll/new': typeof DashboardOrganizationIdPayrollNewRoute
+  '/dashboard/$organizationId/settings/organization': typeof DashboardOrganizationIdSettingsOrganizationRoute
+  '/dashboard/$organizationId/settings/tax': typeof DashboardOrganizationIdSettingsTaxRoute
+  '/dashboard/$organizationId/contracts/': typeof DashboardOrganizationIdContractsIndexRoute
+  '/dashboard/$organizationId/departments/': typeof DashboardOrganizationIdDepartmentsIndexRoute
+  '/dashboard/$organizationId/employees/': typeof DashboardOrganizationIdEmployeesIndexRoute
+  '/dashboard/$organizationId/invoices/': typeof DashboardOrganizationIdInvoicesIndexRoute
+  '/dashboard/$organizationId/payroll/': typeof DashboardOrganizationIdPayrollIndexRoute
+  '/dashboard/$organizationId/purchases/': typeof DashboardOrganizationIdPurchasesIndexRoute
+  '/dashboard/$organizationId/contracts/$contractId/activity': typeof DashboardOrganizationIdContractsContractIdActivityRoute
+  '/dashboard/$organizationId/contracts/$contractId/deadlines': typeof DashboardOrganizationIdContractsContractIdDeadlinesRoute
+  '/dashboard/$organizationId/contracts/$contractId/documents': typeof DashboardOrganizationIdContractsContractIdDocumentsRoute
+  '/dashboard/$organizationId/contracts/$contractId/employees': typeof DashboardOrganizationIdContractsContractIdEmployeesRoute
+  '/dashboard/$organizationId/contracts/$contractId/invoices': typeof DashboardOrganizationIdContractsContractIdInvoicesRoute
+  '/dashboard/$organizationId/contracts/$contractId/payroll': typeof DashboardOrganizationIdContractsContractIdPayrollRoute
+  '/dashboard/$organizationId/contracts/$contractId/': typeof DashboardOrganizationIdContractsContractIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -287,89 +309,92 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/welcome'
-    | '/dashboard/agent'
-    | '/dashboard/'
-    | '/dashboard/contracts/$contractId'
-    | '/dashboard/contracts/new'
-    | '/dashboard/employees/$employeeId'
-    | '/dashboard/employees/new'
-    | '/dashboard/invoices/$invoiceId'
-    | '/dashboard/invoices/new'
-    | '/dashboard/payroll/$payrollId'
-    | '/dashboard/payroll/new'
-    | '/dashboard/settings/organization'
-    | '/dashboard/settings/tax'
-    | '/dashboard/contracts/'
-    | '/dashboard/departments/'
-    | '/dashboard/employees/'
-    | '/dashboard/invoices/'
-    | '/dashboard/payroll/'
-    | '/dashboard/purchases/'
-    | '/dashboard/contracts/$contractId/activity'
-    | '/dashboard/contracts/$contractId/deadlines'
-    | '/dashboard/contracts/$contractId/documents'
-    | '/dashboard/contracts/$contractId/employees'
-    | '/dashboard/contracts/$contractId/invoices'
-    | '/dashboard/contracts/$contractId/payroll'
-    | '/dashboard/contracts/$contractId/'
+    | '/dashboard/$organizationId'
+    | '/dashboard/$organizationId/agent'
+    | '/dashboard/$organizationId/'
+    | '/dashboard/$organizationId/contracts/$contractId'
+    | '/dashboard/$organizationId/contracts/new'
+    | '/dashboard/$organizationId/employees/$employeeId'
+    | '/dashboard/$organizationId/employees/new'
+    | '/dashboard/$organizationId/invoices/$invoiceId'
+    | '/dashboard/$organizationId/invoices/new'
+    | '/dashboard/$organizationId/payroll/$payrollId'
+    | '/dashboard/$organizationId/payroll/new'
+    | '/dashboard/$organizationId/settings/organization'
+    | '/dashboard/$organizationId/settings/tax'
+    | '/dashboard/$organizationId/contracts/'
+    | '/dashboard/$organizationId/departments/'
+    | '/dashboard/$organizationId/employees/'
+    | '/dashboard/$organizationId/invoices/'
+    | '/dashboard/$organizationId/payroll/'
+    | '/dashboard/$organizationId/purchases/'
+    | '/dashboard/$organizationId/contracts/$contractId/activity'
+    | '/dashboard/$organizationId/contracts/$contractId/deadlines'
+    | '/dashboard/$organizationId/contracts/$contractId/documents'
+    | '/dashboard/$organizationId/contracts/$contractId/employees'
+    | '/dashboard/$organizationId/contracts/$contractId/invoices'
+    | '/dashboard/$organizationId/contracts/$contractId/payroll'
+    | '/dashboard/$organizationId/contracts/$contractId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/welcome'
-    | '/dashboard/agent'
     | '/dashboard'
-    | '/dashboard/contracts/new'
-    | '/dashboard/employees/$employeeId'
-    | '/dashboard/employees/new'
-    | '/dashboard/invoices/$invoiceId'
-    | '/dashboard/invoices/new'
-    | '/dashboard/payroll/$payrollId'
-    | '/dashboard/payroll/new'
-    | '/dashboard/settings/organization'
-    | '/dashboard/settings/tax'
-    | '/dashboard/contracts'
-    | '/dashboard/departments'
-    | '/dashboard/employees'
-    | '/dashboard/invoices'
-    | '/dashboard/payroll'
-    | '/dashboard/purchases'
-    | '/dashboard/contracts/$contractId/activity'
-    | '/dashboard/contracts/$contractId/deadlines'
-    | '/dashboard/contracts/$contractId/documents'
-    | '/dashboard/contracts/$contractId/employees'
-    | '/dashboard/contracts/$contractId/invoices'
-    | '/dashboard/contracts/$contractId/payroll'
-    | '/dashboard/contracts/$contractId'
+    | '/welcome'
+    | '/dashboard/$organizationId/agent'
+    | '/dashboard/$organizationId'
+    | '/dashboard/$organizationId/contracts/new'
+    | '/dashboard/$organizationId/employees/$employeeId'
+    | '/dashboard/$organizationId/employees/new'
+    | '/dashboard/$organizationId/invoices/$invoiceId'
+    | '/dashboard/$organizationId/invoices/new'
+    | '/dashboard/$organizationId/payroll/$payrollId'
+    | '/dashboard/$organizationId/payroll/new'
+    | '/dashboard/$organizationId/settings/organization'
+    | '/dashboard/$organizationId/settings/tax'
+    | '/dashboard/$organizationId/contracts'
+    | '/dashboard/$organizationId/departments'
+    | '/dashboard/$organizationId/employees'
+    | '/dashboard/$organizationId/invoices'
+    | '/dashboard/$organizationId/payroll'
+    | '/dashboard/$organizationId/purchases'
+    | '/dashboard/$organizationId/contracts/$contractId/activity'
+    | '/dashboard/$organizationId/contracts/$contractId/deadlines'
+    | '/dashboard/$organizationId/contracts/$contractId/documents'
+    | '/dashboard/$organizationId/contracts/$contractId/employees'
+    | '/dashboard/$organizationId/contracts/$contractId/invoices'
+    | '/dashboard/$organizationId/contracts/$contractId/payroll'
+    | '/dashboard/$organizationId/contracts/$contractId'
   id:
     | '__root__'
     | '/'
     | '/dashboard'
     | '/welcome'
-    | '/dashboard/agent'
-    | '/dashboard/'
-    | '/dashboard/contracts/$contractId'
-    | '/dashboard/contracts/new'
-    | '/dashboard/employees/$employeeId'
-    | '/dashboard/employees/new'
-    | '/dashboard/invoices/$invoiceId'
-    | '/dashboard/invoices/new'
-    | '/dashboard/payroll/$payrollId'
-    | '/dashboard/payroll/new'
-    | '/dashboard/settings/organization'
-    | '/dashboard/settings/tax'
-    | '/dashboard/contracts/'
-    | '/dashboard/departments/'
-    | '/dashboard/employees/'
-    | '/dashboard/invoices/'
-    | '/dashboard/payroll/'
-    | '/dashboard/purchases/'
-    | '/dashboard/contracts/$contractId/activity'
-    | '/dashboard/contracts/$contractId/deadlines'
-    | '/dashboard/contracts/$contractId/documents'
-    | '/dashboard/contracts/$contractId/employees'
-    | '/dashboard/contracts/$contractId/invoices'
-    | '/dashboard/contracts/$contractId/payroll'
-    | '/dashboard/contracts/$contractId/'
+    | '/dashboard/$organizationId'
+    | '/dashboard/$organizationId/agent'
+    | '/dashboard/$organizationId/'
+    | '/dashboard/$organizationId/contracts/$contractId'
+    | '/dashboard/$organizationId/contracts/new'
+    | '/dashboard/$organizationId/employees/$employeeId'
+    | '/dashboard/$organizationId/employees/new'
+    | '/dashboard/$organizationId/invoices/$invoiceId'
+    | '/dashboard/$organizationId/invoices/new'
+    | '/dashboard/$organizationId/payroll/$payrollId'
+    | '/dashboard/$organizationId/payroll/new'
+    | '/dashboard/$organizationId/settings/organization'
+    | '/dashboard/$organizationId/settings/tax'
+    | '/dashboard/$organizationId/contracts/'
+    | '/dashboard/$organizationId/departments/'
+    | '/dashboard/$organizationId/employees/'
+    | '/dashboard/$organizationId/invoices/'
+    | '/dashboard/$organizationId/payroll/'
+    | '/dashboard/$organizationId/purchases/'
+    | '/dashboard/$organizationId/contracts/$contractId/activity'
+    | '/dashboard/$organizationId/contracts/$contractId/deadlines'
+    | '/dashboard/$organizationId/contracts/$contractId/documents'
+    | '/dashboard/$organizationId/contracts/$contractId/employees'
+    | '/dashboard/$organizationId/contracts/$contractId/invoices'
+    | '/dashboard/$organizationId/contracts/$contractId/payroll'
+    | '/dashboard/$organizationId/contracts/$contractId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -401,258 +426,295 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WelcomeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard/': {
-      id: '/dashboard/'
-      path: '/'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof DashboardIndexRouteImport
+    '/dashboard/$organizationId': {
+      id: '/dashboard/$organizationId'
+      path: '/$organizationId'
+      fullPath: '/dashboard/$organizationId'
+      preLoaderRoute: typeof DashboardOrganizationIdRouteRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
-    '/dashboard/agent': {
-      id: '/dashboard/agent'
+    '/dashboard/$organizationId/': {
+      id: '/dashboard/$organizationId/'
+      path: '/'
+      fullPath: '/dashboard/$organizationId/'
+      preLoaderRoute: typeof DashboardOrganizationIdIndexRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
+    }
+    '/dashboard/$organizationId/agent': {
+      id: '/dashboard/$organizationId/agent'
       path: '/agent'
-      fullPath: '/dashboard/agent'
-      preLoaderRoute: typeof DashboardAgentRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      fullPath: '/dashboard/$organizationId/agent'
+      preLoaderRoute: typeof DashboardOrganizationIdAgentRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
     }
-    '/dashboard/contracts/': {
-      id: '/dashboard/contracts/'
+    '/dashboard/$organizationId/contracts/': {
+      id: '/dashboard/$organizationId/contracts/'
       path: '/contracts'
-      fullPath: '/dashboard/contracts/'
-      preLoaderRoute: typeof DashboardContractsIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      fullPath: '/dashboard/$organizationId/contracts/'
+      preLoaderRoute: typeof DashboardOrganizationIdContractsIndexRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
     }
-    '/dashboard/contracts/$contractId': {
-      id: '/dashboard/contracts/$contractId'
+    '/dashboard/$organizationId/contracts/$contractId': {
+      id: '/dashboard/$organizationId/contracts/$contractId'
       path: '/contracts/$contractId'
-      fullPath: '/dashboard/contracts/$contractId'
-      preLoaderRoute: typeof DashboardContractsContractIdRouteRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      fullPath: '/dashboard/$organizationId/contracts/$contractId'
+      preLoaderRoute: typeof DashboardOrganizationIdContractsContractIdRouteRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
     }
-    '/dashboard/contracts/new': {
-      id: '/dashboard/contracts/new'
+    '/dashboard/$organizationId/contracts/new': {
+      id: '/dashboard/$organizationId/contracts/new'
       path: '/contracts/new'
-      fullPath: '/dashboard/contracts/new'
-      preLoaderRoute: typeof DashboardContractsNewRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      fullPath: '/dashboard/$organizationId/contracts/new'
+      preLoaderRoute: typeof DashboardOrganizationIdContractsNewRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
     }
-    '/dashboard/departments/': {
-      id: '/dashboard/departments/'
+    '/dashboard/$organizationId/departments/': {
+      id: '/dashboard/$organizationId/departments/'
       path: '/departments'
-      fullPath: '/dashboard/departments/'
-      preLoaderRoute: typeof DashboardDepartmentsIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      fullPath: '/dashboard/$organizationId/departments/'
+      preLoaderRoute: typeof DashboardOrganizationIdDepartmentsIndexRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
     }
-    '/dashboard/employees/': {
-      id: '/dashboard/employees/'
+    '/dashboard/$organizationId/employees/': {
+      id: '/dashboard/$organizationId/employees/'
       path: '/employees'
-      fullPath: '/dashboard/employees/'
-      preLoaderRoute: typeof DashboardEmployeesIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      fullPath: '/dashboard/$organizationId/employees/'
+      preLoaderRoute: typeof DashboardOrganizationIdEmployeesIndexRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
     }
-    '/dashboard/employees/$employeeId': {
-      id: '/dashboard/employees/$employeeId'
+    '/dashboard/$organizationId/employees/$employeeId': {
+      id: '/dashboard/$organizationId/employees/$employeeId'
       path: '/employees/$employeeId'
-      fullPath: '/dashboard/employees/$employeeId'
-      preLoaderRoute: typeof DashboardEmployeesEmployeeIdRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      fullPath: '/dashboard/$organizationId/employees/$employeeId'
+      preLoaderRoute: typeof DashboardOrganizationIdEmployeesEmployeeIdRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
     }
-    '/dashboard/employees/new': {
-      id: '/dashboard/employees/new'
+    '/dashboard/$organizationId/employees/new': {
+      id: '/dashboard/$organizationId/employees/new'
       path: '/employees/new'
-      fullPath: '/dashboard/employees/new'
-      preLoaderRoute: typeof DashboardEmployeesNewRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      fullPath: '/dashboard/$organizationId/employees/new'
+      preLoaderRoute: typeof DashboardOrganizationIdEmployeesNewRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
     }
-    '/dashboard/invoices/': {
-      id: '/dashboard/invoices/'
+    '/dashboard/$organizationId/invoices/': {
+      id: '/dashboard/$organizationId/invoices/'
       path: '/invoices'
-      fullPath: '/dashboard/invoices/'
-      preLoaderRoute: typeof DashboardInvoicesIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      fullPath: '/dashboard/$organizationId/invoices/'
+      preLoaderRoute: typeof DashboardOrganizationIdInvoicesIndexRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
     }
-    '/dashboard/invoices/$invoiceId': {
-      id: '/dashboard/invoices/$invoiceId'
+    '/dashboard/$organizationId/invoices/$invoiceId': {
+      id: '/dashboard/$organizationId/invoices/$invoiceId'
       path: '/invoices/$invoiceId'
-      fullPath: '/dashboard/invoices/$invoiceId'
-      preLoaderRoute: typeof DashboardInvoicesInvoiceIdRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      fullPath: '/dashboard/$organizationId/invoices/$invoiceId'
+      preLoaderRoute: typeof DashboardOrganizationIdInvoicesInvoiceIdRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
     }
-    '/dashboard/invoices/new': {
-      id: '/dashboard/invoices/new'
+    '/dashboard/$organizationId/invoices/new': {
+      id: '/dashboard/$organizationId/invoices/new'
       path: '/invoices/new'
-      fullPath: '/dashboard/invoices/new'
-      preLoaderRoute: typeof DashboardInvoicesNewRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      fullPath: '/dashboard/$organizationId/invoices/new'
+      preLoaderRoute: typeof DashboardOrganizationIdInvoicesNewRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
     }
-    '/dashboard/payroll/': {
-      id: '/dashboard/payroll/'
+    '/dashboard/$organizationId/payroll/': {
+      id: '/dashboard/$organizationId/payroll/'
       path: '/payroll'
-      fullPath: '/dashboard/payroll/'
-      preLoaderRoute: typeof DashboardPayrollIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      fullPath: '/dashboard/$organizationId/payroll/'
+      preLoaderRoute: typeof DashboardOrganizationIdPayrollIndexRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
     }
-    '/dashboard/payroll/$payrollId': {
-      id: '/dashboard/payroll/$payrollId'
+    '/dashboard/$organizationId/payroll/$payrollId': {
+      id: '/dashboard/$organizationId/payroll/$payrollId'
       path: '/payroll/$payrollId'
-      fullPath: '/dashboard/payroll/$payrollId'
-      preLoaderRoute: typeof DashboardPayrollPayrollIdRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      fullPath: '/dashboard/$organizationId/payroll/$payrollId'
+      preLoaderRoute: typeof DashboardOrganizationIdPayrollPayrollIdRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
     }
-    '/dashboard/payroll/new': {
-      id: '/dashboard/payroll/new'
+    '/dashboard/$organizationId/payroll/new': {
+      id: '/dashboard/$organizationId/payroll/new'
       path: '/payroll/new'
-      fullPath: '/dashboard/payroll/new'
-      preLoaderRoute: typeof DashboardPayrollNewRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      fullPath: '/dashboard/$organizationId/payroll/new'
+      preLoaderRoute: typeof DashboardOrganizationIdPayrollNewRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
     }
-    '/dashboard/purchases/': {
-      id: '/dashboard/purchases/'
+    '/dashboard/$organizationId/purchases/': {
+      id: '/dashboard/$organizationId/purchases/'
       path: '/purchases'
-      fullPath: '/dashboard/purchases/'
-      preLoaderRoute: typeof DashboardPurchasesIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      fullPath: '/dashboard/$organizationId/purchases/'
+      preLoaderRoute: typeof DashboardOrganizationIdPurchasesIndexRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
     }
-    '/dashboard/settings/organization': {
-      id: '/dashboard/settings/organization'
+    '/dashboard/$organizationId/settings/organization': {
+      id: '/dashboard/$organizationId/settings/organization'
       path: '/settings/organization'
-      fullPath: '/dashboard/settings/organization'
-      preLoaderRoute: typeof DashboardSettingsOrganizationRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      fullPath: '/dashboard/$organizationId/settings/organization'
+      preLoaderRoute: typeof DashboardOrganizationIdSettingsOrganizationRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
     }
-    '/dashboard/settings/tax': {
-      id: '/dashboard/settings/tax'
+    '/dashboard/$organizationId/settings/tax': {
+      id: '/dashboard/$organizationId/settings/tax'
       path: '/settings/tax'
-      fullPath: '/dashboard/settings/tax'
-      preLoaderRoute: typeof DashboardSettingsTaxRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      fullPath: '/dashboard/$organizationId/settings/tax'
+      preLoaderRoute: typeof DashboardOrganizationIdSettingsTaxRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
     }
-    '/dashboard/contracts/$contractId/': {
-      id: '/dashboard/contracts/$contractId/'
+    '/dashboard/$organizationId/contracts/$contractId/': {
+      id: '/dashboard/$organizationId/contracts/$contractId/'
       path: '/'
-      fullPath: '/dashboard/contracts/$contractId/'
-      preLoaderRoute: typeof DashboardContractsContractIdIndexRouteImport
-      parentRoute: typeof DashboardContractsContractIdRouteRoute
+      fullPath: '/dashboard/$organizationId/contracts/$contractId/'
+      preLoaderRoute: typeof DashboardOrganizationIdContractsContractIdIndexRouteImport
+      parentRoute: typeof DashboardOrganizationIdContractsContractIdRouteRoute
     }
-    '/dashboard/contracts/$contractId/activity': {
-      id: '/dashboard/contracts/$contractId/activity'
+    '/dashboard/$organizationId/contracts/$contractId/activity': {
+      id: '/dashboard/$organizationId/contracts/$contractId/activity'
       path: '/activity'
-      fullPath: '/dashboard/contracts/$contractId/activity'
-      preLoaderRoute: typeof DashboardContractsContractIdActivityRouteImport
-      parentRoute: typeof DashboardContractsContractIdRouteRoute
+      fullPath: '/dashboard/$organizationId/contracts/$contractId/activity'
+      preLoaderRoute: typeof DashboardOrganizationIdContractsContractIdActivityRouteImport
+      parentRoute: typeof DashboardOrganizationIdContractsContractIdRouteRoute
     }
-    '/dashboard/contracts/$contractId/deadlines': {
-      id: '/dashboard/contracts/$contractId/deadlines'
+    '/dashboard/$organizationId/contracts/$contractId/deadlines': {
+      id: '/dashboard/$organizationId/contracts/$contractId/deadlines'
       path: '/deadlines'
-      fullPath: '/dashboard/contracts/$contractId/deadlines'
-      preLoaderRoute: typeof DashboardContractsContractIdDeadlinesRouteImport
-      parentRoute: typeof DashboardContractsContractIdRouteRoute
+      fullPath: '/dashboard/$organizationId/contracts/$contractId/deadlines'
+      preLoaderRoute: typeof DashboardOrganizationIdContractsContractIdDeadlinesRouteImport
+      parentRoute: typeof DashboardOrganizationIdContractsContractIdRouteRoute
     }
-    '/dashboard/contracts/$contractId/documents': {
-      id: '/dashboard/contracts/$contractId/documents'
+    '/dashboard/$organizationId/contracts/$contractId/documents': {
+      id: '/dashboard/$organizationId/contracts/$contractId/documents'
       path: '/documents'
-      fullPath: '/dashboard/contracts/$contractId/documents'
-      preLoaderRoute: typeof DashboardContractsContractIdDocumentsRouteImport
-      parentRoute: typeof DashboardContractsContractIdRouteRoute
+      fullPath: '/dashboard/$organizationId/contracts/$contractId/documents'
+      preLoaderRoute: typeof DashboardOrganizationIdContractsContractIdDocumentsRouteImport
+      parentRoute: typeof DashboardOrganizationIdContractsContractIdRouteRoute
     }
-    '/dashboard/contracts/$contractId/employees': {
-      id: '/dashboard/contracts/$contractId/employees'
+    '/dashboard/$organizationId/contracts/$contractId/employees': {
+      id: '/dashboard/$organizationId/contracts/$contractId/employees'
       path: '/employees'
-      fullPath: '/dashboard/contracts/$contractId/employees'
-      preLoaderRoute: typeof DashboardContractsContractIdEmployeesRouteImport
-      parentRoute: typeof DashboardContractsContractIdRouteRoute
+      fullPath: '/dashboard/$organizationId/contracts/$contractId/employees'
+      preLoaderRoute: typeof DashboardOrganizationIdContractsContractIdEmployeesRouteImport
+      parentRoute: typeof DashboardOrganizationIdContractsContractIdRouteRoute
     }
-    '/dashboard/contracts/$contractId/invoices': {
-      id: '/dashboard/contracts/$contractId/invoices'
+    '/dashboard/$organizationId/contracts/$contractId/invoices': {
+      id: '/dashboard/$organizationId/contracts/$contractId/invoices'
       path: '/invoices'
-      fullPath: '/dashboard/contracts/$contractId/invoices'
-      preLoaderRoute: typeof DashboardContractsContractIdInvoicesRouteImport
-      parentRoute: typeof DashboardContractsContractIdRouteRoute
+      fullPath: '/dashboard/$organizationId/contracts/$contractId/invoices'
+      preLoaderRoute: typeof DashboardOrganizationIdContractsContractIdInvoicesRouteImport
+      parentRoute: typeof DashboardOrganizationIdContractsContractIdRouteRoute
     }
-    '/dashboard/contracts/$contractId/payroll': {
-      id: '/dashboard/contracts/$contractId/payroll'
+    '/dashboard/$organizationId/contracts/$contractId/payroll': {
+      id: '/dashboard/$organizationId/contracts/$contractId/payroll'
       path: '/payroll'
-      fullPath: '/dashboard/contracts/$contractId/payroll'
-      preLoaderRoute: typeof DashboardContractsContractIdPayrollRouteImport
-      parentRoute: typeof DashboardContractsContractIdRouteRoute
+      fullPath: '/dashboard/$organizationId/contracts/$contractId/payroll'
+      preLoaderRoute: typeof DashboardOrganizationIdContractsContractIdPayrollRouteImport
+      parentRoute: typeof DashboardOrganizationIdContractsContractIdRouteRoute
     }
   }
 }
 
-interface DashboardContractsContractIdRouteRouteChildren {
-  DashboardContractsContractIdActivityRoute: typeof DashboardContractsContractIdActivityRoute
-  DashboardContractsContractIdDeadlinesRoute: typeof DashboardContractsContractIdDeadlinesRoute
-  DashboardContractsContractIdDocumentsRoute: typeof DashboardContractsContractIdDocumentsRoute
-  DashboardContractsContractIdEmployeesRoute: typeof DashboardContractsContractIdEmployeesRoute
-  DashboardContractsContractIdInvoicesRoute: typeof DashboardContractsContractIdInvoicesRoute
-  DashboardContractsContractIdPayrollRoute: typeof DashboardContractsContractIdPayrollRoute
-  DashboardContractsContractIdIndexRoute: typeof DashboardContractsContractIdIndexRoute
+interface DashboardOrganizationIdContractsContractIdRouteRouteChildren {
+  DashboardOrganizationIdContractsContractIdActivityRoute: typeof DashboardOrganizationIdContractsContractIdActivityRoute
+  DashboardOrganizationIdContractsContractIdDeadlinesRoute: typeof DashboardOrganizationIdContractsContractIdDeadlinesRoute
+  DashboardOrganizationIdContractsContractIdDocumentsRoute: typeof DashboardOrganizationIdContractsContractIdDocumentsRoute
+  DashboardOrganizationIdContractsContractIdEmployeesRoute: typeof DashboardOrganizationIdContractsContractIdEmployeesRoute
+  DashboardOrganizationIdContractsContractIdInvoicesRoute: typeof DashboardOrganizationIdContractsContractIdInvoicesRoute
+  DashboardOrganizationIdContractsContractIdPayrollRoute: typeof DashboardOrganizationIdContractsContractIdPayrollRoute
+  DashboardOrganizationIdContractsContractIdIndexRoute: typeof DashboardOrganizationIdContractsContractIdIndexRoute
 }
 
-const DashboardContractsContractIdRouteRouteChildren: DashboardContractsContractIdRouteRouteChildren =
+const DashboardOrganizationIdContractsContractIdRouteRouteChildren: DashboardOrganizationIdContractsContractIdRouteRouteChildren =
   {
-    DashboardContractsContractIdActivityRoute:
-      DashboardContractsContractIdActivityRoute,
-    DashboardContractsContractIdDeadlinesRoute:
-      DashboardContractsContractIdDeadlinesRoute,
-    DashboardContractsContractIdDocumentsRoute:
-      DashboardContractsContractIdDocumentsRoute,
-    DashboardContractsContractIdEmployeesRoute:
-      DashboardContractsContractIdEmployeesRoute,
-    DashboardContractsContractIdInvoicesRoute:
-      DashboardContractsContractIdInvoicesRoute,
-    DashboardContractsContractIdPayrollRoute:
-      DashboardContractsContractIdPayrollRoute,
-    DashboardContractsContractIdIndexRoute:
-      DashboardContractsContractIdIndexRoute,
+    DashboardOrganizationIdContractsContractIdActivityRoute:
+      DashboardOrganizationIdContractsContractIdActivityRoute,
+    DashboardOrganizationIdContractsContractIdDeadlinesRoute:
+      DashboardOrganizationIdContractsContractIdDeadlinesRoute,
+    DashboardOrganizationIdContractsContractIdDocumentsRoute:
+      DashboardOrganizationIdContractsContractIdDocumentsRoute,
+    DashboardOrganizationIdContractsContractIdEmployeesRoute:
+      DashboardOrganizationIdContractsContractIdEmployeesRoute,
+    DashboardOrganizationIdContractsContractIdInvoicesRoute:
+      DashboardOrganizationIdContractsContractIdInvoicesRoute,
+    DashboardOrganizationIdContractsContractIdPayrollRoute:
+      DashboardOrganizationIdContractsContractIdPayrollRoute,
+    DashboardOrganizationIdContractsContractIdIndexRoute:
+      DashboardOrganizationIdContractsContractIdIndexRoute,
   }
 
-const DashboardContractsContractIdRouteRouteWithChildren =
-  DashboardContractsContractIdRouteRoute._addFileChildren(
-    DashboardContractsContractIdRouteRouteChildren,
+const DashboardOrganizationIdContractsContractIdRouteRouteWithChildren =
+  DashboardOrganizationIdContractsContractIdRouteRoute._addFileChildren(
+    DashboardOrganizationIdContractsContractIdRouteRouteChildren,
+  )
+
+interface DashboardOrganizationIdRouteRouteChildren {
+  DashboardOrganizationIdAgentRoute: typeof DashboardOrganizationIdAgentRoute
+  DashboardOrganizationIdIndexRoute: typeof DashboardOrganizationIdIndexRoute
+  DashboardOrganizationIdContractsContractIdRouteRoute: typeof DashboardOrganizationIdContractsContractIdRouteRouteWithChildren
+  DashboardOrganizationIdContractsNewRoute: typeof DashboardOrganizationIdContractsNewRoute
+  DashboardOrganizationIdEmployeesEmployeeIdRoute: typeof DashboardOrganizationIdEmployeesEmployeeIdRoute
+  DashboardOrganizationIdEmployeesNewRoute: typeof DashboardOrganizationIdEmployeesNewRoute
+  DashboardOrganizationIdInvoicesInvoiceIdRoute: typeof DashboardOrganizationIdInvoicesInvoiceIdRoute
+  DashboardOrganizationIdInvoicesNewRoute: typeof DashboardOrganizationIdInvoicesNewRoute
+  DashboardOrganizationIdPayrollPayrollIdRoute: typeof DashboardOrganizationIdPayrollPayrollIdRoute
+  DashboardOrganizationIdPayrollNewRoute: typeof DashboardOrganizationIdPayrollNewRoute
+  DashboardOrganizationIdSettingsOrganizationRoute: typeof DashboardOrganizationIdSettingsOrganizationRoute
+  DashboardOrganizationIdSettingsTaxRoute: typeof DashboardOrganizationIdSettingsTaxRoute
+  DashboardOrganizationIdContractsIndexRoute: typeof DashboardOrganizationIdContractsIndexRoute
+  DashboardOrganizationIdDepartmentsIndexRoute: typeof DashboardOrganizationIdDepartmentsIndexRoute
+  DashboardOrganizationIdEmployeesIndexRoute: typeof DashboardOrganizationIdEmployeesIndexRoute
+  DashboardOrganizationIdInvoicesIndexRoute: typeof DashboardOrganizationIdInvoicesIndexRoute
+  DashboardOrganizationIdPayrollIndexRoute: typeof DashboardOrganizationIdPayrollIndexRoute
+  DashboardOrganizationIdPurchasesIndexRoute: typeof DashboardOrganizationIdPurchasesIndexRoute
+}
+
+const DashboardOrganizationIdRouteRouteChildren: DashboardOrganizationIdRouteRouteChildren =
+  {
+    DashboardOrganizationIdAgentRoute: DashboardOrganizationIdAgentRoute,
+    DashboardOrganizationIdIndexRoute: DashboardOrganizationIdIndexRoute,
+    DashboardOrganizationIdContractsContractIdRouteRoute:
+      DashboardOrganizationIdContractsContractIdRouteRouteWithChildren,
+    DashboardOrganizationIdContractsNewRoute:
+      DashboardOrganizationIdContractsNewRoute,
+    DashboardOrganizationIdEmployeesEmployeeIdRoute:
+      DashboardOrganizationIdEmployeesEmployeeIdRoute,
+    DashboardOrganizationIdEmployeesNewRoute:
+      DashboardOrganizationIdEmployeesNewRoute,
+    DashboardOrganizationIdInvoicesInvoiceIdRoute:
+      DashboardOrganizationIdInvoicesInvoiceIdRoute,
+    DashboardOrganizationIdInvoicesNewRoute:
+      DashboardOrganizationIdInvoicesNewRoute,
+    DashboardOrganizationIdPayrollPayrollIdRoute:
+      DashboardOrganizationIdPayrollPayrollIdRoute,
+    DashboardOrganizationIdPayrollNewRoute:
+      DashboardOrganizationIdPayrollNewRoute,
+    DashboardOrganizationIdSettingsOrganizationRoute:
+      DashboardOrganizationIdSettingsOrganizationRoute,
+    DashboardOrganizationIdSettingsTaxRoute:
+      DashboardOrganizationIdSettingsTaxRoute,
+    DashboardOrganizationIdContractsIndexRoute:
+      DashboardOrganizationIdContractsIndexRoute,
+    DashboardOrganizationIdDepartmentsIndexRoute:
+      DashboardOrganizationIdDepartmentsIndexRoute,
+    DashboardOrganizationIdEmployeesIndexRoute:
+      DashboardOrganizationIdEmployeesIndexRoute,
+    DashboardOrganizationIdInvoicesIndexRoute:
+      DashboardOrganizationIdInvoicesIndexRoute,
+    DashboardOrganizationIdPayrollIndexRoute:
+      DashboardOrganizationIdPayrollIndexRoute,
+    DashboardOrganizationIdPurchasesIndexRoute:
+      DashboardOrganizationIdPurchasesIndexRoute,
+  }
+
+const DashboardOrganizationIdRouteRouteWithChildren =
+  DashboardOrganizationIdRouteRoute._addFileChildren(
+    DashboardOrganizationIdRouteRouteChildren,
   )
 
 interface DashboardRouteRouteChildren {
-  DashboardAgentRoute: typeof DashboardAgentRoute
-  DashboardIndexRoute: typeof DashboardIndexRoute
-  DashboardContractsContractIdRouteRoute: typeof DashboardContractsContractIdRouteRouteWithChildren
-  DashboardContractsNewRoute: typeof DashboardContractsNewRoute
-  DashboardEmployeesEmployeeIdRoute: typeof DashboardEmployeesEmployeeIdRoute
-  DashboardEmployeesNewRoute: typeof DashboardEmployeesNewRoute
-  DashboardInvoicesInvoiceIdRoute: typeof DashboardInvoicesInvoiceIdRoute
-  DashboardInvoicesNewRoute: typeof DashboardInvoicesNewRoute
-  DashboardPayrollPayrollIdRoute: typeof DashboardPayrollPayrollIdRoute
-  DashboardPayrollNewRoute: typeof DashboardPayrollNewRoute
-  DashboardSettingsOrganizationRoute: typeof DashboardSettingsOrganizationRoute
-  DashboardSettingsTaxRoute: typeof DashboardSettingsTaxRoute
-  DashboardContractsIndexRoute: typeof DashboardContractsIndexRoute
-  DashboardDepartmentsIndexRoute: typeof DashboardDepartmentsIndexRoute
-  DashboardEmployeesIndexRoute: typeof DashboardEmployeesIndexRoute
-  DashboardInvoicesIndexRoute: typeof DashboardInvoicesIndexRoute
-  DashboardPayrollIndexRoute: typeof DashboardPayrollIndexRoute
-  DashboardPurchasesIndexRoute: typeof DashboardPurchasesIndexRoute
+  DashboardOrganizationIdRouteRoute: typeof DashboardOrganizationIdRouteRouteWithChildren
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
-  DashboardAgentRoute: DashboardAgentRoute,
-  DashboardIndexRoute: DashboardIndexRoute,
-  DashboardContractsContractIdRouteRoute:
-    DashboardContractsContractIdRouteRouteWithChildren,
-  DashboardContractsNewRoute: DashboardContractsNewRoute,
-  DashboardEmployeesEmployeeIdRoute: DashboardEmployeesEmployeeIdRoute,
-  DashboardEmployeesNewRoute: DashboardEmployeesNewRoute,
-  DashboardInvoicesInvoiceIdRoute: DashboardInvoicesInvoiceIdRoute,
-  DashboardInvoicesNewRoute: DashboardInvoicesNewRoute,
-  DashboardPayrollPayrollIdRoute: DashboardPayrollPayrollIdRoute,
-  DashboardPayrollNewRoute: DashboardPayrollNewRoute,
-  DashboardSettingsOrganizationRoute: DashboardSettingsOrganizationRoute,
-  DashboardSettingsTaxRoute: DashboardSettingsTaxRoute,
-  DashboardContractsIndexRoute: DashboardContractsIndexRoute,
-  DashboardDepartmentsIndexRoute: DashboardDepartmentsIndexRoute,
-  DashboardEmployeesIndexRoute: DashboardEmployeesIndexRoute,
-  DashboardInvoicesIndexRoute: DashboardInvoicesIndexRoute,
-  DashboardPayrollIndexRoute: DashboardPayrollIndexRoute,
-  DashboardPurchasesIndexRoute: DashboardPurchasesIndexRoute,
+  DashboardOrganizationIdRouteRoute:
+    DashboardOrganizationIdRouteRouteWithChildren,
 }
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(

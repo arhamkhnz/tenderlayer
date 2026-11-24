@@ -1,11 +1,21 @@
-import { createFileRoute } from "@tanstack/react-router";
-
-import { DashboardLayout } from "./-components/layout";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/dashboard")({
-  loader: async () => {
+  beforeLoad: async ({ location }) => {
     const organizations = await window.electronAPI.organizations.list();
-    return { organization: organizations[0] ?? null };
+    const firstOrganization = organizations[0];
+
+    if (!firstOrganization) throw redirect({ to: "/welcome", replace: true });
+
+    if (location.pathname === "/dashboard" || location.pathname === "/dashboard/") {
+      throw redirect({
+        to: "/dashboard/$organizationId",
+        params: { organizationId: firstOrganization.id },
+        replace: true,
+      });
+    }
+
+    return { organizations };
   },
-  component: DashboardLayout,
+  component: Outlet,
 });
