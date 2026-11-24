@@ -15,15 +15,10 @@ import {
 import { Textarea } from "@tenderlayer/ui/components/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@tenderlayer/ui/components/tabs";
 
-const organizationTypes = [
-  { value: null, label: "Select organization type" },
-  { value: "sole-proprietorship", label: "Sole proprietorship" },
-  { value: "partnership", label: "Partnership" },
-  { value: "llp", label: "LLP" },
-  { value: "private-limited", label: "Private limited company" },
-  { value: "public-limited", label: "Public limited company" },
-  { value: "other", label: "Other" },
-];
+import { indianStatesAndUTs, organizationTypes } from "../../../../../../../shared/reference-data";
+
+const organizationTypeOptions = [{ value: null, label: "Select organization type" }, ...organizationTypes];
+const registrationStateOptions = indianStatesAndUTs.map((state) => ({ label: state, value: state }));
 
 export function OrganizationSettingsScreen() {
   const { organization } = useLoaderData({ from: "/dashboard/$organizationId" });
@@ -108,13 +103,13 @@ export function OrganizationSettingsScreen() {
                   <FieldLabel className="font-normal" htmlFor="org-type">
                     Organization type
                   </FieldLabel>
-                  <Select items={organizationTypes} defaultValue="private-limited">
+                  <Select items={organizationTypeOptions} defaultValue="private-limited">
                     <SelectTrigger id="org-type" className="w-full">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        {organizationTypes.map((option) => (
+                        {organizationTypeOptions.map((option) => (
                           <SelectItem key={option.value ?? "placeholder"} value={option.value}>
                             {option.label}
                           </SelectItem>
@@ -168,23 +163,20 @@ export function OrganizationSettingsScreen() {
                   <Input id="pan" defaultValue="AABCT4829Q" />
                 </Field>
                 <Field className="gap-1">
-                  <FieldLabel className="font-normal">State of registration</FieldLabel>
-                  <Select
-                    items={[
-                      { value: "delhi", label: "Delhi" },
-                      { value: "maharashtra", label: "Maharashtra" },
-                      { value: "uttar-pradesh", label: "Uttar Pradesh" },
-                    ]}
-                    defaultValue="delhi"
-                  >
-                    <SelectTrigger className="w-full" aria-label="State of registration">
+                  <FieldLabel className="font-normal" htmlFor="registration-state">
+                    State of registration
+                  </FieldLabel>
+                  <Select items={registrationStateOptions} defaultValue="Delhi">
+                    <SelectTrigger id="registration-state" className="w-full">
                       <SelectValue className="font-450" />
                     </SelectTrigger>
                     <SelectContent className="font-450">
                       <SelectGroup>
-                        <SelectItem value="delhi">Delhi</SelectItem>
-                        <SelectItem value="maharashtra">Maharashtra</SelectItem>
-                        <SelectItem value="uttar-pradesh">Uttar Pradesh</SelectItem>
+                        {registrationStateOptions.map(({ label, value }) => (
+                          <SelectItem key={value} value={value}>
+                            {label}
+                          </SelectItem>
+                        ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>

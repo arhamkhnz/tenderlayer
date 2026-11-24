@@ -30,7 +30,9 @@ import {
   SelectValue,
 } from "@tenderlayer/ui/components/select";
 import { Textarea } from "@tenderlayer/ui/components/textarea";
-import { StatePicker, indianStatesAndUTs } from "../../-components/state-picker";
+import { indianStatesAndUTs } from "../../../../../../../shared/reference-data";
+
+import { StatePicker } from "../../-components/state-picker";
 import { departments } from "../../departments/-components/data";
 import { ContractDatePicker } from "./contract-date-picker";
 
