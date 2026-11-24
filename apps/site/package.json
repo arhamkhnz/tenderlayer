@@ -12,8 +12,8 @@
     "format": "oxfmt"
   },
   "dependencies": {
-    "@keyline-icons/react": "^2.7.0",
-    "@opennextjs/cloudflare": "^1.20.17",
+    "@keyline-icons/react": "^2.9.0",
+    "@opennextjs/cloudflare": "^1.20.18",
     "@tenderlayer/fonts": "^0.0.0",
     "@tenderlayer/ui": "^0.0.0",
     "next": "^16.4.6",
@@ -28,6 +28,6 @@
     "babel-plugin-react-compiler": "1.0.0",
     "tailwindcss": "^4",
     "typescript": "^6.0.3",
-    "wrangler": "^4.165.0"
+    "wrangler": "^4.167.0"
   }
 }
