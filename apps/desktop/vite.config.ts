@@ -8,7 +8,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   base: "./",
   resolve: {
-    dedupe: ["react", "react-dom"],
+    dedupe: ["react", "react-dom", "recharts"],
     alias: {
       "@": fileURLToPath(new URL("./src/renderer/src", import.meta.url)),
     },

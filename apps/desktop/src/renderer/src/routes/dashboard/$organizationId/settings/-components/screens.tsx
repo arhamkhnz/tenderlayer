@@ -49,7 +49,10 @@ export function OrganizationSettingsScreen() {
         className="min-h-0 flex-1 flex-col gap-0 overflow-hidden border-t border-border/60 md:flex-row"
       >
         <aside className="shrink-0 border-b border-border/60 px-2 py-4 md:w-56 md:border-r md:border-b-0 md:pt-4.5">
-          <TabsList variant="navigation" className="h-auto w-full items-stretch" aria-label="Organization settings">
+          <TabsList
+            className="h-auto w-full items-stretch gap-1 bg-transparent p-0 *:data-[slot=tabs-trigger]:text-muted-foreground *:data-[slot=tabs-trigger]:hover:bg-muted/50 *:data-[slot=tabs-trigger]:data-active:border-transparent! *:data-[slot=tabs-trigger]:data-active:bg-muted! *:data-[slot=tabs-trigger]:data-active:text-foreground! *:data-[slot=tabs-trigger]:data-active:shadow-none!"
+            aria-label="Organization settings"
+          >
             <TabsTrigger
               value="company"
               className="grid h-8 flex-none grid-cols-[1rem_minmax(0,1fr)] items-center justify-start gap-2 border-0 px-2 text-left"

@@ -1,5 +1,4 @@
-import { CircleQuestionIcon } from "@keyline-icons/react";
-import { Avatar, AvatarFallback } from "@tenderlayer/ui/components/avatar";
+import { CircleQuestionIcon, UserIcon } from "@keyline-icons/react";
 import { Button } from "@tenderlayer/ui/components/button";
 import {
   DropdownMenu,
@@ -30,18 +29,9 @@ export function HeaderActions() {
       <ThemeToggle />
       <DropdownMenu>
         <DropdownMenuTrigger
-          render={
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label="Demo User profile — coming soon"
-              className="border-0 p-0 hover:bg-transparent aria-expanded:bg-transparent dark:hover:bg-transparent"
-            />
-          }
+          render={<Button variant="outline" size="icon" aria-label="Demo User profile — coming soon" />}
         >
-          <Avatar className="rounded-lg after:rounded-lg">
-            <AvatarFallback className="rounded-lg">DU</AvatarFallback>
-          </Avatar>
+          <UserIcon aria-hidden="true" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-44">
           <DropdownMenuGroup>
