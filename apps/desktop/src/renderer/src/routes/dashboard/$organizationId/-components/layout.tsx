@@ -73,7 +73,7 @@ export function DashboardLayout() {
         <AppHeader isFullscreen={isFullscreen} />
         <MainHeader isFullscreen={isFullscreen} />
         <div className="col-start-1 row-start-2">
-          <AppSidebar />
+          <AppSidebar isFullscreen={isFullscreen} />
         </div>
         <main className="relative col-start-2 row-start-2 flex min-w-0 flex-col bg-background">
           <div className="min-h-0 w-full min-w-0 p-4 has-data-[content-padding=false]:p-0">

@@ -4,7 +4,7 @@ import { useLayoutEffect, useRef } from "react";
 import { cn } from "cn";
 import { Button } from "@tenderlayer/ui/components/button";
 import { useSidebar } from "@tenderlayer/ui/components/sidebar";
-import { isMacOS } from "../../../../../../shared/platform";
+import { isMacOS } from "@shared/platform";
 
 export function AppHeader({ isFullscreen }: { isFullscreen: boolean }) {
   const headerRef = useRef<HTMLElement>(null);

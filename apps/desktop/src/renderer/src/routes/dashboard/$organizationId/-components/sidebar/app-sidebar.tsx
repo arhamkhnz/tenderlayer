@@ -26,6 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "@tenderlayer/ui/components/dropdown-menu";
 import { sidebarFooterItems, sidebarItems } from "@/navigation/sidebar/sidebar-items";
+import { isMacOS } from "@shared/platform";
 
 import { SidebarFooterNavigation, SidebarNavigation } from "./sidebar-navigation";
 
@@ -51,9 +52,10 @@ function OrganizationAvatar({ name }: { name: string }) {
   );
 }
 
-export function AppSidebar() {
+export function AppSidebar({ isFullscreen }: { isFullscreen: boolean }) {
   const { state, isMobile } = useSidebar();
   const isCollapsed = state === "collapsed" && !isMobile;
+  const needsTitlebarClearance = isMobile && !isFullscreen && isMacOS(window.electronAPI.platform);
   const { organization, organizations } = useLoaderData({ from: "/dashboard/$organizationId" });
   const name = organization.name;
   const navigate = useNavigate({ from: "/dashboard/$organizationId" });
@@ -64,7 +66,9 @@ export function AppSidebar() {
       collapsible="icon"
       className="top-(--sidebar-top) h-[calc(100svh-var(--sidebar-top))] **:data-[slot=sidebar-inner]:pt-[calc(var(--header-height)-var(--sidebar-top))]"
     >
-      <SidebarHeader>
+      <SidebarHeader
+        className={needsTitlebarClearance ? "mt-[calc(max(46px,env(titlebar-area-height,0px))-1rem)]" : undefined}
+      >
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>

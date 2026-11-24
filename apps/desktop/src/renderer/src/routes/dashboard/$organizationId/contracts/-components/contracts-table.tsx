@@ -141,7 +141,7 @@ export function ContractsTable({ contracts }: { contracts: ContractRecord[] }) {
       <Table className="min-w-260 border-y border-border/60" aria-label="Contracts">
         <TableHeader>
           <TableRow className="border-border/60 hover:bg-transparent">
-            <TableHead className="h-10 w-14 border-r border-border/50 px-0">
+            <TableHead className="h-10 w-14 min-w-14 border-r border-border/50 px-0">
               <Checkbox
                 className="mx-auto"
                 aria-label="Select all contracts on this page"
@@ -177,7 +177,7 @@ export function ContractsTable({ contracts }: { contracts: ContractRecord[] }) {
         <TableBody>
           {visibleContracts.map((contract) => (
             <TableRow key={contract.id} className="border-border/60 hover:bg-muted/30">
-              <TableCell className="h-12 w-14 border-r border-border/50 px-0 py-2">
+              <TableCell className="h-12 w-14 min-w-14 border-r border-border/50 px-0 py-2">
                 <Checkbox
                   className="mx-auto"
                   aria-label={`Select ${contract.name}`}

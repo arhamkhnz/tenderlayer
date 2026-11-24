@@ -110,7 +110,7 @@ export function RecordsTable<T extends { id: string; status: string }>({
       <Table className="min-w-260 border-y border-border/60" aria-label={label}>
         <TableHeader>
           <TableRow className="border-border/60 hover:bg-transparent">
-            <TableHead className="h-10 w-14 border-r border-border/50 px-0">
+            <TableHead className="h-10 w-14 min-w-14 border-r border-border/50 px-0">
               <Checkbox
                 className="mx-auto"
                 checked={allSelected}
@@ -145,7 +145,7 @@ export function RecordsTable<T extends { id: string; status: string }>({
         <TableBody>
           {visible.map((record) => (
             <TableRow key={record.id} className="border-border/60 hover:bg-muted/30">
-              <TableCell className="h-12 w-14 border-r border-border/50 px-0 py-2">
+              <TableCell className="h-12 w-14 min-w-14 border-r border-border/50 px-0 py-2">
                 <Checkbox
                   className="mx-auto"
                   checked={selectedIds.has(record.id)}

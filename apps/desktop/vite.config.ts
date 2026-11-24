@@ -11,6 +11,7 @@ export default defineConfig({
     dedupe: ["react", "react-dom", "recharts"],
     alias: {
       "@": fileURLToPath(new URL("./src/renderer/src", import.meta.url)),
+      "@shared": fileURLToPath(new URL("./src/shared", import.meta.url)),
     },
   },
   plugins: [

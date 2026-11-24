@@ -3,6 +3,7 @@
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/renderer/src/*"],
+      "@shared/*": ["./src/shared/*"],
       "@tenderlayer/ui/*": ["../../packages/ui/src/*"]
     }
   },
