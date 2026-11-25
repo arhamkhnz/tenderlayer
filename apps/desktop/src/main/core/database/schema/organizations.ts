@@ -20,8 +20,7 @@ export const organizations = sqliteTable(
       "organizations_slug_check",
       sql`length(${table.slug}) between 1 and 80 and ${table.slug} not glob '*[^a-z0-9-]*' and substr(${table.slug}, 1, 1) <> '-' and substr(${table.slug}, -1, 1) <> '-' and instr(${table.slug}, '--') = 0`,
     ),
+    uniqueIndex("organizations_name_unique").on(sql`lower(${sql.identifier(table.name.name)})`),
     uniqueIndex("organizations_slug_unique").on(table.slug),
   ],
 );
-
-export type Organization = typeof organizations.$inferSelect;

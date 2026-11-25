@@ -32,24 +32,21 @@ function WelcomePage() {
     try {
       const result = await window.electronAPI.organizations.create(values);
       if (!result.ok) {
-        form.setError(
-          "name",
-          { type: "server", message: "An organization with this name already exists" },
-          { shouldFocus: true },
-        );
+        for (const [index, { field, message }] of result.fieldErrors.entries()) {
+          form.setError(field, { type: "server", message }, { shouldFocus: index === 0 });
+        }
+        if (result.formError) {
+          form.setError("root.server", { type: "server", message: result.formError });
+        }
         return;
       }
 
-      await navigate({ to: "/dashboard/$organizationId", params: { organizationId: result.organization.id } });
+      await navigate({ to: "/dashboard/$organizationId", params: { organizationId: result.organizationId } });
     } catch {
-      form.setError(
-        "name",
-        {
-          type: "server",
-          message: "Unable to create the organization. Please try again.",
-        },
-        { shouldFocus: true },
-      );
+      form.setError("root.server", {
+        type: "server",
+        message: "Unable to create the organization. Please try again.",
+      });
     }
   }
 
@@ -105,6 +102,10 @@ function WelcomePage() {
                   </Field>
                 )}
               />
+
+              {form.formState.errors.root?.server && (
+                <FieldError>{form.formState.errors.root.server.message}</FieldError>
+              )}
 
               <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting && <Spinner data-icon="inline-start" />}

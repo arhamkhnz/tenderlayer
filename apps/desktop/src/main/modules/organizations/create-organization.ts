@@ -1,21 +1,27 @@
-import { eq } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 
 import { getDatabase } from "@db/client";
-import { organizations, type Organization } from "@db/schema/organizations";
+import { organizations } from "@db/schema/organizations";
+import type { CreateOrganizationResult } from "@shared/contracts/organizations";
 import { organizationSlugMaxLength, type CreateOrganizationInput } from "@shared/schemas/organizations";
 
 import { createOrganizationSlug } from "./create-organization-slug.js";
 
-export function createOrganization({ name }: CreateOrganizationInput): Organization | undefined {
-  return getDatabase().transaction(
+export function createOrganization({ name }: CreateOrganizationInput): CreateOrganizationResult {
+  return getDatabase().transaction<CreateOrganizationResult>(
     (transaction) => {
       const existing = transaction
         .select({ id: organizations.id })
         .from(organizations)
-        .where(eq(organizations.name, name))
+        .where(sql`lower(${organizations.name}) = lower(${name})`)
         .get();
 
-      if (existing) return undefined;
+      if (existing) {
+        return {
+          ok: false,
+          fieldErrors: [{ field: "name", message: "An organization with this name already exists" }],
+        };
+      }
 
       const baseSlug = createOrganizationSlug(name);
 
@@ -26,12 +32,12 @@ export function createOrganization({ name }: CreateOrganizationInput): Organizat
           .insert(organizations)
           .values({ name, slug })
           .onConflictDoNothing({ target: organizations.slug })
-          .returning()
+          .returning({ id: organizations.id })
           .get();
 
         if (organization) {
           // Future cloud sync: enqueue an outbox event using this transaction before returning.
-          return organization;
+          return { ok: true, organizationId: organization.id };
         }
       }
     },

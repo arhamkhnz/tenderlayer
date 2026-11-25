@@ -1,26 +1,30 @@
-import { and, eq, isNull } from "drizzle-orm";
-
 import { getDatabase } from "@db/client";
-import { departments, type Department } from "@db/schema/departments";
-import { organizations } from "@db/schema/organizations";
+import { isOrganizationActive } from "@db/organization-queries";
+import { departments } from "@db/schema/departments";
+import type { DepartmentSaveResult } from "@shared/contracts/departments";
 import type { CreateDepartmentInput } from "@shared/schemas/departments";
 
-export function createDepartment({ organizationId, name, code }: CreateDepartmentInput): Department | undefined {
-  return getDatabase().transaction(
+import { getConflicts } from "./department-queries.js";
+
+export function createDepartment(input: CreateDepartmentInput): DepartmentSaveResult {
+  const { organizationId, name, code } = input;
+
+  return getDatabase().transaction<DepartmentSaveResult>(
     (transaction) => {
-      const organization = transaction
-        .select({ id: organizations.id })
-        .from(organizations)
-        .where(and(eq(organizations.id, organizationId), isNull(organizations.deletedAt)))
-        .get();
+      if (!isOrganizationActive(transaction, organizationId)) {
+        return { ok: false, fieldErrors: [], formError: "This organization is no longer available." };
+      }
 
-      if (!organization) return undefined;
+      const fieldErrors = getConflicts(transaction, input);
+      if (fieldErrors.length) return { ok: false, fieldErrors };
 
-      return transaction
+      const result = transaction
         .insert(departments)
         .values({ organizationId, name, code: code || null })
-        .returning()
-        .get();
+        .run();
+
+      if (result.changes !== 1) throw new Error("Department insert did not write one row");
+      return { ok: true };
     },
     { behavior: "immediate" },
   );

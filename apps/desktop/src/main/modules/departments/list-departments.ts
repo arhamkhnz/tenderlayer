@@ -1,12 +1,17 @@
-import { and, asc, eq, getTableColumns, isNull } from "drizzle-orm";
+import { and, asc, eq, isNull } from "drizzle-orm";
 
 import { getDatabase } from "@db/client";
-import { departments, type Department } from "@db/schema/departments";
+import { departments } from "@db/schema/departments";
 import { organizations } from "@db/schema/organizations";
+import type { DepartmentRecord } from "@shared/contracts/departments";
 
-export function listDepartments(organizationId: string): Department[] {
+export function listDepartments(organizationId: string): DepartmentRecord[] {
   return getDatabase()
-    .select(getTableColumns(departments))
+    .select({
+      id: departments.id,
+      name: departments.name,
+      code: departments.code,
+    })
     .from(departments)
     .innerJoin(organizations, eq(organizations.id, departments.organizationId))
     .where(

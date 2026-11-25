@@ -1,11 +1,12 @@
 import { asc, isNull } from "drizzle-orm";
 
 import { getDatabase } from "@db/client";
-import { organizations, type Organization } from "@db/schema/organizations";
+import { organizations } from "@db/schema/organizations";
+import type { OrganizationRecord } from "@shared/contracts/organizations";
 
-export function listOrganizations(): Organization[] {
+export function listOrganizations(): OrganizationRecord[] {
   return getDatabase()
-    .select()
+    .select({ id: organizations.id, name: organizations.name })
     .from(organizations)
     .where(isNull(organizations.deletedAt))
     .orderBy(asc(organizations.name))

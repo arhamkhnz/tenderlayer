@@ -11,8 +11,8 @@ export interface OrganizationRecord {
 }
 
 export type CreateOrganizationResult =
-  | { ok: true; organization: OrganizationRecord }
-  | { ok: false; reason: "duplicate-name" };
+  | { ok: true; organizationId: string }
+  | { ok: false; fieldErrors: { field: "name"; message: string }[]; formError?: string };
 
 export interface OrganizationsApi {
   create: (input: CreateOrganizationInput) => Promise<CreateOrganizationResult>;

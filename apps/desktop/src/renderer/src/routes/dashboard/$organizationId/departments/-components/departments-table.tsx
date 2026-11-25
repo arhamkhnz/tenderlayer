@@ -39,11 +39,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { pageSizeOptions } from "@/lib/data-table-constants";
 import type { DepartmentRecord } from "@shared/contracts/departments";
 
-type DepartmentTableRow = DepartmentRecord & {
-  activeContractCount?: number;
-  activeContractValue?: number;
-};
-
 const columns = [
   { label: "Department", icon: Building },
   { label: "Code", icon: HashIcon },
@@ -51,13 +46,13 @@ const columns = [
   { label: "Active contract value", icon: IndianRupeeIcon },
 ];
 
-const currencyFormatter = new Intl.NumberFormat("en-IN", {
-  style: "currency",
-  currency: "INR",
-  maximumFractionDigits: 0,
-});
-
-export function DepartmentsTable({ departments }: { departments: DepartmentTableRow[] }) {
+export function DepartmentsTable({
+  departments,
+  onEdit,
+}: {
+  departments: DepartmentRecord[];
+  onEdit: (department: DepartmentRecord) => void;
+}) {
   const [search, setSearch] = useState("");
   const query = search.trim().toLowerCase();
   const filteredDepartments = departments.filter((department) =>
@@ -176,22 +171,14 @@ export function DepartmentsTable({ departments }: { departments: DepartmentTable
                 )}
               </TableCell>
               <TableCell className="border-r border-border/50 px-4.5 py-2 tabular-nums">
-                {department.activeContractCount === undefined ? (
-                  <span className="text-muted-foreground" aria-label="Active contract count unavailable">
-                    —
-                  </span>
-                ) : (
-                  <span className="font-mono">{department.activeContractCount}</span>
-                )}
+                <span className="text-muted-foreground" aria-label="Active contract count unavailable">
+                  —
+                </span>
               </TableCell>
               <TableCell className="border-r border-border/50 px-4.5 py-2 font-mono tabular-nums">
-                {department.activeContractValue === undefined ? (
-                  <span className="text-muted-foreground" aria-label="Active contract value unavailable">
-                    —
-                  </span>
-                ) : (
-                  currencyFormatter.format(department.activeContractValue)
-                )}
+                <span className="text-muted-foreground" aria-label="Active contract value unavailable">
+                  —
+                </span>
               </TableCell>
               <TableCell className="w-14 px-2.5 py-2">
                 <div className="flex justify-center">
@@ -207,7 +194,7 @@ export function DepartmentsTable({ departments }: { departments: DepartmentTable
                           <EyeIcon aria-hidden="true" />
                           View
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onEdit(department)}>
                           <PenLineIcon aria-hidden="true" />
                           Edit
                         </DropdownMenuItem>

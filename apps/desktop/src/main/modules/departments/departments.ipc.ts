@@ -1,15 +1,40 @@
 import { ipcMain } from "electron/main";
+import type { z } from "zod";
 
 import { assertTrustedSender } from "@core/ipc-security";
-import type { Department } from "@db/schema/departments";
-import { departmentIpcChannels, type DepartmentRecord } from "@shared/contracts/departments";
-import { createDepartmentSchema, departmentOrganizationIdSchema } from "@shared/schemas/departments";
+import { departmentIpcChannels, type DepartmentSaveResult } from "@shared/contracts/departments";
+import {
+  createDepartmentSchema,
+  departmentOrganizationIdSchema,
+  updateDepartmentSchema,
+} from "@shared/schemas/departments";
 
 import { createDepartment } from "./create-department.js";
 import { listDepartments } from "./list-departments.js";
+import { updateDepartment } from "./update-department.js";
 
-function toDepartmentRecord({ id, organizationId, name, code }: Department): DepartmentRecord {
-  return { id, organizationId, name, code };
+function handleDepartmentSave<Input>(
+  schema: z.ZodType<Input>,
+  input: unknown,
+  save: (values: Input) => DepartmentSaveResult,
+): DepartmentSaveResult {
+  const result = schema.safeParse(input);
+  if (!result.success) {
+    const failure: Extract<DepartmentSaveResult, { ok: false }> = { ok: false, fieldErrors: [] };
+    for (const issue of result.error.issues) {
+      const field = issue.path[0];
+      if (field === "name" || field === "code") failure.fieldErrors.push({ field, message: issue.message });
+      else failure.formError ??= issue.message;
+    }
+    return failure;
+  }
+
+  try {
+    return save(result.data);
+  } catch (error) {
+    console.error("[departments] failed to save a department", error);
+    return { ok: false, fieldErrors: [], formError: "Couldn’t save the department. Please try again." };
+  }
 }
 
 export function registerDepartmentIpcHandlers() {
@@ -18,30 +43,20 @@ export function registerDepartmentIpcHandlers() {
     const organizationId = departmentOrganizationIdSchema.parse(input);
 
     try {
-      return listDepartments(organizationId).map(toDepartmentRecord);
+      return listDepartments(organizationId);
     } catch (error) {
       console.error("[departments] failed to list departments", error);
       throw new Error("Could not load departments");
     }
   });
 
-  ipcMain.handle(departmentIpcChannels.create, (event, input: unknown) => {
+  ipcMain.handle(departmentIpcChannels.create, (event, input: unknown): DepartmentSaveResult => {
     assertTrustedSender(event);
-    const result = createDepartmentSchema.safeParse(input);
-    if (!result.success) throw new TypeError(result.error.issues[0]?.message ?? "Invalid department input");
+    return handleDepartmentSave(createDepartmentSchema, input, createDepartment);
+  });
 
-    let department: ReturnType<typeof createDepartment>;
-    try {
-      department = createDepartment(result.data);
-    } catch (error) {
-      if (error instanceof Error && "code" in error && error.code === "SQLITE_CONSTRAINT_UNIQUE") {
-        throw new Error("A department with this name or code already exists in this organization.");
-      }
-      console.error("[departments] failed to create a department", error);
-      throw new Error("Could not create department");
-    }
-
-    if (!department) throw new Error("Organization not found");
-    return toDepartmentRecord(department);
+  ipcMain.handle(departmentIpcChannels.update, (event, input: unknown): DepartmentSaveResult => {
+    assertTrustedSender(event);
+    return handleDepartmentSave(updateDepartmentSchema, input, updateDepartment);
   });
 }

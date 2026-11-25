@@ -8,4 +8,9 @@ export const createDepartmentSchema = z.object({
   code: z.string().trim().nullish(),
 });
 
+export const updateDepartmentSchema = createDepartmentSchema.extend({
+  departmentId: z.string().min(1, "A department is required."),
+});
+
 export type CreateDepartmentInput = z.input<typeof createDepartmentSchema>;
+export type UpdateDepartmentInput = z.input<typeof updateDepartmentSchema>;

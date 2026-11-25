@@ -18,10 +18,10 @@ export const departments = sqliteTable(
   (table) => [
     index("departments_organization_idx").on(table.organizationId),
     uniqueIndex("departments_organization_name_unique")
-      .on(table.organizationId, table.name)
+      .on(table.organizationId, sql`lower(${sql.identifier(table.name.name)})`)
       .where(isNull(table.deletedAt)),
     uniqueIndex("departments_organization_code_unique")
-      .on(table.organizationId, table.code)
+      .on(table.organizationId, sql`lower(${sql.identifier(table.code.name)})`)
       .where(isNull(table.deletedAt)),
     check("departments_name_check", sql`length(${table.name}) > 0 and ${table.name} = trim(${table.name})`),
     check(
@@ -30,5 +30,3 @@ export const departments = sqliteTable(
     ),
   ],
 );
-
-export type Department = typeof departments.$inferSelect;
