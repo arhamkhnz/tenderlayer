@@ -37,11 +37,9 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@tenderlayer/ui/components/table";
 
 import { pageSizeOptions } from "@/lib/data-table-constants";
+import type { DepartmentRecord } from "@shared/contracts/departments";
 
-type DepartmentRecord = {
-  id: string;
-  name: string;
-  code: string;
+type DepartmentTableRow = DepartmentRecord & {
   activeContractCount?: number;
   activeContractValue?: number;
 };
@@ -59,11 +57,11 @@ const currencyFormatter = new Intl.NumberFormat("en-IN", {
   maximumFractionDigits: 0,
 });
 
-export function DepartmentsTable({ departments }: { departments: DepartmentRecord[] }) {
+export function DepartmentsTable({ departments }: { departments: DepartmentTableRow[] }) {
   const [search, setSearch] = useState("");
   const query = search.trim().toLowerCase();
   const filteredDepartments = departments.filter((department) =>
-    `${department.name} ${department.code}`.toLowerCase().includes(query),
+    `${department.name} ${department.code ?? ""}`.toLowerCase().includes(query),
   );
   const [pageSize, setPageSize] = useState(10);
   const [pageIndex, setPageIndex] = useState(0);

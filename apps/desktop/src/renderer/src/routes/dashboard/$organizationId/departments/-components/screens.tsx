@@ -1,8 +1,9 @@
-import { departments } from "./data";
+import type { DepartmentRecord } from "@shared/contracts/departments";
+
 import { DepartmentsTable } from "./departments-table";
 import { NewDepartmentDrawer } from "./new-department-drawer";
 
-export function DepartmentsScreen() {
+export function DepartmentsScreen({ departments }: { departments: DepartmentRecord[] }) {
   return (
     <section
       data-content-padding="false"

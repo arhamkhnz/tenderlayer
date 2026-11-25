@@ -5,7 +5,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { usePreferences } from "@/app/preferences";
 
 import { DashboardLayout } from "./-components/layout";
-import { OrganizationNotFound } from "./-components/organization-not-found";
+import { OrganizationPicker } from "./-components/organization-picker";
 
 export const Route = createFileRoute("/dashboard/$organizationId")({
   loader: {
@@ -23,7 +23,7 @@ export const Route = createFileRoute("/dashboard/$organizationId")({
     },
   },
   component: OrganizationDashboard,
-  notFoundComponent: OrganizationNotFound,
+  notFoundComponent: OrganizationPicker,
 });
 
 function OrganizationDashboard() {
