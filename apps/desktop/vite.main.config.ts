@@ -1,5 +1,6 @@
-import { builtinModules } from "node:module";
 import { readFileSync } from "node:fs";
+import { builtinModules } from "node:module";
+
 import { defineConfig } from "vite";
 
 interface PackageJson {

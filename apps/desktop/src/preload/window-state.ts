@@ -1,4 +1,5 @@
 import { ipcRenderer, type IpcRendererEvent } from "electron/renderer";
+
 import { windowStateIpcChannels, type WindowStateApi } from "../shared/contracts/window-state.js";
 
 export const windowStateApi = {

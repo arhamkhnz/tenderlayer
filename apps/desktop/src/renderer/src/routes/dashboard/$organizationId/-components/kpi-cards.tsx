@@ -1,9 +1,11 @@
+import type { ComponentType } from "react";
+
 import { ArrowRightIcon, type IconProps } from "@keyline-icons/react";
 import { Link } from "@tanstack/react-router";
-import type { ComponentType } from "react";
-import type { NavItem } from "@/navigation/sidebar/sidebar-items";
 
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@tenderlayer/ui/components/card";
+
+import type { NavItem } from "@/navigation/sidebar/sidebar-items";
 
 type KpiItem = {
   label: string;

@@ -1,6 +1,7 @@
-import { app, net, protocol } from "electron/main";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+
+import { app, net, protocol } from "electron/main";
 
 const rendererScheme = "app";
 const rendererHost = "renderer";

@@ -3,9 +3,8 @@ import { PlusIcon } from "@keyline-icons/react";
 import { Button } from "@tenderlayer/ui/components/button";
 
 import { DataCard, KeyValueGrid, MetricStrip, StaticStatus, StaticTable } from "../../-components/screen";
-
-import { contracts } from "./data";
 import { ContractsTable } from "./contracts-table";
+import { contracts } from "./data";
 import { NewContractDrawer } from "./new-contract-drawer";
 
 export function ContractsScreen({ openNewContract = false }: { openNewContract?: boolean } = {}) {

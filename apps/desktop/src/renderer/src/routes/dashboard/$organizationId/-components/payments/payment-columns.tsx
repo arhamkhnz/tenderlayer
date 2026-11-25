@@ -5,8 +5,9 @@ import { Badge } from "@tenderlayer/ui/components/badge";
 import { Checkbox } from "@tenderlayer/ui/components/checkbox";
 import { formatCompactNumber } from "@tenderlayer/ui/lib/utils";
 
-import { paymentDateFormatter, type Payment } from "./payment-data";
 import type { DataTableFeatures } from "@/lib/data-table-features";
+
+import { paymentDateFormatter, type Payment } from "./payment-data";
 
 export const paymentColumnLabels: Record<string, string> = {
   name: "Particulars",

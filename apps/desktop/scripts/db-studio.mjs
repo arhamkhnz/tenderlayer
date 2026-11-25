@@ -2,6 +2,7 @@ import { spawn } from "node:child_process";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
 import { app } from "electron";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");

@@ -1,4 +1,5 @@
 import type { IpcMainInvokeEvent } from "electron/main";
+
 import { isTrustedRendererUrl } from "./renderer-protocol.js";
 
 function isTrustedSender(event: IpcMainInvokeEvent) {

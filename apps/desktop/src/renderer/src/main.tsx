@@ -1,11 +1,14 @@
 import { StrictMode } from "react";
-import { RouterProvider } from "@tanstack/react-router";
 import { createRoot } from "react-dom/client";
+
+import { RouterProvider } from "@tanstack/react-router";
+
 import "@tenderlayer/fonts/fonts.css";
 import "@tenderlayer/ui/globals.css";
-import { router } from "./app/router";
+
 import { loadPreferences } from "./app/preferences";
 import { PreferencesProvider } from "./app/preferences-provider";
+import { router } from "./app/router";
 
 async function startRenderer() {
   const preferences = await loadPreferences();

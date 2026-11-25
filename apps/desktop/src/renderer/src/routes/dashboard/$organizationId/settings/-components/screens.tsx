@@ -12,8 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@tenderlayer/ui/components/select";
-import { Textarea } from "@tenderlayer/ui/components/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@tenderlayer/ui/components/tabs";
+import { Textarea } from "@tenderlayer/ui/components/textarea";
 
 import { indianStatesAndUTs, organizationTypes } from "../../../../../../../shared/reference-data";
 

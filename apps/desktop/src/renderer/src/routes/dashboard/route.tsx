@@ -1,5 +1,7 @@
 import { createFileRoute, Navigate, Outlet, redirect, useLocation } from "@tanstack/react-router";
+
 import { usePreferences } from "@/app/preferences";
+
 import { DashboardLoadFailure } from "./-components/dashboard-load-failure";
 
 export const Route = createFileRoute("/dashboard")({

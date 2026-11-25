@@ -1,9 +1,12 @@
+import { useLayoutEffect, useRef } from "react";
+
 import { ArrowLeftIcon, ArrowRightIcon, PanelLeftIcon, PanelLeftOpenIcon } from "@keyline-icons/react";
 import { useCanGoBack, useRouter, useRouterState } from "@tanstack/react-router";
-import { useLayoutEffect, useRef } from "react";
 import { cn } from "cn";
+
 import { Button } from "@tenderlayer/ui/components/button";
 import { useSidebar } from "@tenderlayer/ui/components/sidebar";
+
 import { isMacOS } from "@shared/platform";
 
 export function AppHeader({ isFullscreen }: { isFullscreen: boolean }) {

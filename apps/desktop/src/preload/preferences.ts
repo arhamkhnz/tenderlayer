@@ -1,4 +1,5 @@
 import { ipcRenderer } from "electron/renderer";
+
 import { preferenceIpcChannels, type PreferencesApi } from "../shared/contracts/preferences.js";
 
 export const preferencesApi = {

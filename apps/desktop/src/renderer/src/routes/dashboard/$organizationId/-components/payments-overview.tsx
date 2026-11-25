@@ -1,5 +1,6 @@
-import { ChevronLeftIcon, ChevronRightIcon, Columns3Icon, DownloadIcon, SearchIcon } from "@keyline-icons/react";
 import { useMemo, useState } from "react";
+
+import { ChevronLeftIcon, ChevronRightIcon, Columns3Icon, DownloadIcon, SearchIcon } from "@keyline-icons/react";
 import {
   useTable,
   type ColumnVisibilityState,
@@ -38,6 +39,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@tenderlayer/ui/components/tabs";
 import { formatCompactNumber } from "@tenderlayer/ui/lib/utils";
 
+import { pageSizeOptions } from "@/lib/data-table-constants";
+import { dataTableFeatures } from "@/lib/data-table-features";
+
 import { paymentColumns, paymentColumnLabels } from "./payments/payment-columns";
 import {
   getSamplePayments,
@@ -47,8 +51,6 @@ import {
 } from "./payments/payment-data";
 import { getPaymentMonthRange, type PaymentDateRange, type PaymentPeriod } from "./payments/payment-date-range";
 import { PaymentPeriodFilter } from "./payments/payment-period-filter";
-import { pageSizeOptions } from "@/lib/data-table-constants";
-import { dataTableFeatures } from "@/lib/data-table-features";
 
 export function PaymentsOverview({ today }: { today: Date }) {
   const [period, setPeriod] = useState<PaymentPeriod>("this-month");

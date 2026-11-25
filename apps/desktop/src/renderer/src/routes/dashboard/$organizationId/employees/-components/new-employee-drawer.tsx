@@ -1,8 +1,9 @@
-import { PlusIcon } from "@keyline-icons/react";
+import { useState, type ComponentProps, type ChangeEvent } from "react";
+
 import { zodResolver } from "@hookform/resolvers/zod";
+import { PlusIcon } from "@keyline-icons/react";
 import { useNavigate } from "@tanstack/react-router";
 import { cn } from "cn";
-import { useState, type ComponentProps, type ChangeEvent } from "react";
 import { Controller, useForm, useWatch, type Control } from "react-hook-form";
 import { z } from "zod";
 
@@ -32,11 +33,10 @@ import {
 import { Separator } from "@tenderlayer/ui/components/separator";
 import { Textarea } from "@tenderlayer/ui/components/textarea";
 
-import { indianStatesAndUTs } from "../../../../../../../shared/reference-data";
-
 import { StatePicker } from "../../-components/state-picker";
-import { contracts } from "../../contracts/-components/data";
+import { indianStatesAndUTs } from "../../../../../../../shared/reference-data";
 import { ContractDatePicker } from "../../contracts/-components/contract-date-picker";
+import { contracts } from "../../contracts/-components/data";
 import { departments } from "../../departments/-components/data";
 import { employees } from "./data";
 

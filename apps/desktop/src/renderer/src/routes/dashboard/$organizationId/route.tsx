@@ -1,9 +1,12 @@
-import { createFileRoute, Link, notFound, useLoaderData } from "@tanstack/react-router";
 import { useEffect } from "react";
+
+import { createFileRoute, Link, notFound, useLoaderData } from "@tanstack/react-router";
 
 import { buttonVariants } from "@tenderlayer/ui/components/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@tenderlayer/ui/components/card";
+
 import { usePreferences } from "@/app/preferences";
+
 import { DashboardLayout } from "./-components/layout";
 
 export const Route = createFileRoute("/dashboard/$organizationId")({

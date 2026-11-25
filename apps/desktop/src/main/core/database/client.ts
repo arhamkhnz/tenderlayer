@@ -1,9 +1,11 @@
-import Database from "better-sqlite3";
-import { app } from "electron/main";
-import { drizzle, type BetterSQLite3Database } from "drizzle-orm/better-sqlite3";
 import path from "node:path";
-import * as schema from "./schema/index.js";
+
+import Database from "better-sqlite3";
+import { drizzle, type BetterSQLite3Database } from "drizzle-orm/better-sqlite3";
+import { app } from "electron/main";
+
 import { migrateDatabase } from "./migrate.js";
+import * as schema from "./schema/index.js";
 
 export type DatabaseClient = BetterSQLite3Database<typeof schema>;
 

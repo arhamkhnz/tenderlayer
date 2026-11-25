@@ -26,9 +26,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Textarea } from "@tenderlayer/ui/components/textarea";
 
 import { FinanceStatusBadge } from "../../-components/finance-status-badge";
-import { DataCard, KeyValueGrid, PageHeader } from "../../-components/screen";
-
 import { RecordsTable, type RecordColumn } from "../../-components/records-table";
+import { DataCard, KeyValueGrid, PageHeader } from "../../-components/screen";
 
 const invoices = [
   {

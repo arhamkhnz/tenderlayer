@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import { check, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+
 import { id, syncColumns } from "./common.js";
 
 export const organizations = sqliteTable(

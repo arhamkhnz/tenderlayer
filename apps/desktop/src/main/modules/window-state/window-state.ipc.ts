@@ -1,4 +1,5 @@
 import { BrowserWindow, ipcMain } from "electron/main";
+
 import { windowStateIpcChannels } from "../../../shared/contracts/window-state.js";
 import { assertTrustedSender } from "../../core/ipc-security.js";
 

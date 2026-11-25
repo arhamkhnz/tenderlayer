@@ -23,5 +23,22 @@ export default defineConfig({
   insertFinalNewline: true,
   objectWrap: "preserve",
   embeddedLanguageFormatting: "auto",
+  sortImports: {
+    customGroups: [
+      { groupName: "react", elementNamePattern: ["react", "react/**", "react-dom", "react-dom/**"] },
+      { groupName: "workspace", elementNamePattern: ["@tenderlayer/**"] },
+    ],
+    internalPattern: ["~/", "@/", "@shared/", "#"],
+    groups: [
+      "react",
+      "builtin",
+      "external",
+      "workspace",
+      ["internal", "subpath"],
+      ["parent", "sibling", "index"],
+      "style",
+      "unknown",
+    ],
+  },
   sortPackageJson: false,
 });

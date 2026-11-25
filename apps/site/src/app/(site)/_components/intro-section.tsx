@@ -1,10 +1,11 @@
 import { Suspense } from "react";
 
 import { CircleProgressQuarter } from "@keyline-icons/react";
+
 import tenderlayerIcon from "@tenderlayer/ui/assets/icon.svg";
 
-import GitHubStarCount from "./github-star-count";
 import { productTagline } from "../../_lib/product-metadata";
+import GitHubStarCount from "./github-star-count";
 
 export default function IntroSection({ repositoryUrl }: { repositoryUrl: string }) {
   return (

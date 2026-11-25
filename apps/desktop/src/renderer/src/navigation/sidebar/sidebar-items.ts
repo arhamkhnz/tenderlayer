@@ -1,3 +1,5 @@
+import type { ComponentType } from "react";
+
 import {
   BanknoteIcon,
   BotIcon,
@@ -10,7 +12,6 @@ import {
   UsersIcon,
   type IconProps,
 } from "@keyline-icons/react";
-import type { ComponentType } from "react";
 
 import type { FileRouteTypes } from "@/routeTree.gen";
 

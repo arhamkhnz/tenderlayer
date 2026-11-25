@@ -1,16 +1,18 @@
-import { Outlet } from "@tanstack/react-router";
-import { SearchIcon } from "@keyline-icons/react";
 import type { CSSProperties } from "react";
+
+import { SearchIcon } from "@keyline-icons/react";
+import { Outlet } from "@tanstack/react-router";
 import { cn } from "cn";
 
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@tenderlayer/ui/components/input-group";
 import { SidebarProvider, useSidebar } from "@tenderlayer/ui/components/sidebar";
 import { TooltipProvider } from "@tenderlayer/ui/components/tooltip";
+
 import { usePreferences } from "@/app/preferences";
 
-import { AppSidebar } from "./sidebar/app-sidebar";
 import { AppHeader } from "./app-header";
 import { HeaderActions } from "./header-actions";
+import { AppSidebar } from "./sidebar/app-sidebar";
 import { useWindowFullscreen } from "./use-window-fullscreen";
 
 function MainHeader({ isFullscreen }: { isFullscreen: boolean }) {

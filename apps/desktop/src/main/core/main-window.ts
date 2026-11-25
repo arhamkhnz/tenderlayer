@@ -1,7 +1,8 @@
-import { BrowserWindow, nativeTheme } from "electron/main";
 import { shell } from "electron";
-import { isMacOS } from "../../shared/platform.js";
+import { BrowserWindow, nativeTheme } from "electron/main";
+
 import { windowStateIpcChannels } from "../../shared/contracts/window-state.js";
+import { isMacOS } from "../../shared/platform.js";
 import { supportEmail } from "../../shared/support.js";
 import { isTrustedRendererUrl, preloadPath, rendererPageUrl } from "./renderer-protocol.js";
 

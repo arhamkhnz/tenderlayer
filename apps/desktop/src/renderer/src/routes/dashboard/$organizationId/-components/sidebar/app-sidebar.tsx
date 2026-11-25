@@ -1,19 +1,8 @@
+import type { CSSProperties } from "react";
+
 import { ChevronsUpDownIcon, PlusIcon } from "@keyline-icons/react";
 import { Link, useLoaderData, useNavigate } from "@tanstack/react-router";
-import type { CSSProperties } from "react";
-import { getAvatarColors } from "@tenderlayer/ui/lib/avatar-colors";
-import { getInitials } from "@tenderlayer/ui/lib/utils";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarSeparator,
-  useSidebar,
-} from "@tenderlayer/ui/components/sidebar";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +14,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@tenderlayer/ui/components/dropdown-menu";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarSeparator,
+  useSidebar,
+} from "@tenderlayer/ui/components/sidebar";
+import { getAvatarColors } from "@tenderlayer/ui/lib/avatar-colors";
+import { getInitials } from "@tenderlayer/ui/lib/utils";
+
 import { sidebarFooterItems, sidebarItems } from "@/navigation/sidebar/sidebar-items";
 import { isMacOS } from "@shared/platform";
 

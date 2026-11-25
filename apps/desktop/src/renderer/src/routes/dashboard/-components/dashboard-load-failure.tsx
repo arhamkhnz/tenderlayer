@@ -1,6 +1,8 @@
 import { useRouter } from "@tanstack/react-router";
+
 import { Button, buttonVariants } from "@tenderlayer/ui/components/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@tenderlayer/ui/components/card";
+
 import { supportEmail } from "@shared/support";
 
 export function DashboardLoadFailure() {

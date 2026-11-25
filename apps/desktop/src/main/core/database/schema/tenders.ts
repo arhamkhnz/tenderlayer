@@ -1,4 +1,5 @@
 import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+
 import { id, syncColumns } from "./common.js";
 import { organizations } from "./organizations.js";
 

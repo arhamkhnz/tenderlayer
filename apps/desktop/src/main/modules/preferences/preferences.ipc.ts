@@ -1,5 +1,6 @@
 import { ipcMain, nativeTheme } from "electron/main";
 import { z } from "zod";
+
 import { preferenceIpcChannels } from "../../../shared/contracts/preferences.js";
 import { assertTrustedSender } from "../../core/ipc-security.js";
 import { getPreferences, setLastOpenedOrganizationId, setSidebarOpen, setTheme } from "../../core/preferences.js";

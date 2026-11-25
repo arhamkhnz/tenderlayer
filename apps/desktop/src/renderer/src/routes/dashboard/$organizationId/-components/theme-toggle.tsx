@@ -1,5 +1,7 @@
 import { MonitorIcon, MoonIcon, SunIcon } from "@keyline-icons/react";
+
 import { Button } from "@tenderlayer/ui/components/button";
+
 import { usePreferences } from "@/app/preferences";
 
 const themeCycle = ["light", "dark", "system"] as const;

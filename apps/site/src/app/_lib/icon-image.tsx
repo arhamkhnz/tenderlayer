@@ -1,4 +1,5 @@
 import { Buffer } from "node:buffer";
+
 import { ImageResponse } from "next/og";
 
 import icon from "@tenderlayer/ui/assets/icon.svg?raw";

@@ -24,9 +24,8 @@ import {
 } from "@tenderlayer/ui/components/select";
 
 import { FinanceStatusBadge } from "../../-components/finance-status-badge";
-import { DataCard, KeyValueGrid, PageHeader, StaticTable } from "../../-components/screen";
-
 import { RecordsTable, type RecordColumn } from "../../-components/records-table";
+import { DataCard, KeyValueGrid, PageHeader, StaticTable } from "../../-components/screen";
 
 const payrollRuns = [
   {

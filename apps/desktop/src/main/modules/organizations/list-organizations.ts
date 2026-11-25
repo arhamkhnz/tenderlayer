@@ -1,4 +1,5 @@
 import { asc, isNull } from "drizzle-orm";
+
 import { getDatabase } from "../../core/database/client.js";
 import { organizations, type Organization } from "../../core/database/schema/organizations.js";
 

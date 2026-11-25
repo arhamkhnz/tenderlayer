@@ -4,10 +4,11 @@ import { Link } from "@tanstack/react-router";
 import { Avatar, AvatarFallback } from "@tenderlayer/ui/components/avatar";
 import { Badge } from "@tenderlayer/ui/components/badge";
 import { Button } from "@tenderlayer/ui/components/button";
-import { EmployeeDataTable } from "./employee-data-table";
-import { employees } from "./data";
-import { NewEmployeeDrawer } from "./new-employee-drawer";
+
 import { DataCard, KeyValueGrid, StaticStatus, StaticTable } from "../../-components/screen";
+import { employees } from "./data";
+import { EmployeeDataTable } from "./employee-data-table";
+import { NewEmployeeDrawer } from "./new-employee-drawer";
 
 export function EmployeesScreen({ openNewEmployee = false }: { openNewEmployee?: boolean } = {}) {
   return (

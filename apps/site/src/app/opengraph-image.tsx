@@ -1,8 +1,9 @@
+import { Buffer } from "node:buffer";
+
 import { ImageResponse } from "next/og";
 
-import fontData from "./fonts/og-fonts.json";
-import { Buffer } from "node:buffer";
 import { productCategory, seoDescription, seoTitle } from "./_lib/product-metadata";
+import fontData from "./fonts/og-fonts.json";
 
 export const alt = seoTitle;
 export const size = { width: 1200, height: 630 };

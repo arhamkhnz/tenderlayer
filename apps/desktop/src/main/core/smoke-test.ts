@@ -1,5 +1,6 @@
-import { app, type BrowserWindow } from "electron/main";
 import path from "node:path";
+
+import { app, type BrowserWindow } from "electron/main";
 
 export const isSmokeTest = process.argv.includes("--smoke-test");
 

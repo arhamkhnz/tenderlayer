@@ -1,6 +1,7 @@
+import type { Metadata } from "next";
+
 import { fontMono, fontSans, fontSerif } from "@tenderlayer/fonts/next";
 
-import type { Metadata } from "next";
 import { seoDescription as description, seoTitle as title } from "./_lib/product-metadata";
 
 import "@tenderlayer/ui/globals.css";

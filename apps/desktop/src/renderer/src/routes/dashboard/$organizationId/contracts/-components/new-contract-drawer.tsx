@@ -1,7 +1,8 @@
+import { useState } from "react";
+
+import { zodResolver } from "@hookform/resolvers/zod";
 import { FilePlusIcon } from "@keyline-icons/react";
 import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 
@@ -20,7 +21,6 @@ import {
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@tenderlayer/ui/components/field";
 import { Input } from "@tenderlayer/ui/components/input";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@tenderlayer/ui/components/input-group";
-import { Separator } from "@tenderlayer/ui/components/separator";
 import {
   Select,
   SelectContent,
@@ -29,10 +29,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@tenderlayer/ui/components/select";
+import { Separator } from "@tenderlayer/ui/components/separator";
 import { Textarea } from "@tenderlayer/ui/components/textarea";
-import { indianStatesAndUTs } from "../../../../../../../shared/reference-data";
 
 import { StatePicker } from "../../-components/state-picker";
+import { indianStatesAndUTs } from "../../../../../../../shared/reference-data";
 import { departments } from "../../departments/-components/data";
 import { ContractDatePicker } from "./contract-date-picker";
 

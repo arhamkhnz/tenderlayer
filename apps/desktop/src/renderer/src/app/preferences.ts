@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+
 import type { AppPreferences, ThemePreference } from "../../../shared/contracts/preferences";
 
 export function applyTheme(theme: ThemePreference) {

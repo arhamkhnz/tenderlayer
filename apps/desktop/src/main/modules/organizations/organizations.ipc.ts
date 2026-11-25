@@ -1,4 +1,5 @@
 import { ipcMain } from "electron/main";
+
 import { organizationIpcChannels, type OrganizationRecord } from "../../../shared/contracts/organizations.js";
 import { assertTrustedSender } from "../../core/ipc-security.js";
 import { createOrganization } from "./create-organization.js";
