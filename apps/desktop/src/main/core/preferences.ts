@@ -7,10 +7,11 @@ let preferencesStore: Store<AppPreferences> | undefined;
 function getPreferencesStore() {
   preferencesStore ??= new Store<AppPreferences>({
     name: "preferences",
-    defaults: { theme: "system", sidebarOpen: true },
+    defaults: { theme: "system", sidebarOpen: true, lastOpenedOrganizationId: null },
     schema: {
       theme: { type: "string", enum: ["light", "dark", "system"] },
       sidebarOpen: { type: "boolean" },
+      lastOpenedOrganizationId: { type: ["string", "null"] },
     },
   });
   return preferencesStore;
@@ -18,7 +19,11 @@ function getPreferencesStore() {
 
 export function getPreferences(): AppPreferences {
   const store = getPreferencesStore();
-  return { theme: store.get("theme"), sidebarOpen: store.get("sidebarOpen") };
+  return {
+    theme: store.get("theme"),
+    sidebarOpen: store.get("sidebarOpen"),
+    lastOpenedOrganizationId: store.get("lastOpenedOrganizationId"),
+  };
 }
 
 export function setTheme(theme: ThemePreference) {
@@ -28,4 +33,8 @@ export function setTheme(theme: ThemePreference) {
 
 export function setSidebarOpen(open: boolean) {
   getPreferencesStore().set("sidebarOpen", open);
+}
+
+export function setLastOpenedOrganizationId(organizationId: string) {
+  getPreferencesStore().set("lastOpenedOrganizationId", organizationId);
 }

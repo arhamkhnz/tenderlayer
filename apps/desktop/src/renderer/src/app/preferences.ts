@@ -22,6 +22,7 @@ interface PreferencesContextValue extends AppPreferences {
   isDark: boolean;
   setTheme: (theme: ThemePreference) => Promise<void>;
   setSidebarOpen: (open: boolean) => Promise<void>;
+  setLastOpenedOrganizationId: (organizationId: string) => Promise<void>;
 }
 
 export const PreferencesContext = createContext<PreferencesContextValue | null>(null);

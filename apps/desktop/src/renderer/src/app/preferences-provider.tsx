@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import type { AppPreferences, ThemePreference } from "../../../shared/contracts/preferences";
 import { applyTheme, PreferencesContext } from "./preferences";
 
@@ -39,8 +39,19 @@ export function PreferencesProvider({
     }
   }
 
+  const setLastOpenedOrganizationId = useCallback(async (lastOpenedOrganizationId: string) => {
+    setPreferences((current) => ({ ...current, lastOpenedOrganizationId }));
+    try {
+      await window.electronAPI.preferences.setLastOpenedOrganizationId(lastOpenedOrganizationId);
+    } catch (error) {
+      console.error("Failed to save the last opened organization", error);
+    }
+  }, []);
+
   return (
-    <PreferencesContext.Provider value={{ ...preferences, isDark, setTheme, setSidebarOpen }}>
+    <PreferencesContext.Provider
+      value={{ ...preferences, isDark, setTheme, setSidebarOpen, setLastOpenedOrganizationId }}
+    >
       {children}
     </PreferencesContext.Provider>
   );

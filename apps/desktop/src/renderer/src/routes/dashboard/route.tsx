@@ -1,4 +1,5 @@
 import { createFileRoute, Navigate, Outlet, redirect, useLocation } from "@tanstack/react-router";
+import { usePreferences } from "@/app/preferences";
 import { DashboardLoadFailure } from "./-components/dashboard-load-failure";
 
 export const Route = createFileRoute("/dashboard")({
@@ -17,11 +18,13 @@ export const Route = createFileRoute("/dashboard")({
 });
 
 function DashboardRoute() {
-  const { firstOrganization } = Route.useLoaderData();
+  const { organizations, firstOrganization } = Route.useLoaderData();
+  const { lastOpenedOrganizationId } = usePreferences();
   const pathname = useLocation({ select: (location) => location.pathname });
 
   if (pathname === "/dashboard" || pathname === "/dashboard/") {
-    return <Navigate to="/dashboard/$organizationId" params={{ organizationId: firstOrganization.id }} replace />;
+    const organization = organizations.find(({ id }) => id === lastOpenedOrganizationId) ?? firstOrganization;
+    return <Navigate to="/dashboard/$organizationId" params={{ organizationId: organization.id }} replace />;
   }
 
   return <Outlet />;

@@ -1,7 +1,9 @@
 import { createFileRoute, Link, notFound, useLoaderData } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 import { buttonVariants } from "@tenderlayer/ui/components/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@tenderlayer/ui/components/card";
+import { usePreferences } from "@/app/preferences";
 import { DashboardLayout } from "./-components/layout";
 
 export const Route = createFileRoute("/dashboard/$organizationId")({
@@ -24,6 +26,12 @@ export const Route = createFileRoute("/dashboard/$organizationId")({
 
 function OrganizationDashboard() {
   const { organizationId } = Route.useParams();
+  const { lastOpenedOrganizationId, setLastOpenedOrganizationId } = usePreferences();
+
+  useEffect(() => {
+    if (organizationId !== lastOpenedOrganizationId) void setLastOpenedOrganizationId(organizationId);
+  }, [lastOpenedOrganizationId, organizationId, setLastOpenedOrganizationId]);
+
   return <DashboardLayout key={organizationId} />;
 }
 
