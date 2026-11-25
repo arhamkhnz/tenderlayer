@@ -1,9 +1,10 @@
 import { shell } from "electron";
 import { BrowserWindow, nativeTheme } from "electron/main";
 
-import { windowStateIpcChannels } from "../../shared/contracts/window-state.js";
-import { isMacOS } from "../../shared/platform.js";
-import { supportEmail } from "../../shared/support.js";
+import { windowStateIpcChannels } from "@shared/contracts/window-state";
+import { isMacOS } from "@shared/platform";
+import { supportEmail } from "@shared/support";
+
 import { isTrustedRendererUrl, preloadPath, rendererPageUrl } from "./renderer-protocol.js";
 
 function isSafeExternalUrl(url: string) {

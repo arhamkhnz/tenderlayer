@@ -32,8 +32,9 @@ import {
 import { Separator } from "@tenderlayer/ui/components/separator";
 import { Textarea } from "@tenderlayer/ui/components/textarea";
 
+import { indianStatesAndUTs } from "@shared/reference-data";
+
 import { StatePicker } from "../../-components/state-picker";
-import { indianStatesAndUTs } from "../../../../../../../shared/reference-data";
 import { departments } from "../../departments/-components/data";
 import { ContractDatePicker } from "./contract-date-picker";
 

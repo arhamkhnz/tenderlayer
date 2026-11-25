@@ -1,7 +1,7 @@
 import Store from "electron-store";
 import { nativeTheme } from "electron/main";
 
-import type { AppPreferences, ThemePreference } from "../../shared/contracts/preferences.js";
+import type { AppPreferences, ThemePreference } from "@shared/contracts/preferences";
 
 let preferencesStore: Store<AppPreferences> | undefined;
 

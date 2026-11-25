@@ -3,6 +3,9 @@
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    "paths": {
+      "@shared/*": ["./src/shared/*.ts"]
+    },
     "types": ["node", "electron"],
     "rootDir": "src",
     "composite": true,

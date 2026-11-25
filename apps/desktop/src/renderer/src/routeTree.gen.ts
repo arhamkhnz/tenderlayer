@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardOrganizationIdRouteRouteImport } from './routes/dashboard/$organizationId/route'
 import { Route as DashboardOrganizationIdIndexRouteImport } from './routes/dashboard/$organizationId/index'
 import { Route as DashboardOrganizationIdAgentRouteImport } from './routes/dashboard/$organizationId/agent'
@@ -53,6 +54,11 @@ const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
   path: '/welcome',
   getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardOrganizationIdRouteRoute =
   DashboardOrganizationIdRouteRouteImport.update({
@@ -216,6 +222,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/welcome': typeof WelcomeRoute
   '/dashboard/$organizationId': typeof DashboardOrganizationIdRouteRouteWithChildren
+  '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/$organizationId/agent': typeof DashboardOrganizationIdAgentRoute
   '/dashboard/$organizationId/': typeof DashboardOrganizationIdIndexRoute
   '/dashboard/$organizationId/contracts/$contractId': typeof DashboardOrganizationIdContractsContractIdRouteRouteWithChildren
@@ -244,8 +251,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/welcome': typeof WelcomeRoute
+  '/dashboard': typeof DashboardIndexRoute
   '/dashboard/$organizationId/agent': typeof DashboardOrganizationIdAgentRoute
   '/dashboard/$organizationId': typeof DashboardOrganizationIdIndexRoute
   '/dashboard/$organizationId/contracts/new': typeof DashboardOrganizationIdContractsNewRoute
@@ -277,6 +284,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/welcome': typeof WelcomeRoute
   '/dashboard/$organizationId': typeof DashboardOrganizationIdRouteRouteWithChildren
+  '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/$organizationId/agent': typeof DashboardOrganizationIdAgentRoute
   '/dashboard/$organizationId/': typeof DashboardOrganizationIdIndexRoute
   '/dashboard/$organizationId/contracts/$contractId': typeof DashboardOrganizationIdContractsContractIdRouteRouteWithChildren
@@ -310,6 +318,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/welcome'
     | '/dashboard/$organizationId'
+    | '/dashboard/'
     | '/dashboard/$organizationId/agent'
     | '/dashboard/$organizationId/'
     | '/dashboard/$organizationId/contracts/$contractId'
@@ -338,8 +347,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/dashboard'
     | '/welcome'
+    | '/dashboard'
     | '/dashboard/$organizationId/agent'
     | '/dashboard/$organizationId'
     | '/dashboard/$organizationId/contracts/new'
@@ -370,6 +379,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/welcome'
     | '/dashboard/$organizationId'
+    | '/dashboard/'
     | '/dashboard/$organizationId/agent'
     | '/dashboard/$organizationId/'
     | '/dashboard/$organizationId/contracts/$contractId'
@@ -425,6 +435,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/welcome'
       preLoaderRoute: typeof WelcomeRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/$organizationId': {
       id: '/dashboard/$organizationId'
@@ -710,11 +727,13 @@ const DashboardOrganizationIdRouteRouteWithChildren =
 
 interface DashboardRouteRouteChildren {
   DashboardOrganizationIdRouteRoute: typeof DashboardOrganizationIdRouteRouteWithChildren
+  DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardOrganizationIdRouteRoute:
     DashboardOrganizationIdRouteRouteWithChildren,
+  DashboardIndexRoute: DashboardIndexRoute,
 }
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(

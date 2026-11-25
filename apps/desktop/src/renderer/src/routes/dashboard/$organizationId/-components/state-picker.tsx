@@ -10,7 +10,7 @@ import {
 } from "@tenderlayer/ui/components/combobox";
 import { Input } from "@tenderlayer/ui/components/input";
 
-import { indianStatesAndUTs } from "../../../../../../shared/reference-data";
+import { indianStatesAndUTs } from "@shared/reference-data";
 
 export function StatePicker({
   id,

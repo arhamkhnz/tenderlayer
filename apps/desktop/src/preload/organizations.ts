@@ -1,6 +1,6 @@
 import { ipcRenderer } from "electron/renderer";
 
-import { organizationIpcChannels, type OrganizationsApi } from "../shared/contracts/organizations.js";
+import { organizationIpcChannels, type OrganizationsApi } from "@shared/contracts/organizations";
 
 export const organizationsApi = {
   create: (input) =>

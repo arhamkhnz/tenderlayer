@@ -1,6 +1,7 @@
 import { contextBridge } from "electron/renderer";
 
-import type { ElectronApi, ElectronPlatform } from "../shared/electron-api.js";
+import type { ElectronApi, ElectronPlatform } from "@shared/electron-api";
+
 import { organizationsApi } from "./organizations.js";
 import { preferencesApi } from "./preferences.js";
 import { windowStateApi } from "./window-state.js";

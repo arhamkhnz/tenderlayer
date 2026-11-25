@@ -8,7 +8,7 @@ import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@te
 import { Input } from "@tenderlayer/ui/components/input";
 import { Spinner } from "@tenderlayer/ui/components/spinner";
 
-import { createOrganizationSchema } from "../../../shared/schemas/organizations";
+import { createOrganizationSchema } from "@shared/schemas/organizations";
 
 export const Route = createFileRoute("/welcome")({
   component: WelcomePage,

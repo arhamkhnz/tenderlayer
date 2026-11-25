@@ -1,4 +1,5 @@
-import { organizationSlugSchema, parseCreateOrganizationInput } from "../../../shared/schemas/organizations.js";
+import { organizationSlugSchema, parseCreateOrganizationInput } from "@shared/schemas/organizations";
+
 import { getDatabase } from "../../core/database/client.js";
 import { organizations, type Organization } from "../../core/database/schema/organizations.js";
 import { createOrganizationSlug } from "./create-organization-slug.js";

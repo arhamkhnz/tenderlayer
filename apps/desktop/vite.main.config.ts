@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { builtinModules } from "node:module";
+import { fileURLToPath } from "node:url";
 
 import { defineConfig } from "vite";
 
@@ -21,6 +22,11 @@ function isExternal(id: string) {
 }
 
 export default defineConfig(({ mode }) => ({
+  resolve: {
+    alias: {
+      "@shared": fileURLToPath(new URL("./src/shared", import.meta.url)),
+    },
+  },
   build: {
     copyPublicDir: false,
     emptyOutDir: true,

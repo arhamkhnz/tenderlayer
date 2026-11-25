@@ -1,6 +1,6 @@
 import { ipcRenderer, type IpcRendererEvent } from "electron/renderer";
 
-import { windowStateIpcChannels, type WindowStateApi } from "../shared/contracts/window-state.js";
+import { windowStateIpcChannels, type WindowStateApi } from "@shared/contracts/window-state";
 
 export const windowStateApi = {
   getFullscreen: () => ipcRenderer.invoke(windowStateIpcChannels.getFullscreen) as Promise<boolean>,

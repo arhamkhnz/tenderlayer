@@ -59,8 +59,9 @@ export function AppSidebar({ isFullscreen }: { isFullscreen: boolean }) {
   const { state, isMobile } = useSidebar();
   const isCollapsed = state === "collapsed" && !isMobile;
   const needsTitlebarClearance = isMobile && !isFullscreen && isMacOS(window.electronAPI.platform);
-  const { organization, organizations } = useLoaderData({ from: "/dashboard/$organizationId" });
-  const name = organization.name;
+  const { availableOrganizations } = useLoaderData({ from: "/dashboard" });
+  const { activeOrganization } = useLoaderData({ from: "/dashboard/$organizationId" });
+  const { id: activeOrganizationId, name } = activeOrganization;
   const navigate = useNavigate({ from: "/dashboard/$organizationId" });
   const avatar = <OrganizationAvatar name={name} />;
 
@@ -98,17 +99,17 @@ export function AppSidebar({ isFullscreen }: { isFullscreen: boolean }) {
                 <DropdownMenuGroup>
                   <DropdownMenuLabel>Organizations</DropdownMenuLabel>
                   <DropdownMenuRadioGroup
-                    value={organization.id}
+                    value={activeOrganizationId}
                     onValueChange={(organizationId) => {
                       if (
-                        organizationId === organization.id ||
-                        !organizations.some((item) => item.id === organizationId)
+                        organizationId === activeOrganizationId ||
+                        !availableOrganizations.some((item) => item.id === organizationId)
                       )
                         return;
                       void navigate({ to: "/dashboard/$organizationId", params: { organizationId } });
                     }}
                   >
-                    {organizations.map((item) => (
+                    {availableOrganizations.map((item) => (
                       <DropdownMenuRadioItem key={item.id} value={item.id}>
                         <OrganizationAvatar name={item.name} />
                         <span className="truncate">{item.name}</span>

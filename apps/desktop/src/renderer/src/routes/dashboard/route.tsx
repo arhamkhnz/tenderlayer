@@ -1,6 +1,4 @@
-import { createFileRoute, Navigate, Outlet, redirect, useLocation } from "@tanstack/react-router";
-
-import { usePreferences } from "@/app/preferences";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 import { DashboardLoadFailure } from "./-components/dashboard-load-failure";
 
@@ -9,25 +7,12 @@ export const Route = createFileRoute("/dashboard")({
   loader: {
     staleReloadMode: "blocking",
     handler: async () => {
-      const organizations = await window.electronAPI.organizations.list();
-      const firstOrganization = organizations[0];
+      const availableOrganizations = await window.electronAPI.organizations.list();
+      const firstOrganization = availableOrganizations[0];
       if (!firstOrganization) throw redirect({ to: "/welcome", replace: true });
-      return { organizations, firstOrganization };
+      return { availableOrganizations, firstOrganization };
     },
   },
-  component: DashboardRoute,
+  component: Outlet,
   errorComponent: DashboardLoadFailure,
 });
-
-function DashboardRoute() {
-  const { organizations, firstOrganization } = Route.useLoaderData();
-  const { lastOpenedOrganizationId } = usePreferences();
-  const pathname = useLocation({ select: (location) => location.pathname });
-
-  if (pathname === "/dashboard" || pathname === "/dashboard/") {
-    const organization = organizations.find(({ id }) => id === lastOpenedOrganizationId) ?? firstOrganization;
-    return <Navigate to="/dashboard/$organizationId" params={{ organizationId: organization.id }} replace />;
-  }
-
-  return <Outlet />;
-}

@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 
-import type { AppPreferences, ThemePreference } from "../../../shared/contracts/preferences";
+import type { AppPreferences, ThemePreference } from "@shared/contracts/preferences";
 
 export function applyTheme(theme: ThemePreference) {
   const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);

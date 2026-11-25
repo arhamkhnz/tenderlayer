@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState, type ReactNode } from "react";
 
-import type { AppPreferences, ThemePreference } from "../../../shared/contracts/preferences";
+import type { AppPreferences, ThemePreference } from "@shared/contracts/preferences";
+
 import { applyTheme, PreferencesContext } from "./preferences";
 
 export function PreferencesProvider({

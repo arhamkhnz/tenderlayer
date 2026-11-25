@@ -1,4 +1,4 @@
-import { organizationSlugMaxLength } from "../../../shared/schemas/organizations.js";
+import { organizationSlugMaxLength } from "@shared/schemas/organizations";
 
 export function createOrganizationSlug(name: string) {
   const slug = name

@@ -15,13 +15,13 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@tenderlayer/ui/components/tabs";
 import { Textarea } from "@tenderlayer/ui/components/textarea";
 
-import { indianStatesAndUTs, organizationTypes } from "../../../../../../../shared/reference-data";
+import { indianStatesAndUTs, organizationTypes } from "@shared/reference-data";
 
 const organizationTypeOptions = [{ value: null, label: "Select organization type" }, ...organizationTypes];
 const registrationStateOptions = indianStatesAndUTs.map((state) => ({ label: state, value: state }));
 
 export function OrganizationSettingsScreen() {
-  const { organization } = useLoaderData({ from: "/dashboard/$organizationId" });
+  const { activeOrganization } = useLoaderData({ from: "/dashboard/$organizationId" });
   return (
     <section
       data-content-padding="false"
@@ -89,7 +89,7 @@ export function OrganizationSettingsScreen() {
                   <FieldLabel className="font-normal" htmlFor="org-name">
                     Organization name
                   </FieldLabel>
-                  <Input id="org-name" defaultValue={organization.name} />
+                  <Input id="org-name" defaultValue={activeOrganization.name} />
                   <FieldDescription>Your workspace name. A short name or abbreviation is fine.</FieldDescription>
                 </Field>
                 <Field className="gap-1">
