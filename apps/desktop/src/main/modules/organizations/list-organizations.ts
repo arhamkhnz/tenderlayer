@@ -1,7 +1,7 @@
 import { asc, isNull } from "drizzle-orm";
 
-import { getDatabase } from "../../core/database/client.js";
-import { organizations, type Organization } from "../../core/database/schema/organizations.js";
+import { getDatabase } from "@db/client";
+import { organizations, type Organization } from "@db/schema/organizations";
 
 export function listOrganizations(): Organization[] {
   return getDatabase()

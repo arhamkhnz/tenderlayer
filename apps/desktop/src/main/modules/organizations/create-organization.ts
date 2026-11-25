@@ -1,31 +1,40 @@
-import { organizationSlugSchema, parseCreateOrganizationInput } from "@shared/schemas/organizations";
+import { eq } from "drizzle-orm";
 
-import { getDatabase } from "../../core/database/client.js";
-import { organizations, type Organization } from "../../core/database/schema/organizations.js";
+import { getDatabase } from "@db/client";
+import { organizations, type Organization } from "@db/schema/organizations";
+import { organizationSlugMaxLength, type CreateOrganizationInput } from "@shared/schemas/organizations";
+
 import { createOrganizationSlug } from "./create-organization-slug.js";
 
-export function createOrganization(input: unknown): Organization {
-  const organizationInput = parseCreateOrganizationInput(input);
+export function createOrganization({ name }: CreateOrganizationInput): Organization | undefined {
+  return getDatabase().transaction(
+    (transaction) => {
+      const existing = transaction
+        .select({ id: organizations.id })
+        .from(organizations)
+        .where(eq(organizations.name, name))
+        .get();
 
-  return getDatabase().transaction((transaction) => {
-    const now = Date.now();
-    const slug = organizationSlugSchema.parse(createOrganizationSlug(organizationInput.name));
-    const organization = transaction
-      .insert(organizations)
-      .values({
-        name: organizationInput.name,
-        slug,
-        createdAt: now,
-        updatedAt: now,
-      })
-      .returning()
-      .get();
+      if (existing) return undefined;
 
-    if (!organization) {
-      throw new Error("Failed to create organization");
-    }
+      const baseSlug = createOrganizationSlug(name);
 
-    // Future cloud sync: enqueue an outbox event using this transaction before returning.
-    return organization;
-  });
+      for (let attempt = 1; ; attempt++) {
+        const suffix = attempt === 1 ? "" : `-${attempt}`;
+        const slug = baseSlug.slice(0, organizationSlugMaxLength - suffix.length).replace(/-+$/, "") + suffix;
+        const organization = transaction
+          .insert(organizations)
+          .values({ name, slug })
+          .onConflictDoNothing({ target: organizations.slug })
+          .returning()
+          .get();
+
+        if (organization) {
+          // Future cloud sync: enqueue an outbox event using this transaction before returning.
+          return organization;
+        }
+      }
+    },
+    { behavior: "immediate" },
+  );
 }

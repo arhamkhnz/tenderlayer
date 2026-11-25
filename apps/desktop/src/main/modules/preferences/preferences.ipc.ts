@@ -1,10 +1,9 @@
 import { ipcMain, nativeTheme } from "electron/main";
 import { z } from "zod";
 
+import { assertTrustedSender } from "@core/ipc-security";
+import { getPreferences, setLastOpenedOrganizationId, setSidebarOpen, setTheme } from "@core/preferences";
 import { preferenceIpcChannels } from "@shared/contracts/preferences";
-
-import { assertTrustedSender } from "../../core/ipc-security.js";
-import { getPreferences, setLastOpenedOrganizationId, setSidebarOpen, setTheme } from "../../core/preferences.js";
 
 const themeSchema = z.enum(["light", "dark", "system"]);
 const sidebarOpenSchema = z.boolean();

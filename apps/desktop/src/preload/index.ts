@@ -2,6 +2,7 @@ import { contextBridge } from "electron/renderer";
 
 import type { ElectronApi, ElectronPlatform } from "@shared/electron-api";
 
+import { departmentsApi } from "./departments.js";
 import { organizationsApi } from "./organizations.js";
 import { preferencesApi } from "./preferences.js";
 import { windowStateApi } from "./window-state.js";
@@ -13,6 +14,7 @@ const electronApi = {
     electron: process.versions.electron,
     node: process.versions.node,
   },
+  departments: departmentsApi,
   organizations: organizationsApi,
   preferences: preferencesApi,
   windowState: windowStateApi,

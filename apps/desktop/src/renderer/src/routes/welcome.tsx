@@ -29,27 +29,24 @@ function WelcomePage() {
   });
 
   async function handleSubmit(values: OrganizationFormValues) {
-    const result = createOrganizationSchema.safeParse(values);
-
-    if (!result.success) {
-      form.setError("name", {
-        message: result.error.issues[0]?.message ?? "Enter a valid organization name",
-      });
-      return;
-    }
-
     try {
-      const organization = await window.electronAPI.organizations.create(result.data);
-      await navigate({ to: "/dashboard/$organizationId", params: { organizationId: organization.id } });
-    } catch (creationError) {
-      const message = creationError instanceof Error ? creationError.message : "";
+      const result = await window.electronAPI.organizations.create(values);
+      if (!result.ok) {
+        form.setError(
+          "name",
+          { type: "server", message: "An organization with this name already exists" },
+          { shouldFocus: true },
+        );
+        return;
+      }
+
+      await navigate({ to: "/dashboard/$organizationId", params: { organizationId: result.organization.id } });
+    } catch {
       form.setError(
         "name",
         {
           type: "server",
-          message: message.includes("UNIQUE constraint failed")
-            ? "An organization with this name already exists"
-            : "Unable to create the organization. Please try again.",
+          message: "Unable to create the organization. Please try again.",
         },
         { shouldFocus: true },
       );

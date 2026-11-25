@@ -1,8 +1,7 @@
 import { BrowserWindow, ipcMain } from "electron/main";
 
+import { assertTrustedSender } from "@core/ipc-security";
 import { windowStateIpcChannels } from "@shared/contracts/window-state";
-
-import { assertTrustedSender } from "../../core/ipc-security.js";
 
 export function registerWindowStateIpcHandlers() {
   ipcMain.handle(windowStateIpcChannels.getFullscreen, (event) => {
