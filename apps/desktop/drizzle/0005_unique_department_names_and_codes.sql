@@ -1,2 +1,0 @@
-CREATE UNIQUE INDEX `departments_organization_name_unique` ON `departments` (`organization_id`,`name`) WHERE "departments"."deleted_at" is null;--> statement-breakpoint
-CREATE UNIQUE INDEX `departments_organization_code_unique` ON `departments` (`organization_id`,`code`) WHERE "departments"."deleted_at" is null;

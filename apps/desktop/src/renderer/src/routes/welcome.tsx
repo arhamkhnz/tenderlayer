@@ -1,34 +1,28 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
 
 import { Button } from "@tenderlayer/ui/components/button";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@tenderlayer/ui/components/field";
 import { Input } from "@tenderlayer/ui/components/input";
 import { Spinner } from "@tenderlayer/ui/components/spinner";
 
-import { createOrganizationSchema } from "@shared/schemas/organizations";
+import { createOrganizationSchema, type CreateOrganizationInput } from "@shared/schemas/organizations";
 
 export const Route = createFileRoute("/welcome")({
   component: WelcomePage,
 });
 
-const organizationFormSchema = createOrganizationSchema.pick({ name: true });
-
-type OrganizationFormInput = z.input<typeof organizationFormSchema>;
-type OrganizationFormValues = z.output<typeof organizationFormSchema>;
-
 function WelcomePage() {
   const navigate = useNavigate();
-  const form = useForm<OrganizationFormInput, unknown, OrganizationFormValues>({
-    resolver: zodResolver(organizationFormSchema),
+  const form = useForm<CreateOrganizationInput>({
+    resolver: zodResolver(createOrganizationSchema),
     defaultValues: {
       name: "",
     },
   });
 
-  async function handleSubmit(values: OrganizationFormValues) {
+  async function handleSubmit(values: CreateOrganizationInput) {
     try {
       const result = await window.electronAPI.organizations.create(values);
       if (!result.ok) {
@@ -76,7 +70,7 @@ function WelcomePage() {
                 name="name"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} data-disabled={form.formState.isSubmitting}>
+                  <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="organization-name">Organization name</FieldLabel>
                     <Input
                       {...field}
@@ -88,7 +82,7 @@ function WelcomePage() {
                       aria-describedby={
                         fieldState.invalid ? "organization-name-error" : "organization-name-description"
                       }
-                      disabled={form.formState.isSubmitting}
+                      readOnly={form.formState.isSubmitting}
                       required
                     />
                     {fieldState.invalid ? (

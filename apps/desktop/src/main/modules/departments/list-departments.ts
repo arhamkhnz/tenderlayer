@@ -21,6 +21,6 @@ export function listDepartments(organizationId: string): DepartmentRecord[] {
         isNull(organizations.deletedAt),
       ),
     )
-    .orderBy(asc(departments.name), asc(departments.id))
+    .orderBy(asc(departments.name))
     .all();
 }

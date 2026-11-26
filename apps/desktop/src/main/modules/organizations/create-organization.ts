@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { and, isNull, sql } from "drizzle-orm";
 
 import { getDatabase } from "@db/client";
 import { organizations } from "@db/schema/organizations";
@@ -13,7 +13,7 @@ export function createOrganization({ name }: CreateOrganizationInput): CreateOrg
       const existing = transaction
         .select({ id: organizations.id })
         .from(organizations)
-        .where(sql`lower(${organizations.name}) = lower(${name})`)
+        .where(and(isNull(organizations.deletedAt), sql`lower(${organizations.name}) = lower(${name})`))
         .get();
 
       if (existing) {
