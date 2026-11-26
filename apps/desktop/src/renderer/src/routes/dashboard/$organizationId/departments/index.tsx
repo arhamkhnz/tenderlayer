@@ -9,7 +9,7 @@ import { toast } from "@tenderlayer/ui/components/toast";
 import { RouteErrorScreen } from "@/app/route-error-screen";
 import type { DepartmentRecord } from "@shared/contracts/departments";
 
-import { DepartmentDrawer } from "./-components/department-drawer";
+import { DepartmentDrawer, type DepartmentFormValues } from "./-components/department-drawer";
 import { DepartmentsTable } from "./-components/departments-table";
 
 export const Route = createFileRoute("/dashboard/$organizationId/departments/")({
@@ -39,10 +39,19 @@ function DepartmentsPage() {
     setDrawer((current) => ({ ...current, open: false }));
   }
 
-  function handleSaved() {
+  async function saveDepartment(values: DepartmentFormValues) {
+    const input = { ...values, organizationId };
+    const { department } = drawer;
+    const api = window.electronAPI.departments;
+
+    const result = await (department ? api.update({ ...input, departmentId: department.id }) : api.create(input));
+    if (!result.ok) return result;
+
     closeDrawer();
-    toast.add({ title: drawer.department ? "Department updated" : "Department created", type: "success" });
+    toast.add({ title: department ? "Department updated" : "Department created", type: "success" });
     void router.invalidate({ filter: (match) => match.routeId === Route.id });
+
+    return result;
   }
 
   return (
@@ -65,11 +74,10 @@ function DepartmentsPage() {
       </header>
       <DepartmentsTable departments={departments} onEdit={(department) => setDrawer({ open: true, department })} />
       <DepartmentDrawer
-        organizationId={organizationId}
         open={drawer.open}
         department={drawer.department}
         onClose={closeDrawer}
-        onSaved={handleSaved}
+        onSave={saveDepartment}
       />
     </section>
   );

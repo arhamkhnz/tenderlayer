@@ -81,7 +81,9 @@ async function checkMigration(executable, temporary, invalid = false) {
   } finally {
     backupDatabase.close();
   }
-  console.log(invalid ? "Packaged smoke test passed: migration rollback" : "Packaged smoke test passed: baseline upgrade");
+  console.log(
+    invalid ? "Packaged smoke test passed: migration rollback" : "Packaged smoke test passed: baseline upgrade",
+  );
 }
 
 function launch(executable, directory) {
@@ -159,7 +161,10 @@ try {
     assert.deepEqual(database.prepare("PRAGMA foreign_key_check").all(), []);
     assert.equal(migrationCount(database), journal.entries.length);
     const createdTables = new Set(
-      database.prepare("SELECT name FROM sqlite_schema WHERE type = 'table'").all().map(({ name }) => name),
+      database
+        .prepare("SELECT name FROM sqlite_schema WHERE type = 'table'")
+        .all()
+        .map(({ name }) => name),
     );
     for (const table of tables) assert.ok(createdTables.has(table), `Missing table ${table}`);
   } finally {
