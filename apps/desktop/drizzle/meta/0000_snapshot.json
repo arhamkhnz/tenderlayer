@@ -114,11 +114,11 @@
       "checkConstraints": {
         "departments_name_check": {
           "name": "departments_name_check",
-          "value": "length(\"departments\".\"name\") > 0 and \"departments\".\"name\" = trim(\"departments\".\"name\")"
+          "value": "length(\"departments\".\"name\") > 0 and \"departments\".\"name\" = trim(\"departments\".\"name\") and instr(\"departments\".\"name\", char(0)) = 0"
         },
         "departments_code_check": {
           "name": "departments_code_check",
-          "value": "\"departments\".\"code\" is null or (length(\"departments\".\"code\") > 0 and \"departments\".\"code\" = trim(\"departments\".\"code\"))"
+          "value": "\"departments\".\"code\" is null or (length(\"departments\".\"code\") > 0 and \"departments\".\"code\" = trim(\"departments\".\"code\") and instr(\"departments\".\"code\", char(0)) = 0)"
         }
       }
     },

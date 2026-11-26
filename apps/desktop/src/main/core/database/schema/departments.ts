@@ -23,10 +23,13 @@ export const departments = sqliteTable(
     uniqueIndex("departments_organization_code_unique")
       .on(table.organizationId, sql`lower(${sql.identifier(table.code.name)})`)
       .where(isNull(table.deletedAt)),
-    check("departments_name_check", sql`length(${table.name}) > 0 and ${table.name} = trim(${table.name})`),
+    check(
+      "departments_name_check",
+      sql`length(${table.name}) > 0 and ${table.name} = trim(${table.name}) and instr(${table.name}, char(0)) = 0`,
+    ),
     check(
       "departments_code_check",
-      sql`${table.code} is null or (length(${table.code}) > 0 and ${table.code} = trim(${table.code}))`,
+      sql`${table.code} is null or (length(${table.code}) > 0 and ${table.code} = trim(${table.code}) and instr(${table.code}, char(0)) = 0)`,
     ),
   ],
 );

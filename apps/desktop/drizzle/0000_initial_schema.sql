@@ -8,8 +8,8 @@ CREATE TABLE `departments` (
 	`deleted_at` integer,
 	`revision` integer DEFAULT 1 NOT NULL,
 	FOREIGN KEY (`organization_id`) REFERENCES `organizations`(`id`) ON UPDATE no action ON DELETE cascade,
-	CONSTRAINT "departments_name_check" CHECK(length("departments"."name") > 0 and "departments"."name" = trim("departments"."name")),
-	CONSTRAINT "departments_code_check" CHECK("departments"."code" is null or (length("departments"."code") > 0 and "departments"."code" = trim("departments"."code")))
+	CONSTRAINT "departments_name_check" CHECK(length("departments"."name") > 0 and "departments"."name" = trim("departments"."name") and instr("departments"."name", char(0)) = 0),
+	CONSTRAINT "departments_code_check" CHECK("departments"."code" is null or (length("departments"."code") > 0 and "departments"."code" = trim("departments"."code") and instr("departments"."code", char(0)) = 0))
 );
 --> statement-breakpoint
 CREATE INDEX `departments_organization_idx` ON `departments` (`organization_id`);--> statement-breakpoint

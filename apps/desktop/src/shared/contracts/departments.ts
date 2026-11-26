@@ -1,7 +1,8 @@
-import type { CreateDepartmentInput, UpdateDepartmentInput } from "../schemas/departments.js";
+import type { CreateDepartmentInput, DeleteDepartmentInput, UpdateDepartmentInput } from "../schemas/departments.js";
 
 export const departmentIpcChannels = {
   create: "departments:create",
+  delete: "departments:delete",
   list: "departments:list",
   update: "departments:update",
 } as const;
@@ -23,6 +24,7 @@ export type DepartmentSaveResult =
 
 export interface DepartmentsApi {
   create: (input: CreateDepartmentInput) => Promise<DepartmentSaveResult>;
+  delete: (input: DeleteDepartmentInput) => Promise<boolean>;
   list: (organizationId: string) => Promise<DepartmentRecord[]>;
   update: (input: UpdateDepartmentInput) => Promise<DepartmentSaveResult>;
 }

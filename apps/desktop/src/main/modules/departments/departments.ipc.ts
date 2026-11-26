@@ -5,11 +5,13 @@ import { assertTrustedSender } from "@core/ipc-security";
 import { departmentIpcChannels, type DepartmentSaveResult } from "@shared/contracts/departments";
 import {
   createDepartmentSchema,
+  deleteDepartmentSchema,
   departmentOrganizationIdSchema,
   updateDepartmentSchema,
 } from "@shared/schemas/departments";
 
 import { createDepartment } from "./create-department.js";
+import { deleteDepartment } from "./delete-department.js";
 import { listDepartments } from "./list-departments.js";
 import { updateDepartment } from "./update-department.js";
 
@@ -58,5 +60,16 @@ export function registerDepartmentIpcHandlers() {
   ipcMain.handle(departmentIpcChannels.update, (event, input: unknown): DepartmentSaveResult => {
     assertTrustedSender(event);
     return handleDepartmentSave(updateDepartmentSchema, input, updateDepartment);
+  });
+
+  ipcMain.handle(departmentIpcChannels.delete, (event, input: unknown) => {
+    assertTrustedSender(event);
+
+    try {
+      return deleteDepartment(deleteDepartmentSchema.parse(input));
+    } catch (error) {
+      console.error("[departments] failed to delete a department", error);
+      throw new Error("Could not delete the department");
+    }
   });
 }
