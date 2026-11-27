@@ -26,31 +26,16 @@ import {
 import { Separator } from "@tenderlayer/ui/components/separator";
 import { Textarea } from "@tenderlayer/ui/components/textarea";
 
+import { calculateEndDate } from "@shared/contract-dates";
 import type { ContractRecord, ContractSaveResult } from "@shared/contracts/contracts";
 import type { DepartmentRecord } from "@shared/contracts/departments";
-import {
-  calculateEndDate,
-  contractFormSchema,
-  getCurrencyFractionDigits,
-  type ContractFormValues,
-} from "@shared/schemas/contracts";
+import { getCurrencyFractionDigits } from "@shared/money";
+import { contractFormSchema, type ContractFormValues } from "@shared/schemas/contracts";
 
 import { StatePicker } from "../../-components/state-picker";
 import { ContractDatePicker } from "./contract-date-picker";
+import { contractStatusOptions } from "./contract-display";
 
-const statusOptions = [
-  { value: "draft", label: "Draft", description: "Contract details are still being prepared." },
-  {
-    value: "wo-received",
-    label: "WO Received",
-    description: "Work order received; commencement arrangements are pending.",
-  },
-  { value: "scheduled", label: "Scheduled", description: "Start date confirmed; work has yet to begin." },
-  { value: "active", label: "Active", description: "Work has started." },
-  { value: "on-hold", label: "On Hold", description: "Work is temporarily paused." },
-  { value: "completed", label: "Completed", description: "Contract work is finished." },
-  { value: "terminated", label: "Terminated", description: "The contract ended early." },
-];
 const dateFormatter = new Intl.DateTimeFormat("en-IN", { dateStyle: "medium", timeZone: "UTC" });
 
 function getFormValues(contract: ContractRecord | undefined): ContractFormValues {
@@ -339,7 +324,7 @@ export function ContractDrawer({ open, contract, departments, onClose, onSave }:
                     </FieldLabel>
                     <Select
                       name={field.name}
-                      items={statusOptions}
+                      items={contractStatusOptions}
                       value={field.value}
                       onValueChange={field.onChange}
                       readOnly={isSubmitting}
@@ -356,8 +341,8 @@ export function ContractDrawer({ open, contract, departments, onClose, onSave }:
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {statusOptions.map((option) => (
-                            <SelectItem key={option.value ?? "placeholder"} value={option.value}>
+                          {contractStatusOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
                               {option.label}
                             </SelectItem>
                           ))}
@@ -386,9 +371,7 @@ export function ContractDrawer({ open, contract, departments, onClose, onSave }:
                         {...field}
                         readOnly={isSubmitting}
                         id="contract-value"
-                        type="number"
-                        min="0"
-                        step={10 ** -fractionDigits}
+                        inputMode={fractionDigits ? "decimal" : "numeric"}
                         placeholder={(0).toFixed(fractionDigits)}
                         aria-invalid={fieldState.invalid}
                         aria-describedby={fieldState.invalid ? "contract-value-error" : undefined}
@@ -490,9 +473,7 @@ export function ContractDrawer({ open, contract, departments, onClose, onSave }:
                         {...field}
                         readOnly={isSubmitting}
                         id="contract-duration"
-                        type="number"
-                        min="1"
-                        step="1"
+                        inputMode="numeric"
                         placeholder="e.g. 12"
                         aria-invalid={fieldState.invalid}
                         aria-describedby={fieldState.invalid ? "contract-duration-error" : undefined}
@@ -555,11 +536,11 @@ export function ContractDrawer({ open, contract, departments, onClose, onSave }:
                 render={({ field, fieldState }) => (
                   <Field className="gap-1 @sm/field-group:col-span-2" data-invalid={fieldState.invalid}>
                     <FieldLabel className="font-normal" htmlFor="contract-endDate">
-                      End date
+                      Ended on
                     </FieldLabel>
                     <ContractDatePicker
                       id="contract-endDate"
-                      label="End date"
+                      label="Ended on"
                       disabled={isSubmitting}
                       name={field.name}
                       value={field.value}
@@ -574,7 +555,7 @@ export function ContractDrawer({ open, contract, departments, onClose, onSave }:
                     />
                     {fieldState.invalid && <FieldError id="contract-endDate-error" errors={[fieldState.error]} />}
                     <FieldDescription id="contract-endDate-help">
-                      Leave blank until the contract ends. Include any extensions in the end date.
+                      Leave blank until the contract ends. Use the final date after any extensions.
                     </FieldDescription>
                     {endDate && !fieldState.invalid && (
                       <FieldDescription aria-live="polite">
@@ -599,9 +580,7 @@ export function ContractDrawer({ open, contract, departments, onClose, onSave }:
                       {...field}
                       readOnly={isSubmitting}
                       id="contract-required"
-                      type="number"
-                      min="0"
-                      step="1"
+                      inputMode="numeric"
                       placeholder="e.g. 20"
                       aria-invalid={fieldState.invalid}
                       aria-describedby={fieldState.invalid ? "contract-required-error" : undefined}
@@ -622,9 +601,7 @@ export function ContractDrawer({ open, contract, departments, onClose, onSave }:
                       {...field}
                       readOnly={isSubmitting}
                       id="contract-deployed"
-                      type="number"
-                      min="0"
-                      step="1"
+                      inputMode="numeric"
                       placeholder="e.g. 20"
                       aria-invalid={fieldState.invalid}
                       aria-describedby={fieldState.invalid ? "contract-deployed-error" : undefined}

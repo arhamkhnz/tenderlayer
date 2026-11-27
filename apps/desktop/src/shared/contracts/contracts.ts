@@ -1,13 +1,14 @@
 import type {
   ContractFormValues,
+  ContractIdentity,
   CreateContractInput,
-  DeleteContractInput,
   UpdateContractInput,
 } from "../schemas/contracts.js";
 
 export const contractIpcChannels = {
   create: "contracts:create",
   delete: "contracts:delete",
+  get: "contracts:get",
   list: "contracts:list",
   update: "contracts:update",
 } as const;
@@ -45,7 +46,8 @@ export type ContractSaveResult =
 
 export interface ContractsApi {
   create: (input: CreateContractInput) => Promise<ContractSaveResult>;
-  delete: (input: DeleteContractInput) => Promise<boolean>;
+  delete: (input: ContractIdentity) => Promise<boolean>;
+  get: (input: ContractIdentity) => Promise<ContractRecord | null>;
   list: (organizationId: string) => Promise<ContractRecord[]>;
   update: (input: UpdateContractInput) => Promise<ContractSaveResult>;
 }

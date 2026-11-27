@@ -17,6 +17,7 @@ import { Route as DashboardOrganizationIdRouteRouteImport } from './routes/dashb
 import { Route as DashboardOrganizationIdIndexRouteImport } from './routes/dashboard/$organizationId/index'
 import { Route as DashboardOrganizationIdAgentRouteImport } from './routes/dashboard/$organizationId/agent'
 import { Route as DashboardOrganizationIdContractsIndexRouteImport } from './routes/dashboard/$organizationId/contracts/index'
+import { Route as DashboardOrganizationIdContractsContractIdRouteRouteImport } from './routes/dashboard/$organizationId/contracts/$contractId/route'
 import { Route as DashboardOrganizationIdDepartmentsIndexRouteImport } from './routes/dashboard/$organizationId/departments/index'
 import { Route as DashboardOrganizationIdEmployeesIndexRouteImport } from './routes/dashboard/$organizationId/employees/index'
 import { Route as DashboardOrganizationIdEmployeesEmployeeIdRouteImport } from './routes/dashboard/$organizationId/employees/$employeeId'
@@ -73,6 +74,12 @@ const DashboardOrganizationIdContractsIndexRoute =
   DashboardOrganizationIdContractsIndexRouteImport.update({
     id: '/contracts/',
     path: '/contracts/',
+    getParentRoute: () => DashboardOrganizationIdRouteRoute,
+  } as any)
+const DashboardOrganizationIdContractsContractIdRouteRoute =
+  DashboardOrganizationIdContractsContractIdRouteRouteImport.update({
+    id: '/contracts/$contractId',
+    path: '/contracts/$contractId',
     getParentRoute: () => DashboardOrganizationIdRouteRoute,
   } as any)
 const DashboardOrganizationIdDepartmentsIndexRoute =
@@ -162,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/$organizationId/agent': typeof DashboardOrganizationIdAgentRoute
   '/dashboard/$organizationId/': typeof DashboardOrganizationIdIndexRoute
+  '/dashboard/$organizationId/contracts/$contractId': typeof DashboardOrganizationIdContractsContractIdRouteRoute
   '/dashboard/$organizationId/employees/$employeeId': typeof DashboardOrganizationIdEmployeesEmployeeIdRoute
   '/dashboard/$organizationId/employees/new': typeof DashboardOrganizationIdEmployeesNewRoute
   '/dashboard/$organizationId/invoices/$invoiceId': typeof DashboardOrganizationIdInvoicesInvoiceIdRoute
@@ -183,6 +191,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardIndexRoute
   '/dashboard/$organizationId/agent': typeof DashboardOrganizationIdAgentRoute
   '/dashboard/$organizationId': typeof DashboardOrganizationIdIndexRoute
+  '/dashboard/$organizationId/contracts/$contractId': typeof DashboardOrganizationIdContractsContractIdRouteRoute
   '/dashboard/$organizationId/employees/$employeeId': typeof DashboardOrganizationIdEmployeesEmployeeIdRoute
   '/dashboard/$organizationId/employees/new': typeof DashboardOrganizationIdEmployeesNewRoute
   '/dashboard/$organizationId/invoices/$invoiceId': typeof DashboardOrganizationIdInvoicesInvoiceIdRoute
@@ -207,6 +216,7 @@ export interface FileRoutesById {
   '/dashboard/': typeof DashboardIndexRoute
   '/dashboard/$organizationId/agent': typeof DashboardOrganizationIdAgentRoute
   '/dashboard/$organizationId/': typeof DashboardOrganizationIdIndexRoute
+  '/dashboard/$organizationId/contracts/$contractId': typeof DashboardOrganizationIdContractsContractIdRouteRoute
   '/dashboard/$organizationId/employees/$employeeId': typeof DashboardOrganizationIdEmployeesEmployeeIdRoute
   '/dashboard/$organizationId/employees/new': typeof DashboardOrganizationIdEmployeesNewRoute
   '/dashboard/$organizationId/invoices/$invoiceId': typeof DashboardOrganizationIdInvoicesInvoiceIdRoute
@@ -232,6 +242,7 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/dashboard/$organizationId/agent'
     | '/dashboard/$organizationId/'
+    | '/dashboard/$organizationId/contracts/$contractId'
     | '/dashboard/$organizationId/employees/$employeeId'
     | '/dashboard/$organizationId/employees/new'
     | '/dashboard/$organizationId/invoices/$invoiceId'
@@ -253,6 +264,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/dashboard/$organizationId/agent'
     | '/dashboard/$organizationId'
+    | '/dashboard/$organizationId/contracts/$contractId'
     | '/dashboard/$organizationId/employees/$employeeId'
     | '/dashboard/$organizationId/employees/new'
     | '/dashboard/$organizationId/invoices/$invoiceId'
@@ -276,6 +288,7 @@ export interface FileRouteTypes {
     | '/dashboard/'
     | '/dashboard/$organizationId/agent'
     | '/dashboard/$organizationId/'
+    | '/dashboard/$organizationId/contracts/$contractId'
     | '/dashboard/$organizationId/employees/$employeeId'
     | '/dashboard/$organizationId/employees/new'
     | '/dashboard/$organizationId/invoices/$invoiceId'
@@ -354,6 +367,13 @@ declare module '@tanstack/react-router' {
       path: '/contracts'
       fullPath: '/dashboard/$organizationId/contracts/'
       preLoaderRoute: typeof DashboardOrganizationIdContractsIndexRouteImport
+      parentRoute: typeof DashboardOrganizationIdRouteRoute
+    }
+    '/dashboard/$organizationId/contracts/$contractId': {
+      id: '/dashboard/$organizationId/contracts/$contractId'
+      path: '/contracts/$contractId'
+      fullPath: '/dashboard/$organizationId/contracts/$contractId'
+      preLoaderRoute: typeof DashboardOrganizationIdContractsContractIdRouteRouteImport
       parentRoute: typeof DashboardOrganizationIdRouteRoute
     }
     '/dashboard/$organizationId/departments/': {
@@ -453,6 +473,7 @@ declare module '@tanstack/react-router' {
 interface DashboardOrganizationIdRouteRouteChildren {
   DashboardOrganizationIdAgentRoute: typeof DashboardOrganizationIdAgentRoute
   DashboardOrganizationIdIndexRoute: typeof DashboardOrganizationIdIndexRoute
+  DashboardOrganizationIdContractsContractIdRouteRoute: typeof DashboardOrganizationIdContractsContractIdRouteRoute
   DashboardOrganizationIdEmployeesEmployeeIdRoute: typeof DashboardOrganizationIdEmployeesEmployeeIdRoute
   DashboardOrganizationIdEmployeesNewRoute: typeof DashboardOrganizationIdEmployeesNewRoute
   DashboardOrganizationIdInvoicesInvoiceIdRoute: typeof DashboardOrganizationIdInvoicesInvoiceIdRoute
@@ -473,6 +494,8 @@ const DashboardOrganizationIdRouteRouteChildren: DashboardOrganizationIdRouteRou
   {
     DashboardOrganizationIdAgentRoute: DashboardOrganizationIdAgentRoute,
     DashboardOrganizationIdIndexRoute: DashboardOrganizationIdIndexRoute,
+    DashboardOrganizationIdContractsContractIdRouteRoute:
+      DashboardOrganizationIdContractsContractIdRouteRoute,
     DashboardOrganizationIdEmployeesEmployeeIdRoute:
       DashboardOrganizationIdEmployeesEmployeeIdRoute,
     DashboardOrganizationIdEmployeesNewRoute:

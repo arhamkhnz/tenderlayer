@@ -2,14 +2,17 @@ import {
   BinIcon,
   BriefcaseIcon,
   CalendarIcon,
+  EyeIcon,
   HashIcon,
   IndianRupeeIcon,
   MoreHorizontalIcon,
   PenLineIcon,
   TagIcon,
 } from "@keyline-icons/react";
+import { Link } from "@tanstack/react-router";
 import {
   columnFilteringFeature,
+  columnVisibilityFeature,
   createColumnHelper,
   createFilteredRowModel,
   createPaginatedRowModel,
@@ -36,30 +39,18 @@ import {
 
 import type { ContractRecord } from "@shared/contracts/contracts";
 
-export const contractStatuses: Record<ContractRecord["status"], { label: string; className: string }> = {
-  draft: { label: "Draft", className: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200" },
-  "wo-received": {
-    label: "WO Received",
-    className: "bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200",
-  },
-  scheduled: { label: "Scheduled", className: "bg-sky-100 text-sky-800 dark:bg-sky-900 dark:text-sky-200" },
-  active: { label: "Active", className: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200" },
-  "on-hold": { label: "On Hold", className: "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200" },
-  completed: { label: "Completed", className: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200" },
-  terminated: { label: "Terminated", className: "bg-rose-100 text-rose-800 dark:bg-rose-900 dark:text-rose-200" },
-};
-
-const dateFormatter = new Intl.DateTimeFormat("en-IN", { dateStyle: "medium", timeZone: "UTC" });
+import { contractStatusDisplay, formatContractAmount, formatContractDate } from "../contract-display";
 
 export const contractTableFeatures = tableFeatures({
   columnFilteringFeature,
+  columnVisibilityFeature,
   globalFilteringFeature,
   rowPaginationFeature,
   rowSelectionFeature,
   filteredRowModel: createFilteredRowModel(),
   paginatedRowModel: createPaginatedRowModel(),
   filterFns: { equals: filterFn_equals },
-  columnMeta: metaHelper<{ widthClassName?: string }>(),
+  columnMeta: metaHelper<{ label?: string; width?: number }>(),
   tableMeta: metaHelper<{
     onEdit: (contract: ContractRecord) => void;
     onDelete: (contract: ContractRecord) => void;
@@ -68,19 +59,23 @@ export const contractTableFeatures = tableFeatures({
 
 const columnHelper = createColumnHelper<typeof contractTableFeatures, ContractRecord>();
 
-function contractColumnHeader(label: string, Icon?: typeof BriefcaseIcon, right = false) {
-  return () => (
-    <div className={cn("flex items-center gap-2", right && "justify-end")}>
-      {Icon && <Icon className="size-3.5 shrink-0" aria-hidden="true" />}
-      {label}
-    </div>
-  );
+function contractColumnHeader(label: string, width?: number, Icon?: typeof BriefcaseIcon, right = false) {
+  return {
+    meta: { label, width },
+    header: () => (
+      <div className={cn("flex items-center gap-2", right && "justify-end")}>
+        {Icon && <Icon className="size-3.5 shrink-0" aria-hidden="true" />}
+        {label}
+      </div>
+    ),
+  };
 }
 
 export const contractColumns = columnHelper.columns([
   columnHelper.display({
     id: "select",
-    meta: { widthClassName: "w-14" },
+    enableHiding: false,
+    meta: { width: 56 },
     header: ({ table }) => (
       <Checkbox
         className="mx-auto"
@@ -101,7 +96,8 @@ export const contractColumns = columnHelper.columns([
     ),
   }),
   columnHelper.accessor("title", {
-    header: contractColumnHeader("Contract", BriefcaseIcon),
+    ...contractColumnHeader("Contract", undefined, BriefcaseIcon),
+    enableHiding: false,
     cell: ({ getValue }) => (
       <span className="block truncate font-450" title={getValue()}>
         {getValue()}
@@ -109,8 +105,7 @@ export const contractColumns = columnHelper.columns([
     ),
   }),
   columnHelper.accessor("gemReference", {
-    meta: { widthClassName: "w-40" },
-    header: contractColumnHeader("Reference", HashIcon),
+    ...contractColumnHeader("Reference", 160, HashIcon),
     cell: ({ getValue }) => (
       <span className="block truncate font-mono text-xs text-muted-foreground" title={getValue() ?? undefined}>
         {getValue() ?? "—"}
@@ -118,8 +113,7 @@ export const contractColumns = columnHelper.columns([
     ),
   }),
   columnHelper.accessor("departmentId", {
-    meta: { widthClassName: "w-48" },
-    header: contractColumnHeader("Department"),
+    ...contractColumnHeader("Department", 192),
     filterFn: "equals",
     cell: ({ row }) => (
       <span className="block truncate" title={row.original.departmentName ?? undefined}>
@@ -128,11 +122,10 @@ export const contractColumns = columnHelper.columns([
     ),
   }),
   columnHelper.accessor("status", {
-    meta: { widthClassName: "w-36" },
-    header: contractColumnHeader("Status", TagIcon),
+    ...contractColumnHeader("Status", 144, TagIcon),
     filterFn: "equals",
     cell: ({ getValue }) => {
-      const { label, className } = contractStatuses[getValue()];
+      const { label, className } = contractStatusDisplay[getValue()];
       return (
         <Badge variant="secondary" className={cn("rounded-md px-1.5 font-450", className)}>
           {label}
@@ -141,15 +134,12 @@ export const contractColumns = columnHelper.columns([
     },
   }),
   columnHelper.accessor("amount", {
-    meta: { widthClassName: "w-36" },
-    header: contractColumnHeader("Value", IndianRupeeIcon, true),
+    ...contractColumnHeader("Value", 144, IndianRupeeIcon, true),
     cell: ({ row, getValue }) => {
       const amount = getValue();
       if (amount === null) return <div className="text-right text-muted-foreground">—</div>;
 
-      const formatter = new Intl.NumberFormat("en-IN", { style: "currency", currency: row.original.currency });
-      const fractionDigits = formatter.resolvedOptions().maximumFractionDigits ?? 0;
-      const value = formatter.format(amount / 10 ** fractionDigits);
+      const value = formatContractAmount(amount, row.original.currency);
       return (
         <div className="truncate text-right font-450 tabular-nums" title={value}>
           {value}
@@ -158,21 +148,15 @@ export const contractColumns = columnHelper.columns([
     },
   }),
   columnHelper.accessor("endDate", {
-    meta: { widthClassName: "w-32" },
-    header: contractColumnHeader("Ends", CalendarIcon, true),
-    cell: ({ getValue }) => {
-      const endDate = getValue();
-      const date = endDate ? new Date(`${endDate}T00:00:00Z`) : null;
-      return (
-        <div className="text-right text-muted-foreground tabular-nums">
-          {date && !Number.isNaN(date.getTime()) ? dateFormatter.format(date) : "—"}
-        </div>
-      );
-    },
+    ...contractColumnHeader("Ended on", 128, CalendarIcon, true),
+    cell: ({ getValue }) => (
+      <div className="text-right text-muted-foreground tabular-nums">{formatContractDate(getValue())}</div>
+    ),
   }),
   columnHelper.display({
     id: "actions",
-    meta: { widthClassName: "w-14" },
+    enableHiding: false,
+    meta: { width: 56 },
     header: () => <span className="sr-only">Actions</span>,
     cell: ({ row, table }) => (
       <div className="flex justify-center">
@@ -184,6 +168,18 @@ export const contractColumns = columnHelper.columns([
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-36 font-450">
             <DropdownMenuGroup>
+              <DropdownMenuItem
+                render={
+                  <Link
+                    from="/dashboard/$organizationId"
+                    to="/dashboard/$organizationId/contracts/$contractId"
+                    params={{ contractId: row.original.id }}
+                  />
+                }
+              >
+                <EyeIcon aria-hidden="true" />
+                View
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => table.options.meta?.onEdit(row.original)}>
                 <PenLineIcon aria-hidden="true" />
                 Edit

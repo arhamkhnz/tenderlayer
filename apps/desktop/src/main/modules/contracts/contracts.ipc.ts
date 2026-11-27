@@ -5,15 +5,16 @@ import { assertTrustedSender } from "@core/ipc-security";
 import { contractIpcChannels, type ContractSaveResult } from "@shared/contracts/contracts";
 import {
   contractFormSchema,
+  contractIdentitySchema,
   contractOrganizationIdSchema,
   createContractSchema,
-  deleteContractSchema,
   updateContractSchema,
   type ContractFormValues,
 } from "@shared/schemas/contracts";
 
 import { createContract } from "./create-contract.js";
 import { deleteContract } from "./delete-contract.js";
+import { getContract } from "./get-contract.js";
 import { listContracts } from "./list-contracts.js";
 import { updateContract } from "./update-contract.js";
 
@@ -45,6 +46,18 @@ function handleContractSave<Input>(
 }
 
 export function registerContractIpcHandlers() {
+  ipcMain.handle(contractIpcChannels.get, (event, input: unknown) => {
+    assertTrustedSender(event);
+    const identity = contractIdentitySchema.parse(input);
+
+    try {
+      return getContract(identity);
+    } catch (error) {
+      console.error("[contracts] failed to load a contract", error);
+      throw new Error("Could not load the contract");
+    }
+  });
+
   ipcMain.handle(contractIpcChannels.list, (event, input: unknown) => {
     assertTrustedSender(event);
     const organizationId = contractOrganizationIdSchema.parse(input);
@@ -71,7 +84,7 @@ export function registerContractIpcHandlers() {
     assertTrustedSender(event);
 
     try {
-      return deleteContract(deleteContractSchema.parse(input));
+      return deleteContract(contractIdentitySchema.parse(input));
     } catch (error) {
       console.error("[contracts] failed to delete a contract", error);
       throw new Error("Could not delete the contract");

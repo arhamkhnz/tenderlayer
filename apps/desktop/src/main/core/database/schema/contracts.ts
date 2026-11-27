@@ -1,9 +1,16 @@
 import { sql } from "drizzle-orm";
 import { check, foreignKey, index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
+import { contractStatuses } from "@shared/contract-statuses";
+
 import { id, syncColumns } from "./common.js";
 import { departments } from "./departments.js";
 import { organizations } from "./organizations.js";
+
+const contractStatusValues = sql.join(
+  contractStatuses.map((status) => sql`${status}`),
+  sql`, `,
+);
 
 export const contracts = sqliteTable(
   "contracts",
@@ -18,11 +25,7 @@ export const contracts = sqliteTable(
     locationState: text("location_state"),
     locationCity: text("location_city"),
     locationAddress: text("location_address"),
-    status: text("status", {
-      enum: ["draft", "wo-received", "scheduled", "active", "on-hold", "completed", "terminated"],
-    })
-      .notNull()
-      .default("draft"),
+    status: text("status", { enum: contractStatuses }).notNull().default("draft"),
     // Store whole minor units, such as paise for INR or cents for USD.
     amount: integer("amount"),
     currency: text("currency").notNull().default("INR"),
@@ -47,10 +50,7 @@ export const contracts = sqliteTable(
     }),
     index("contracts_organization_department_idx").on(table.organizationId, table.departmentId),
     check("contracts_title_check", sql`length(${table.title}) > 0 and ${table.title} = trim(${table.title})`),
-    check(
-      "contracts_status_check",
-      sql`${table.status} in ('draft', 'wo-received', 'scheduled', 'active', 'on-hold', 'completed', 'terminated')`,
-    ),
+    check("contracts_status_check", sql`${table.status} in (${contractStatusValues})`.inlineParams()),
     check(
       "contracts_non_draft_fields_check",
       sql`${table.status} = 'draft' or (

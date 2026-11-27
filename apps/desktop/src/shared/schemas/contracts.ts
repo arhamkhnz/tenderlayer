@@ -1,48 +1,11 @@
 import { z } from "zod";
 
+import { calculateEndDate, contractDurationUnits } from "../contract-dates.js";
+import { contractStatuses } from "../contract-statuses.js";
+import { parseMoneyAmount } from "../money.js";
 import { indianStatesAndUTs } from "../reference-data.js";
 
 export const contractOrganizationIdSchema = z.string().min(1, "An organization is required.");
-
-const contractStatuses = ["draft", "wo-received", "scheduled", "active", "on-hold", "completed", "terminated"] as const;
-const durationUnits = ["days", "months", "years"] as const;
-type DurationUnit = (typeof durationUnits)[number];
-
-export function calculateEndDate(startDate: string, duration: string, unit: DurationUnit) {
-  const amount = Number(duration);
-  if (!startDate || !Number.isSafeInteger(amount) || amount < 1) return "";
-  const start = new Date(`${startDate}T00:00:00Z`);
-  if (Number.isNaN(start.getTime())) return "";
-  const end = new Date(start);
-
-  if (unit === "days") {
-    end.setUTCDate(start.getUTCDate() + amount - 1);
-  } else {
-    // Calendar terms include their final day; short months clamp to their last day.
-    end.setUTCDate(1);
-    end.setUTCMonth(start.getUTCMonth() + amount * (unit === "years" ? 12 : 1));
-    const lastDay = new Date(end);
-    lastDay.setUTCMonth(end.getUTCMonth() + 1, 0);
-    end.setUTCDate(Math.min(start.getUTCDate() - 1, lastDay.getUTCDate()));
-  }
-
-  if (Number.isNaN(end.getTime()) || end.getUTCFullYear() < 1 || end.getUTCFullYear() > 9999) return "";
-  return end.toISOString().slice(0, 10);
-}
-
-export function getCurrencyFractionDigits(currency: string) {
-  return new Intl.NumberFormat("en-IN", { style: "currency", currency }).resolvedOptions().maximumFractionDigits ?? 0;
-}
-
-export function parseContractAmount(value: string, currency: string) {
-  if (!/^(?:\d+(?:\.\d*)?|\.\d+)$/.test(value)) return null;
-  const [whole = "", fraction = ""] = value.split(".");
-  const digits = getCurrencyFractionDigits(currency);
-  if (fraction.length > digits) return null;
-
-  const amount = Number(whole + fraction.padEnd(digits, "0"));
-  return Number.isSafeInteger(amount) ? amount : null;
-}
 
 const optionalDate = z.union([z.literal(""), z.iso.date("Choose a valid date.")]);
 const optionalInteger = (minimum: number) =>
@@ -51,6 +14,7 @@ const optionalInteger = (minimum: number) =>
     .trim()
     .refine((value) => {
       if (!value) return true;
+      if (!/^\d+$/.test(value)) return false;
       const number = Number(value);
       return Number.isSafeInteger(number) && number >= minimum;
     }, `Enter a whole number of ${minimum} or more.`);
@@ -75,7 +39,7 @@ export const contractFormSchema = z
     workOrderReceivedDate: optionalDate,
     startDate: optionalDate,
     duration: optionalInteger(1),
-    durationUnit: z.enum(durationUnits),
+    durationUnit: z.enum(contractDurationUnits),
     endDate: optionalDate,
     required: optionalInteger(0),
     deployed: optionalInteger(0),
@@ -83,7 +47,7 @@ export const contractFormSchema = z
   })
   .superRefine((values, context) => {
     if (values.endDate && values.startDate && values.endDate < values.startDate) {
-      context.addIssue({ code: "custom", path: ["endDate"], message: "End date must be on or after the start date." });
+      context.addIssue({ code: "custom", path: ["endDate"], message: "The contract can’t end before its start date." });
     }
     if (
       values.duration &&
@@ -99,7 +63,7 @@ export const contractFormSchema = z
     if (
       values.value &&
       currencySchema.safeParse(values.currency).success &&
-      parseContractAmount(values.value, values.currency) === null
+      parseMoneyAmount(values.value, values.currency) === null
     ) {
       context.addIssue({ code: "custom", path: ["value"], message: "Enter a valid contract value." });
     }
@@ -123,12 +87,12 @@ const contractIdSchema = z.string().min(1, "A contract is required.");
 
 export const createContractSchema = contractFormSchema.safeExtend({ organizationId: contractOrganizationIdSchema });
 export const updateContractSchema = createContractSchema.safeExtend({ contractId: contractIdSchema });
-export const deleteContractSchema = z.object({
+export const contractIdentitySchema = z.object({
   organizationId: contractOrganizationIdSchema,
   contractId: contractIdSchema,
 });
 
 export type ContractFormValues = z.infer<typeof contractFormSchema>;
 export type CreateContractInput = z.infer<typeof createContractSchema>;
-export type DeleteContractInput = z.infer<typeof deleteContractSchema>;
+export type ContractIdentity = z.infer<typeof contractIdentitySchema>;
 export type UpdateContractInput = z.infer<typeof updateContractSchema>;
