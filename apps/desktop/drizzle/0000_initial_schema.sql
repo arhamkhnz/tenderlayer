@@ -80,4 +80,50 @@ CREATE TABLE `contracts` (
 );
 --> statement-breakpoint
 CREATE INDEX `contracts_organization_department_idx` ON `contracts` (`organization_id`,`department_id`);--> statement-breakpoint
+CREATE UNIQUE INDEX `contracts_organization_contract_unique` ON `contracts` (`organization_id`,`id`);--> statement-breakpoint
 CREATE UNIQUE INDEX `departments_organization_department_unique` ON `departments` (`organization_id`,`id`);
+--> statement-breakpoint
+CREATE TABLE `employees` (
+	`id` text PRIMARY KEY NOT NULL,
+	`organization_id` text NOT NULL,
+	`contract_id` text,
+	`name` text NOT NULL,
+	`code` text NOT NULL,
+	`phone` text NOT NULL,
+	`email` text,
+	`address` text,
+	`job_title` text NOT NULL,
+	`employment_type` text DEFAULT 'full-time' NOT NULL,
+	`joining_date` text NOT NULL,
+	`status` text DEFAULT 'active' NOT NULL,
+	`work_state` text,
+	`work_city` text,
+	`site_location` text,
+	`monthly_pay` integer NOT NULL,
+	`currency` text DEFAULT 'INR' NOT NULL,
+	`pan` text,
+	`uan` text,
+	`account_holder` text,
+	`bank_name` text,
+	`account_number` text,
+	`ifsc` text,
+	`notes` text,
+	`created_at` integer DEFAULT (unixepoch() * 1000) NOT NULL,
+	`updated_at` integer DEFAULT (unixepoch() * 1000) NOT NULL,
+	`deleted_at` integer,
+	`revision` integer DEFAULT 1 NOT NULL,
+	FOREIGN KEY (`organization_id`) REFERENCES `organizations`(`id`) ON UPDATE no action ON DELETE cascade,
+	FOREIGN KEY (`organization_id`,`contract_id`) REFERENCES `contracts`(`organization_id`,`id`) ON UPDATE no action ON DELETE no action,
+	CONSTRAINT "employees_name_check" CHECK(length("employees"."name") > 0 and "employees"."name" = trim("employees"."name") and instr("employees"."name", char(0)) = 0),
+	CONSTRAINT "employees_code_check" CHECK("employees"."code" glob 'EMP-[0-9]*' and substr("employees"."code", 5) not glob '*[^0-9]*' and instr("employees"."code", char(0)) = 0),
+	CONSTRAINT "employees_phone_check" CHECK(length(trim("employees"."phone")) > 0 and instr("employees"."phone", char(0)) = 0),
+	CONSTRAINT "employees_job_title_check" CHECK(length(trim("employees"."job_title")) > 0 and instr("employees"."job_title", char(0)) = 0),
+	CONSTRAINT "employees_employment_type_check" CHECK("employees"."employment_type" in ('full-time', 'contractual', 'temporary', 'part-time')),
+	CONSTRAINT "employees_status_check" CHECK("employees"."status" in ('active', 'on-leave', 'inactive')),
+	CONSTRAINT "employees_joining_date_check" CHECK(date("employees"."joining_date", '+0 days') is "employees"."joining_date"),
+	CONSTRAINT "employees_monthly_pay_check" CHECK(typeof("employees"."monthly_pay") = 'integer' and "employees"."monthly_pay" > 0),
+	CONSTRAINT "employees_currency_check" CHECK("employees"."currency" glob '[A-Z][A-Z][A-Z]')
+);
+--> statement-breakpoint
+CREATE INDEX `employees_organization_contract_idx` ON `employees` (`organization_id`,`contract_id`);--> statement-breakpoint
+CREATE UNIQUE INDEX `employees_organization_code_unique` ON `employees` (`organization_id`,`code`);

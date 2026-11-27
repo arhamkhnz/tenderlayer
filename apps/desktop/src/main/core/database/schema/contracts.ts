@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { check, foreignKey, index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { check, foreignKey, index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 import { contractStatuses } from "@shared/contract-statuses";
 
@@ -49,6 +49,7 @@ export const contracts = sqliteTable(
       foreignColumns: [departments.organizationId, departments.id],
     }),
     index("contracts_organization_department_idx").on(table.organizationId, table.departmentId),
+    uniqueIndex("contracts_organization_contract_unique").on(table.organizationId, table.id),
     check("contracts_title_check", sql`length(${table.title}) > 0 and ${table.title} = trim(${table.title})`),
     check("contracts_status_check", sql`${table.status} in (${contractStatusValues})`.inlineParams()),
     check(
