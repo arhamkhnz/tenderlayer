@@ -17,6 +17,7 @@ type ContractDatePickerProps = {
   min?: string;
   invalid?: boolean;
   describedBy?: string;
+  disabled?: boolean;
 };
 
 function toCalendarDate(value: string) {
@@ -36,6 +37,7 @@ export function ContractDatePicker({
   min,
   invalid,
   describedBy,
+  disabled,
 }: ContractDatePickerProps) {
   const [open, setOpen] = useState(false);
   const selected = toCalendarDate(value);
@@ -59,6 +61,7 @@ export function ContractDatePicker({
         aria-label={label}
         aria-invalid={invalid}
         aria-describedby={describedBy}
+        disabled={disabled}
       >
         <CalendarIcon data-icon="inline-start" />
         {selected ? dateFormatter.format(selected) : "Pick a date"}

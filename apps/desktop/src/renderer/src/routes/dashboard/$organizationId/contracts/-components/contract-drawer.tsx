@@ -1,10 +1,5 @@
-import { useState } from "react";
-
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FilePlusIcon } from "@keyline-icons/react";
-import { useNavigate } from "@tanstack/react-router";
 import { Controller, useForm, useWatch } from "react-hook-form";
-import { z } from "zod";
 
 import { Button } from "@tenderlayer/ui/components/button";
 import { Checkbox } from "@tenderlayer/ui/components/checkbox";
@@ -16,7 +11,6 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
 } from "@tenderlayer/ui/components/drawer";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@tenderlayer/ui/components/field";
 import { Input } from "@tenderlayer/ui/components/input";
@@ -32,10 +26,16 @@ import {
 import { Separator } from "@tenderlayer/ui/components/separator";
 import { Textarea } from "@tenderlayer/ui/components/textarea";
 
-import { indianStatesAndUTs } from "@shared/reference-data";
+import type { ContractRecord, ContractSaveResult } from "@shared/contracts/contracts";
+import type { DepartmentRecord } from "@shared/contracts/departments";
+import {
+  calculateEndDate,
+  contractFormSchema,
+  getCurrencyFractionDigits,
+  type ContractFormValues,
+} from "@shared/schemas/contracts";
 
 import { StatePicker } from "../../-components/state-picker";
-import { departments } from "../../departments/-components/data";
 import { ContractDatePicker } from "./contract-date-picker";
 
 const statusOptions = [
@@ -51,181 +51,119 @@ const statusOptions = [
   { value: "completed", label: "Completed", description: "Contract work is finished." },
   { value: "terminated", label: "Terminated", description: "The contract ended early." },
 ];
-const departmentOptions = [
-  { value: null, label: "Select department" },
-  ...departments.map((department) => ({ value: department.id, label: department.name })),
-];
-
-type DurationUnit = "days" | "months" | "years";
-
 const dateFormatter = new Intl.DateTimeFormat("en-IN", { dateStyle: "medium", timeZone: "UTC" });
 
-function calculateEndDate(startDate: string, duration: string, unit: DurationUnit) {
-  const amount = Number(duration);
-  if (!startDate || !Number.isSafeInteger(amount) || amount < 1) return "";
-  const start = new Date(`${startDate}T00:00:00Z`);
-  if (Number.isNaN(start.getTime())) return "";
-  const end = new Date(start);
-
-  if (unit === "days") {
-    end.setUTCDate(start.getUTCDate() + amount - 1);
-  } else {
-    // Calendar terms include their final day; short months clamp to their last day.
-    end.setUTCDate(1);
-    end.setUTCMonth(start.getUTCMonth() + amount * (unit === "years" ? 12 : 1));
-    const lastDay = new Date(end);
-    lastDay.setUTCMonth(end.getUTCMonth() + 1, 0);
-    end.setUTCDate(Math.min(start.getUTCDate() - 1, lastDay.getUTCDate()));
+function getFormValues(contract: ContractRecord | undefined): ContractFormValues {
+  const currency = contract?.currency ?? "INR";
+  const digits = getCurrencyFractionDigits(currency);
+  let value = "";
+  if (contract?.amount != null) {
+    const minorUnits = String(contract.amount).padStart(digits + 1, "0");
+    value = digits ? `${minorUnits.slice(0, -digits)}.${minorUnits.slice(-digits)}` : minorUnits;
   }
 
-  if (Number.isNaN(end.getTime()) || end.getUTCFullYear() < 1 || end.getUTCFullYear() > 9999) return "";
-  return end.toISOString().slice(0, 10);
+  return {
+    title: contract?.title ?? "",
+    department: contract?.departmentId ?? null,
+    gemReference: contract?.gemReference ?? "",
+    locationState: contract?.locationState ?? "",
+    locationCity: contract?.locationCity ?? "",
+    locationAddress: contract?.locationAddress ?? "",
+    status: contract?.status ?? "draft",
+    value,
+    currency,
+    includesTax: contract?.includesTax ?? false,
+    workOrderReceivedDate: contract?.workOrderReceivedDate ?? "",
+    startDate: contract?.startDate ?? "",
+    duration: contract?.duration?.toString() ?? "",
+    durationUnit: contract?.durationUnit ?? "months",
+    endDate: contract?.endDate ?? "",
+    required: contract?.requiredHeadcount?.toString() ?? "",
+    deployed: contract?.deployedHeadcount.toString() ?? "0",
+    notes: contract?.notes ?? "",
+  };
 }
 
-function parseHeadcount(value: string) {
-  if (!value.trim()) return undefined;
-  const count = Number(value);
-  return Number.isSafeInteger(count) && count >= 0 ? count : undefined;
+interface ContractDrawerProps {
+  open: boolean;
+  contract: ContractRecord | undefined;
+  departments: DepartmentRecord[];
+  onClose: () => void;
+  onSave: (values: ContractFormValues) => Promise<ContractSaveResult>;
 }
 
-const optionalDate = z.union([z.literal(""), z.iso.date("Choose a valid date.")]);
-const optionalNumber = (minimum: number, whole = false) =>
-  z.string().refine(
-    (value) => {
-      if (!value.trim()) return true;
-      const number = Number(value);
-      return Number.isFinite(number) && number >= minimum && (!whole || Number.isSafeInteger(number));
-    },
-    whole ? `Enter a whole number of ${minimum} or more.` : "Enter a valid amount of zero or more.",
-  );
+export function ContractDrawer({ open, contract, departments, onClose, onSave }: ContractDrawerProps) {
+  const initialValues = getFormValues(contract);
+  const departmentOptions = [
+    { value: null, label: "Select department" },
+    ...departments.map((department) => ({ value: department.id, label: department.name })),
+  ];
+  if (contract?.departmentId && !departments.some(({ id }) => id === contract.departmentId)) {
+    departmentOptions.push({
+      value: contract.departmentId,
+      label: `${contract.departmentName ?? "Department"} (archived)`,
+    });
+  }
 
-const contractFormSchema = z
-  .object({
-    title: z.string().trim().min(1, "Enter a contract title."),
-    department: z
-      .string()
-      .nullable()
-      .refine(
-        (value) => value === null || departments.some((department) => department.id === value),
-        "Select a valid department.",
-      ),
-    gemReference: z.string().trim(),
-    locationState: z
-      .string()
-      .refine((value) => !value || indianStatesAndUTs.includes(value), "Select a valid state / UT."),
-    locationCity: z.string().trim(),
-    locationAddress: z.string().trim(),
-    status: z.enum(["draft", "wo-received", "scheduled", "active", "on-hold", "completed", "terminated"]),
-    value: optionalNumber(0),
-    includesTax: z.boolean(),
-    workOrderReceivedDate: optionalDate,
-    startDate: optionalDate,
-    duration: optionalNumber(1, true),
-    durationUnit: z.enum(["days", "months", "years"]),
-    endDate: optionalDate,
-    required: optionalNumber(0, true),
-    deployed: optionalNumber(0, true),
-    notes: z.string().trim(),
-  })
-  .superRefine((values, context) => {
-    if (values.endDate && values.startDate && values.endDate < values.startDate) {
-      context.addIssue({ code: "custom", path: ["endDate"], message: "End date must be on or after the start date." });
-    }
-    if (
-      values.duration &&
-      values.startDate &&
-      !calculateEndDate(values.startDate, values.duration, values.durationUnit)
-    ) {
-      context.addIssue({
-        code: "custom",
-        path: ["duration"],
-        message: "Enter a duration within the supported date range.",
-      });
-    }
-    if (values.status !== "draft") {
-      for (const [name, message] of [
-        ["department", "Select a department."],
-        ["gemReference", "Enter the GeM reference number."],
-        ["locationState", "Select the contract state / UT."],
-        ["locationCity", "Enter the contract city / town."],
-        ["value", "Enter the contract value."],
-        ["startDate", "Choose the start date."],
-        ["duration", "Enter the contract duration."],
-        ["required", "Enter the number of employees required."],
-      ] as const) {
-        if (!values[name]?.trim()) context.addIssue({ code: "custom", path: [name], message });
-      }
-    }
-  });
-
-type ContractFormValues = z.infer<typeof contractFormSchema>;
-
-export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boolean }) {
-  const navigate = useNavigate({ from: "/dashboard/$organizationId" });
-  const [previewTitle, setPreviewTitle] = useState<string | null>(null);
   const form = useForm<ContractFormValues>({
     resolver: zodResolver(contractFormSchema),
-    defaultValues: {
-      title: "",
-      department: null,
-      gemReference: "",
-      locationState: "",
-      locationCity: "",
-      locationAddress: "",
-      status: "draft",
-      value: "",
-      includesTax: false,
-      workOrderReceivedDate: "",
-      startDate: "",
-      duration: "",
-      durationUnit: "months",
-      endDate: "",
-      required: "",
-      deployed: "0",
-      notes: "",
-    },
+    values: initialValues,
   });
-  const [status, startDate, duration, durationUnit, required, deployed, endDate] = useWatch({
+  const { errors, isSubmitting } = form.formState;
+  const fractionDigits = getCurrencyFractionDigits(initialValues.currency);
+  const [status, startDate, duration, durationUnit, endDate] = useWatch({
     control: form.control,
-    name: ["status", "startDate", "duration", "durationUnit", "required", "deployed", "endDate"],
+    name: ["status", "startDate", "duration", "durationUnit", "endDate"],
   });
+  const drawerLabels = contract
+    ? {
+        title: "Edit contract",
+        description: "Update the contract details, dates, and staffing.",
+        submit: "Save changes",
+      }
+    : {
+        title: "New contract",
+        description: "Add the contract details, dates, and staffing.",
+        submit: status === "draft" ? "Save draft" : "Create contract",
+      };
   const scheduledEndDate = calculateEndDate(startDate, duration, durationUnit);
-  const requiredCount = parseHeadcount(required);
-  const deployedCount = parseHeadcount(deployed);
-  const hasStaffingSummary = requiredCount !== undefined && deployedCount !== undefined;
 
-  function handleFieldChange(onChange: (value: unknown) => void) {
-    return (value: unknown) => {
-      setPreviewTitle(null);
-      onChange(value);
-    };
-  }
+  async function handleSubmit(values: ContractFormValues) {
+    try {
+      const result = await onSave(values);
+      if (result.ok) return;
 
-  function handleSubmit(values: ContractFormValues) {
-    // Keep this screen a preview until contract persistence is implemented.
-    setPreviewTitle(values.title);
+      for (const [index, { field, message }] of result.fieldErrors.entries()) {
+        form.setError(field, { type: "server", message }, { shouldFocus: index === 0 });
+      }
+      if (result.formError) form.setError("root.server", { type: "server", message: result.formError });
+    } catch {
+      form.setError("root.server", { message: "Couldn’t save the contract. Please try again." });
+    }
   }
 
   return (
     <Drawer
       swipeDirection="right"
-      defaultOpen={defaultOpen}
-      onOpenChangeComplete={(open) => {
-        if (!open && defaultOpen) void navigate({ to: "/dashboard/$organizationId/contracts", replace: true });
+      open={open}
+      onOpenChange={(isOpen, eventDetails) => {
+        if (isOpen) return;
+        if (isSubmitting) eventDetails.cancel();
+        else onClose();
+      }}
+      onOpenChangeComplete={(isOpen) => {
+        if (!isOpen) form.reset(initialValues);
       }}
     >
-      <DrawerTrigger render={<Button size="sm" />}>
-        <FilePlusIcon data-icon="inline-start" />
-        New contract
-      </DrawerTrigger>
       <DrawerContent className="w-[calc(100%-1rem)] max-w-lg rounded-xl border border-popover shadow-xl dark:border-border [--drawer-inset:0.5rem] [--drawer-bleed-background:transparent]">
         <DrawerHeader className="border-b px-6 py-5">
-          <DrawerTitle className="leading-none font-normal">New contract</DrawerTitle>
-          <DrawerDescription>Add the contract details, dates, and staffing.</DrawerDescription>
+          <DrawerTitle className="leading-none font-normal">{drawerLabels.title}</DrawerTitle>
+          <DrawerDescription>{drawerLabels.description}</DrawerDescription>
         </DrawerHeader>
         <form
-          id="new-contract-form"
+          id="contract-form"
           onSubmit={form.handleSubmit(handleSubmit)}
+          onChange={() => form.clearErrors("root.server")}
           className="min-h-0 flex-1 overflow-y-auto px-6 py-5"
           noValidate
         >
@@ -240,7 +178,7 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                   </FieldLabel>
                   <Input
                     {...field}
-                    onChange={handleFieldChange(field.onChange)}
+                    readOnly={isSubmitting}
                     id="contract-title"
                     placeholder="e.g. Railways Maharashtra"
                     aria-invalid={fieldState.invalid}
@@ -263,7 +201,8 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                       name={field.name}
                       items={departmentOptions}
                       value={field.value}
-                      onValueChange={handleFieldChange(field.onChange)}
+                      onValueChange={field.onChange}
+                      readOnly={isSubmitting}
                     >
                       <SelectTrigger
                         ref={field.ref}
@@ -301,7 +240,9 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                       id="contract-location-state"
                       name={field.name}
                       value={field.value}
-                      onChange={handleFieldChange(field.onChange)}
+                      onChange={(value) => {
+                        if (!isSubmitting) field.onChange(value);
+                      }}
                       onBlur={field.onBlur}
                       inputRef={field.ref}
                       invalid={fieldState.invalid}
@@ -323,7 +264,7 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                     </FieldLabel>
                     <Input
                       {...field}
-                      onChange={handleFieldChange(field.onChange)}
+                      readOnly={isSubmitting}
                       id="contract-location-city"
                       placeholder="e.g. Mumbai"
                       autoComplete="address-level2"
@@ -344,7 +285,7 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                     </FieldLabel>
                     <Input
                       {...field}
-                      onChange={handleFieldChange(field.onChange)}
+                      readOnly={isSubmitting}
                       id="contract-location-address"
                       placeholder="Office, site, or street address"
                       aria-invalid={fieldState.invalid}
@@ -366,7 +307,7 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                     </FieldLabel>
                     <Input
                       {...field}
-                      onChange={handleFieldChange(field.onChange)}
+                      readOnly={isSubmitting}
                       id="contract-gemReference"
                       placeholder="Enter reference number"
                       aria-invalid={fieldState.invalid}
@@ -400,7 +341,8 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                       name={field.name}
                       items={statusOptions}
                       value={field.value}
-                      onValueChange={handleFieldChange(field.onChange)}
+                      onValueChange={field.onChange}
+                      readOnly={isSubmitting}
                     >
                       <SelectTrigger
                         ref={field.ref}
@@ -436,16 +378,18 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                     </FieldLabel>
                     <InputGroup>
                       <InputGroupAddon>
-                        <InputGroupText>₹</InputGroupText>
+                        <InputGroupText>
+                          {initialValues.currency === "INR" ? "₹" : initialValues.currency}
+                        </InputGroupText>
                       </InputGroupAddon>
                       <InputGroupInput
                         {...field}
-                        onChange={handleFieldChange(field.onChange)}
+                        readOnly={isSubmitting}
                         id="contract-value"
                         type="number"
                         min="0"
-                        step="0.01"
-                        placeholder="0.00"
+                        step={10 ** -fractionDigits}
+                        placeholder={(0).toFixed(fractionDigits)}
                         aria-invalid={fieldState.invalid}
                         aria-describedby={fieldState.invalid ? "contract-value-error" : undefined}
                       />
@@ -454,15 +398,18 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                     <Controller
                       name="includesTax"
                       control={form.control}
-                      render={({ field: gstField }) => (
+                      render={({ field: gstField, fieldState: taxState }) => (
                         <Field orientation="horizontal">
                           <Checkbox
                             ref={gstField.ref}
                             name={gstField.name}
                             id="contract-includes-gst"
                             checked={gstField.value}
-                            onCheckedChange={handleFieldChange(gstField.onChange)}
+                            onCheckedChange={gstField.onChange}
                             onBlur={gstField.onBlur}
+                            readOnly={isSubmitting}
+                            aria-invalid={taxState.invalid}
+                            aria-describedby={taxState.invalid ? "contract-includes-gst-error" : undefined}
                           />
                           <FieldLabel htmlFor="contract-includes-gst" className="font-normal text-muted-foreground">
                             Includes GST
@@ -470,6 +417,9 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                         </Field>
                       )}
                     />
+                    {errors.includesTax && (
+                      <FieldError id="contract-includes-gst-error" errors={[errors.includesTax]} />
+                    )}
                   </Field>
                 )}
               />
@@ -484,9 +434,10 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                     <ContractDatePicker
                       id="contract-workOrderReceivedDate"
                       label="WO received date"
+                      disabled={isSubmitting}
                       name={field.name}
                       value={field.value}
-                      onChange={handleFieldChange(field.onChange)}
+                      onChange={field.onChange}
                       onBlur={field.onBlur}
                       triggerRef={field.ref}
                       invalid={fieldState.invalid}
@@ -513,9 +464,10 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                     <ContractDatePicker
                       id="contract-startDate"
                       label="Start date"
+                      disabled={isSubmitting}
                       name={field.name}
                       value={field.value}
-                      onChange={handleFieldChange(field.onChange)}
+                      onChange={field.onChange}
                       onBlur={field.onBlur}
                       triggerRef={field.ref}
                       invalid={fieldState.invalid}
@@ -536,7 +488,7 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                     <InputGroup>
                       <InputGroupInput
                         {...field}
-                        onChange={handleFieldChange(field.onChange)}
+                        readOnly={isSubmitting}
                         id="contract-duration"
                         type="number"
                         min="1"
@@ -554,7 +506,8 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                             <Select
                               name={unitField.name}
                               value={unitField.value}
-                              onValueChange={handleFieldChange(unitField.onChange)}
+                              onValueChange={unitField.onChange}
+                              readOnly={isSubmitting}
                               items={[
                                 { value: "days", label: "Days" },
                                 { value: "months", label: "Months" },
@@ -566,6 +519,8 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                                 onBlur={unitField.onBlur}
                                 className="rounded-l-none border-0 border-l"
                                 aria-label="Duration unit"
+                                aria-invalid={Boolean(errors.durationUnit)}
+                                aria-describedby={errors.durationUnit ? "contract-duration-unit-error" : undefined}
                               >
                                 <SelectValue />
                               </SelectTrigger>
@@ -582,6 +537,9 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                       </InputGroupAddon>
                     </InputGroup>
                     {fieldState.invalid && <FieldError id="contract-duration-error" errors={[fieldState.error]} />}
+                    {errors.durationUnit && (
+                      <FieldError id="contract-duration-unit-error" errors={[errors.durationUnit]} />
+                    )}
                     {scheduledEndDate && (
                       <FieldDescription aria-live="polite">
                         Scheduled to end on {dateFormatter.format(new Date(`${scheduledEndDate}T00:00:00Z`))},
@@ -602,9 +560,10 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                     <ContractDatePicker
                       id="contract-endDate"
                       label="End date"
+                      disabled={isSubmitting}
                       name={field.name}
                       value={field.value}
-                      onChange={handleFieldChange(field.onChange)}
+                      onChange={field.onChange}
                       onBlur={field.onBlur}
                       triggerRef={field.ref}
                       invalid={fieldState.invalid}
@@ -638,20 +597,14 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                     </FieldLabel>
                     <Input
                       {...field}
-                      onChange={handleFieldChange(field.onChange)}
+                      readOnly={isSubmitting}
                       id="contract-required"
                       type="number"
                       min="0"
                       step="1"
                       placeholder="e.g. 20"
                       aria-invalid={fieldState.invalid}
-                      aria-describedby={
-                        fieldState.invalid
-                          ? "contract-required-error"
-                          : hasStaffingSummary
-                            ? "contract-staffing-summary"
-                            : undefined
-                      }
+                      aria-describedby={fieldState.invalid ? "contract-required-error" : undefined}
                     />
                     {fieldState.invalid && <FieldError id="contract-required-error" errors={[fieldState.error]} />}
                   </Field>
@@ -667,34 +620,19 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                     </FieldLabel>
                     <Input
                       {...field}
-                      onChange={handleFieldChange(field.onChange)}
+                      readOnly={isSubmitting}
                       id="contract-deployed"
                       type="number"
                       min="0"
                       step="1"
                       placeholder="e.g. 20"
                       aria-invalid={fieldState.invalid}
-                      aria-describedby={
-                        fieldState.invalid
-                          ? "contract-deployed-error"
-                          : hasStaffingSummary
-                            ? "contract-staffing-summary"
-                            : undefined
-                      }
+                      aria-describedby={fieldState.invalid ? "contract-deployed-error" : undefined}
                     />
                     {fieldState.invalid && <FieldError id="contract-deployed-error" errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
-              {requiredCount !== undefined && deployedCount !== undefined && (
-                <FieldDescription
-                  id="contract-staffing-summary"
-                  className="-mt-3 @sm/field-group:col-span-2"
-                  aria-live="polite"
-                >
-                  {`${deployedCount} of ${requiredCount} deployed · ${deployedCount > requiredCount ? `${deployedCount - requiredCount} above requirement` : `${requiredCount - deployedCount} remaining`}`}
-                </FieldDescription>
-              )}
             </FieldGroup>
             <Controller
               name="notes"
@@ -706,7 +644,7 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                   </FieldLabel>
                   <Textarea
                     {...field}
-                    onChange={handleFieldChange(field.onChange)}
+                    readOnly={isSubmitting}
                     id="contract-notes"
                     className="min-h-20"
                     placeholder="Add any additional details…"
@@ -717,17 +655,15 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                 </Field>
               )}
             />
-            {previewTitle && (
-              <FieldDescription role="status">
-                “{previewTitle}” validated. This preview does not save contracts yet.
-              </FieldDescription>
-            )}
+            {errors.root?.server && <FieldError>{errors.root.server.message}</FieldError>}
           </FieldGroup>
         </form>
         <DrawerFooter className="flex-row justify-end gap-2 border-t px-6 py-4">
-          <DrawerClose render={<Button type="button" variant="outline" />}>Cancel</DrawerClose>
-          <Button type="submit" form="new-contract-form" disabled={form.formState.isSubmitting}>
-            {status === "draft" ? "Save draft" : "Create contract"}
+          <DrawerClose render={<Button type="button" variant="outline" />} disabled={isSubmitting}>
+            Cancel
+          </DrawerClose>
+          <Button type="submit" form="contract-form" disabled={isSubmitting}>
+            {drawerLabels.submit}
           </Button>
         </DrawerFooter>
       </DrawerContent>
