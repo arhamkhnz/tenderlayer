@@ -11,7 +11,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const output = path.join(root, "out");
 const migrations = path.join(root, "drizzle");
 const journal = JSON.parse(readFileSync(path.join(migrations, "meta/_journal.json"), "utf8"));
-const tables = ["organizations", "departments"];
+const tables = ["organizations", "departments", "contracts"];
 
 function workspaceRows(database) {
   return {
