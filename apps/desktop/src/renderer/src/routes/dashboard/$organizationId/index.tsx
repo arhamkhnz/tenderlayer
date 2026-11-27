@@ -53,7 +53,8 @@ function DashboardPage() {
           <PeriodFilter value={period} onValueChange={setPeriod} />
           <Link
             from="/dashboard/$organizationId"
-            to="/dashboard/$organizationId/contracts/new"
+            to="/dashboard/$organizationId/contracts"
+            search={{ new: true }}
             className={buttonVariants({ size: "sm" })}
           >
             <FilePlusIcon data-icon="inline-start" />

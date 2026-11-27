@@ -1,0 +1,522 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "a9273eb2-d5c8-4698-a43e-cc89fcd34d51",
+  "prevId": "eef5a735-6471-48e1-bb61-c606ff6e52b0",
+  "tables": {
+    "contracts": {
+      "name": "contracts",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "organization_id": {
+          "name": "organization_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "department_id": {
+          "name": "department_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "gem_reference": {
+          "name": "gem_reference",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "location_state": {
+          "name": "location_state",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "location_city": {
+          "name": "location_city",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "location_address": {
+          "name": "location_address",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'draft'"
+        },
+        "amount": {
+          "name": "amount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "currency": {
+          "name": "currency",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'INR'"
+        },
+        "includes_tax": {
+          "name": "includes_tax",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
+        },
+        "work_order_received_date": {
+          "name": "work_order_received_date",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "start_date": {
+          "name": "start_date",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "duration": {
+          "name": "duration",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "duration_unit": {
+          "name": "duration_unit",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'months'"
+        },
+        "end_date": {
+          "name": "end_date",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "required_headcount": {
+          "name": "required_headcount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "deployed_headcount": {
+          "name": "deployed_headcount",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
+        "notes": {
+          "name": "notes",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch() * 1000)"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch() * 1000)"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "revision": {
+          "name": "revision",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 1
+        }
+      },
+      "indexes": {
+        "contracts_organization_department_idx": {
+          "name": "contracts_organization_department_idx",
+          "columns": [
+            "organization_id",
+            "department_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "contracts_organization_id_organizations_id_fk": {
+          "name": "contracts_organization_id_organizations_id_fk",
+          "tableFrom": "contracts",
+          "tableTo": "organizations",
+          "columnsFrom": [
+            "organization_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "contracts_department_organization_fk": {
+          "name": "contracts_department_organization_fk",
+          "tableFrom": "contracts",
+          "tableTo": "departments",
+          "columnsFrom": [
+            "organization_id",
+            "department_id"
+          ],
+          "columnsTo": [
+            "organization_id",
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "contracts_title_check": {
+          "name": "contracts_title_check",
+          "value": "length(\"contracts\".\"title\") > 0 and \"contracts\".\"title\" = trim(\"contracts\".\"title\")"
+        },
+        "contracts_status_check": {
+          "name": "contracts_status_check",
+          "value": "\"contracts\".\"status\" in ('draft', 'wo-received', 'scheduled', 'active', 'on-hold', 'completed', 'terminated')"
+        },
+        "contracts_non_draft_fields_check": {
+          "name": "contracts_non_draft_fields_check",
+          "value": "\"contracts\".\"status\" = 'draft' or (\n        \"contracts\".\"department_id\" is not null\n        and coalesce(length(trim(\"contracts\".\"gem_reference\")), 0) > 0\n        and coalesce(length(trim(\"contracts\".\"location_state\")), 0) > 0\n        and coalesce(length(trim(\"contracts\".\"location_city\")), 0) > 0\n        and \"contracts\".\"amount\" is not null\n        and \"contracts\".\"start_date\" is not null\n        and \"contracts\".\"duration\" is not null\n        and \"contracts\".\"required_headcount\" is not null\n      )"
+        },
+        "contracts_amount_check": {
+          "name": "contracts_amount_check",
+          "value": "\"contracts\".\"amount\" is null or (typeof(\"contracts\".\"amount\") = 'integer' and \"contracts\".\"amount\" >= 0)"
+        },
+        "contracts_currency_check": {
+          "name": "contracts_currency_check",
+          "value": "\"contracts\".\"currency\" glob '[A-Z][A-Z][A-Z]'"
+        },
+        "contracts_includes_tax_check": {
+          "name": "contracts_includes_tax_check",
+          "value": "\"contracts\".\"includes_tax\" in (0, 1)"
+        },
+        "contracts_duration_check": {
+          "name": "contracts_duration_check",
+          "value": "\"contracts\".\"duration\" is null or (typeof(\"contracts\".\"duration\") = 'integer' and \"contracts\".\"duration\" > 0)"
+        },
+        "contracts_duration_unit_check": {
+          "name": "contracts_duration_unit_check",
+          "value": "\"contracts\".\"duration_unit\" in ('days', 'months', 'years')"
+        },
+        "contracts_date_order_check": {
+          "name": "contracts_date_order_check",
+          "value": "\"contracts\".\"start_date\" is null or \"contracts\".\"end_date\" is null or \"contracts\".\"end_date\" >= \"contracts\".\"start_date\""
+        },
+        "contracts_required_headcount_check": {
+          "name": "contracts_required_headcount_check",
+          "value": "\"contracts\".\"required_headcount\" is null or (typeof(\"contracts\".\"required_headcount\") = 'integer' and \"contracts\".\"required_headcount\" >= 0)"
+        },
+        "contracts_deployed_headcount_check": {
+          "name": "contracts_deployed_headcount_check",
+          "value": "typeof(\"contracts\".\"deployed_headcount\") = 'integer' and \"contracts\".\"deployed_headcount\" >= 0"
+        }
+      }
+    },
+    "departments": {
+      "name": "departments",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "organization_id": {
+          "name": "organization_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "code": {
+          "name": "code",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch() * 1000)"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch() * 1000)"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "revision": {
+          "name": "revision",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 1
+        }
+      },
+      "indexes": {
+        "departments_organization_idx": {
+          "name": "departments_organization_idx",
+          "columns": [
+            "organization_id"
+          ],
+          "isUnique": false
+        },
+        "departments_organization_department_unique": {
+          "name": "departments_organization_department_unique",
+          "columns": [
+            "organization_id",
+            "id"
+          ],
+          "isUnique": true
+        },
+        "departments_organization_name_unique": {
+          "name": "departments_organization_name_unique",
+          "columns": [
+            "organization_id",
+            "lower(\"name\")"
+          ],
+          "isUnique": true,
+          "where": "\"departments\".\"deleted_at\" is null"
+        },
+        "departments_organization_code_unique": {
+          "name": "departments_organization_code_unique",
+          "columns": [
+            "organization_id",
+            "lower(\"code\")"
+          ],
+          "isUnique": true,
+          "where": "\"departments\".\"deleted_at\" is null"
+        }
+      },
+      "foreignKeys": {
+        "departments_organization_id_organizations_id_fk": {
+          "name": "departments_organization_id_organizations_id_fk",
+          "tableFrom": "departments",
+          "tableTo": "organizations",
+          "columnsFrom": [
+            "organization_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "departments_name_check": {
+          "name": "departments_name_check",
+          "value": "length(\"departments\".\"name\") > 0 and \"departments\".\"name\" = trim(\"departments\".\"name\") and instr(\"departments\".\"name\", char(0)) = 0"
+        },
+        "departments_code_check": {
+          "name": "departments_code_check",
+          "value": "\"departments\".\"code\" is null or (length(\"departments\".\"code\") > 0 and \"departments\".\"code\" = trim(\"departments\".\"code\") and instr(\"departments\".\"code\", char(0)) = 0)"
+        }
+      }
+    },
+    "organizations": {
+      "name": "organizations",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch() * 1000)"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch() * 1000)"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "revision": {
+          "name": "revision",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 1
+        }
+      },
+      "indexes": {
+        "organizations_name_unique": {
+          "name": "organizations_name_unique",
+          "columns": [
+            "lower(\"name\")"
+          ],
+          "isUnique": true,
+          "where": "\"organizations\".\"deleted_at\" is null"
+        },
+        "organizations_slug_unique": {
+          "name": "organizations_slug_unique",
+          "columns": [
+            "slug"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "organizations_name_check": {
+          "name": "organizations_name_check",
+          "value": "length(\"organizations\".\"name\") between 2 and 120 and \"organizations\".\"name\" = trim(\"organizations\".\"name\")"
+        },
+        "organizations_slug_check": {
+          "name": "organizations_slug_check",
+          "value": "length(\"organizations\".\"slug\") between 1 and 80 and \"organizations\".\"slug\" not glob '*[^a-z0-9-]*' and substr(\"organizations\".\"slug\", 1, 1) <> '-' and substr(\"organizations\".\"slug\", -1, 1) <> '-' and instr(\"organizations\".\"slug\", '--') = 0"
+        }
+      }
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {
+      "departments_organization_name_unique": {
+        "columns": {
+          "lower(\"name\")": {
+            "isExpression": true
+          }
+        }
+      },
+      "departments_organization_code_unique": {
+        "columns": {
+          "lower(\"code\")": {
+            "isExpression": true
+          }
+        }
+      },
+      "organizations_name_unique": {
+        "columns": {
+          "lower(\"name\")": {
+            "isExpression": true
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,68 +1,147 @@
-import { ArrowLeftIcon } from "@keyline-icons/react";
-import { Link, Outlet, createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+
+import { ArrowLeftIcon, PenLineIcon } from "@keyline-icons/react";
+import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
+import { cn } from "cn";
 
 import { Badge } from "@tenderlayer/ui/components/badge";
-import { Button } from "@tenderlayer/ui/components/button";
+import { Button, buttonVariants } from "@tenderlayer/ui/components/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@tenderlayer/ui/components/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@tenderlayer/ui/components/tabs";
+import { toast } from "@tenderlayer/ui/components/toast";
+
+import { RouteErrorScreen } from "@/app/route-error-screen";
+import type { ContractFormValues } from "@shared/schemas/contracts";
+
+import { contractStatusDisplay } from "../-components/contract-display";
+import { ContractDrawer } from "../-components/contract-drawer";
+import { ContractRecordPanels, ContractRecordTabs } from "./-components/contract-related-records";
+import { ContractSummary } from "./-components/contract-summary";
 
 export const Route = createFileRoute("/dashboard/$organizationId/contracts/$contractId")({
-  component: ContractLayout,
+  loader: {
+    staleReloadMode: "blocking",
+    handler: async ({ params: { organizationId, contractId } }) => {
+      const contract = await window.electronAPI.contracts.get({ organizationId, contractId });
+      if (!contract) throw notFound({ routeId: Route.id });
+      const departments = await window.electronAPI.departments.list(organizationId);
+      return { contract, departments };
+    },
+  },
+  component: ContractDetailsPage,
+  errorComponent: ContractLoadError,
+  notFoundComponent: ContractNotFound,
 });
 
-function ContractLayout() {
-  const { contractId } = Route.useParams();
-  const tabs = [
-    { label: "Overview", to: "/dashboard/$organizationId/contracts/$contractId" },
-    { label: "Employees", to: "/dashboard/$organizationId/contracts/$contractId/employees" },
-    { label: "Invoices", to: "/dashboard/$organizationId/contracts/$contractId/invoices" },
-    { label: "Payroll", to: "/dashboard/$organizationId/contracts/$contractId/payroll" },
-    { label: "Documents", to: "/dashboard/$organizationId/contracts/$contractId/documents" },
-    { label: "Activity", to: "/dashboard/$organizationId/contracts/$contractId/activity" },
-    { label: "Deadlines", to: "/dashboard/$organizationId/contracts/$contractId/deadlines" },
-  ] as const;
+function ContractLoadError() {
+  const router = useRouter();
 
   return (
-    <>
-      <div className="flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-end lg:justify-between">
-        <div className="flex min-w-0 flex-col gap-1">
-          <Link
-            from="/dashboard/$organizationId"
-            to="/dashboard/$organizationId/contracts"
-            className="mb-1 flex w-fit items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeftIcon />
-            Contracts
-          </Link>
-          <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-3xl tracking-tighter leading-none">Railway signaling maintenance</h1>
-            <Badge variant="outline">Active</Badge>
-          </div>
-          <p className="text-sm text-muted-foreground">GEM/2026/B/4412081 · Indian Railways</p>
+    <RouteErrorScreen
+      title="Couldn’t load the contract"
+      onRetry={() => void router.invalidate({ filter: (match) => match.routeId === Route.id })}
+    />
+  );
+}
+
+function ContractsLink() {
+  return (
+    <Link
+      from={Route.fullPath}
+      to="/dashboard/$organizationId/contracts"
+      aria-label="Back to contracts"
+      className={buttonVariants({ variant: "outline", size: "sm" })}
+    >
+      <ArrowLeftIcon data-icon="inline-start" aria-hidden="true" />
+      Back
+    </Link>
+  );
+}
+
+function ContractNotFound() {
+  return (
+    <section
+      data-content-padding="false"
+      className="grid min-h-[calc(100dvh-var(--header-height))] place-items-center p-6"
+    >
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle role="heading" aria-level={1}>
+            Contract not found
+          </CardTitle>
+          <CardDescription>This contract isn’t available in the current organization.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ContractsLink />
+        </CardContent>
+      </Card>
+    </section>
+  );
+}
+
+function ContractDetailsPage() {
+  const router = useRouter();
+  const { organizationId, contractId } = Route.useParams();
+  const { contract, departments } = Route.useLoaderData();
+  const [editOpen, setEditOpen] = useState(false);
+  const status = contractStatusDisplay[contract.status];
+
+  async function updateContract(values: ContractFormValues) {
+    const result = await window.electronAPI.contracts.update({ ...values, organizationId, contractId });
+    if (!result.ok) return result;
+
+    setEditOpen(false);
+    toast.add({ title: "Contract updated", type: "success" });
+    void router.invalidate({
+      filter: (match) => match.routeId === Route.id || match.routeId === "/dashboard/$organizationId/contracts/",
+    });
+    return result;
+  }
+
+  return (
+    <section
+      data-content-padding="false"
+      className="flex h-[calc(100dvh-var(--header-height))] min-h-0 min-w-0 flex-col"
+    >
+      <div className="grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 p-4">
+        <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2">
+          <h1 className="min-w-0 text-3xl leading-tight tracking-tighter wrap-anywhere">{contract.title}</h1>
+          <Badge variant="secondary" className={cn("rounded-md px-1.5 font-450", status.className)}>
+            {status.label}
+          </Badge>
         </div>
-        <Button type="button" variant="outline">
-          Edit contract
-        </Button>
+        <div className="flex items-center justify-end gap-2">
+          <Button type="button" size="sm" aria-haspopup="dialog" onClick={() => setEditOpen(true)}>
+            <PenLineIcon data-icon="inline-start" aria-hidden="true" />
+            Edit contract
+          </Button>
+          <ContractsLink />
+        </div>
       </div>
 
-      <nav className="scrollbar-none flex overflow-x-auto border-b" aria-label="Contract sections">
-        {tabs.map((tab) => (
-          <Link
-            from="/dashboard/$organizationId"
-            key={tab.to}
-            to={tab.to}
-            params={{ contractId }}
-            activeOptions={{ exact: true }}
-            className="shrink-0 border-b-2 px-3 py-2 text-xs"
-            activeProps={{ className: "border-foreground font-medium text-foreground" }}
-            inactiveProps={{
-              className: "border-transparent text-muted-foreground hover:text-foreground",
-            }}
+      <Tabs key={contract.id} defaultValue="overview" className="min-h-0 min-w-0 flex-1 gap-0">
+        <div className="shrink-0 overflow-x-auto border-b border-border/60 ps-0.75 pe-4 pb-0.5">
+          <TabsList
+            variant="line"
+            aria-label="Contract sections"
+            className="h-10! px-0 *:data-[slot=tabs-trigger]:px-3"
           >
-            {tab.label}
-          </Link>
-        ))}
-      </nav>
-
-      <Outlet />
-    </>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <ContractRecordTabs />
+          </TabsList>
+        </div>
+        <TabsContent value="overview" className="@container min-h-0 min-w-0 overflow-y-auto px-4 pt-1 pb-4">
+          <ContractSummary contract={contract} />
+        </TabsContent>
+        <ContractRecordPanels />
+      </Tabs>
+      <ContractDrawer
+        open={editOpen}
+        contract={contract}
+        departments={departments}
+        onClose={() => setEditOpen(false)}
+        onSave={updateContract}
+      />
+    </section>
   );
 }
