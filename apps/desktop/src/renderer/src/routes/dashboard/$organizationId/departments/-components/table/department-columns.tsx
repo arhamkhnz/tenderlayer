@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 import {
   BinIcon,
   BriefcaseIcon,
@@ -31,6 +33,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@tenderlayer/ui/components/dropdown-menu";
+import { getBadgeColors } from "@tenderlayer/ui/lib/avatar-colors";
 
 import type { DepartmentRecord } from "@shared/contracts/departments";
 
@@ -97,14 +100,26 @@ export const departmentColumns = columnHelper.columns([
   }),
   columnHelper.accessor("code", {
     ...departmentColumnHeader("Code", HashIcon, "w-32 lg:w-40"),
-    cell: ({ getValue }) => {
+    cell: ({ getValue, row }) => {
       const code = getValue();
-      return code ? (
-        <Badge variant="outline" className="rounded-md font-mono">
+      if (!code) return "—";
+
+      const { light, dark } = getBadgeColors(row.original.id);
+      return (
+        <Badge
+          variant="secondary"
+          className="rounded-md bg-(--badge-bg) px-1.5 font-mono font-450 text-(--badge-fg) dark:bg-(--badge-dark-bg) dark:text-(--badge-dark-fg)"
+          style={
+            {
+              "--badge-bg": light.background,
+              "--badge-fg": light.foreground,
+              "--badge-dark-bg": dark.background,
+              "--badge-dark-fg": dark.foreground,
+            } as CSSProperties
+          }
+        >
           {code}
         </Badge>
-      ) : (
-        "—"
       );
     },
   }),
