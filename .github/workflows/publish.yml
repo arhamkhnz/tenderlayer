@@ -231,6 +231,7 @@ jobs:
           else
             gh release create "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
               --draft --prerelease="$prerelease" --target "$GITHUB_SHA" --title "TenderLayer $RELEASE_TAG" \
+              --generate-notes \
               --notes "Unsigned testing builds for macOS Apple Silicon (arm64) and Windows (x64). The macOS build is not notarized. Windows users upgrading from alpha.3 or earlier should uninstall the previous Squirrel installation before installing this NSIS build to avoid duplicate installations."
           fi
           gh release upload "$RELEASE_TAG" release/* --repo "$GITHUB_REPOSITORY" --clobber
