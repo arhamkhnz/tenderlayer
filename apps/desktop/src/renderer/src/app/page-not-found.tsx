@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@tend
 
 export function PageNotFound() {
   return (
-    <main className="grid min-h-svh place-items-center p-6">
+    <main className="grid min-h-svh place-items-center bg-background px-6 py-[max(1.5rem,env(titlebar-area-height,46px))]">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle role="heading" aria-level={1}>

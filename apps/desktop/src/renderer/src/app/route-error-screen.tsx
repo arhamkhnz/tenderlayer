@@ -1,29 +1,29 @@
-import { useRouter } from "@tanstack/react-router";
+import { useId } from "react";
 
 import { Button, buttonVariants } from "@tenderlayer/ui/components/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@tenderlayer/ui/components/card";
 
 import { supportEmail } from "@shared/support";
 
-export function DashboardLoadFailure() {
-  const router = useRouter();
+interface RouteErrorScreenProps {
+  title: string;
+  onRetry: () => void;
+}
+
+export function RouteErrorScreen({ title, onRetry }: RouteErrorScreenProps) {
+  const titleId = useId();
 
   return (
-    <main className="relative grid min-h-svh place-items-center bg-background px-4 py-16">
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 [app-region:drag] [-webkit-app-region:drag]"
-        style={{ height: "env(titlebar-area-height, 46px)" }}
-      />
-      <Card role="region" aria-labelledby="dashboard-error-title" className="w-full max-w-md">
+    <div data-content-padding="false" className="grid min-h-[calc(100dvh-var(--header-height))] place-items-center p-6">
+      <Card role="region" aria-labelledby={titleId} className="w-full max-w-md">
         <CardHeader>
-          <CardTitle id="dashboard-error-title" role="heading" aria-level={1}>
-            Couldn’t load the dashboard
+          <CardTitle id={titleId} role="heading" aria-level={1}>
+            {title}
           </CardTitle>
           <CardDescription>If retrying doesn’t help, restart TenderLayer.</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
-          <Button type="button" onClick={() => void router.invalidate()}>
+          <Button type="button" onClick={onRetry}>
             Retry
           </Button>
           <a
@@ -53,6 +53,6 @@ export function DashboardLoadFailure() {
           </div>
         </CardContent>
       </Card>
-    </main>
+    </div>
   );
 }

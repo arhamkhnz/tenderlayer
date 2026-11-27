@@ -28,7 +28,7 @@ export default defineConfig({
       { groupName: "react", elementNamePattern: ["react", "react/**", "react-dom", "react-dom/**"] },
       { groupName: "workspace", elementNamePattern: ["@tenderlayer/**"] },
     ],
-    internalPattern: ["~/", "@/", "@shared/", "#"],
+    internalPattern: ["~/", "@/", "@core/", "@db/", "@shared/", "#"],
     groups: [
       "react",
       "builtin",

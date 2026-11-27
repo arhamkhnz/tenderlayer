@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
-import { DashboardLoadFailure } from "./-components/dashboard-load-failure";
+import { OrganizationLoadFailure } from "./-components/organization-load-failure";
 
 export const Route = createFileRoute("/dashboard")({
   shouldReload: ({ cause }) => cause === "enter",
@@ -14,5 +14,5 @@ export const Route = createFileRoute("/dashboard")({
     },
   },
   component: Outlet,
-  errorComponent: DashboardLoadFailure,
+  errorComponent: OrganizationLoadFailure,
 });

@@ -1,9 +1,6 @@
-import { useState } from "react";
-
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PlusIcon } from "@keyline-icons/react";
 import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
+import type { z } from "zod";
 
 import { Button } from "@tenderlayer/ui/components/button";
 import {
@@ -14,51 +11,83 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
 } from "@tenderlayer/ui/components/drawer";
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@tenderlayer/ui/components/field";
+import { Field, FieldError, FieldGroup, FieldLabel } from "@tenderlayer/ui/components/field";
 import { Input } from "@tenderlayer/ui/components/input";
 
-const departmentFormSchema = z.object({
-  name: z.string().trim().min(1, "Enter a department name."),
-  code: z.string().trim(),
-});
+import type { DepartmentRecord, DepartmentSaveResult } from "@shared/contracts/departments";
+import { createDepartmentSchema } from "@shared/schemas/departments";
 
-type DepartmentFormValues = z.infer<typeof departmentFormSchema>;
+const departmentFormSchema = createDepartmentSchema.pick({ name: true, code: true });
 
-export function NewDepartmentDrawer() {
-  const [previewName, setPreviewName] = useState<string | null>(null);
+export type DepartmentFormValues = z.infer<typeof departmentFormSchema>;
+
+interface DepartmentDrawerProps {
+  open: boolean;
+  department: DepartmentRecord | undefined;
+  onClose: () => void;
+  onSave: (values: DepartmentFormValues) => Promise<DepartmentSaveResult>;
+}
+
+export function DepartmentDrawer({ open, department, onClose, onSave }: DepartmentDrawerProps) {
+  const drawerLabels = department
+    ? {
+        title: "Edit department",
+        description: "Update the department name or code.",
+        submit: "Save changes",
+      }
+    : {
+        title: "New department",
+        description: "Add a department to your organization.",
+        submit: "Create department",
+      };
+
+  const initialValues = { name: department?.name ?? "", code: department?.code ?? "" };
   const form = useForm<DepartmentFormValues>({
     resolver: zodResolver(departmentFormSchema),
-    defaultValues: { name: "", code: "" },
+    values: initialValues,
   });
 
-  function handleFieldChange(onChange: (value: unknown) => void) {
-    return (value: unknown) => {
-      setPreviewName(null);
-      onChange(value);
-    };
-  }
+  const { errors, isSubmitting } = form.formState;
 
-  function handleSubmit(values: DepartmentFormValues) {
-    // Match the contract form's preview behavior until persistence is implemented.
-    setPreviewName(values.name);
+  async function handleSubmit(values: DepartmentFormValues) {
+    try {
+      const result = await onSave(values);
+      if (result.ok) return;
+
+      for (const [index, { field, message }] of result.fieldErrors.entries()) {
+        form.setError(field, { type: "server", message }, { shouldFocus: index === 0 });
+      }
+      if (result.formError) {
+        form.setError("root.server", { type: "server", message: result.formError });
+      }
+    } catch {
+      form.setError("root.server", { message: "Couldn’t save the department. Please try again." });
+    }
   }
 
   return (
-    <Drawer swipeDirection="right">
-      <DrawerTrigger render={<Button size="sm" />}>
-        <PlusIcon data-icon="inline-start" />
-        Add department
-      </DrawerTrigger>
+    <Drawer
+      swipeDirection="right"
+      open={open}
+      onOpenChange={(isOpen, eventDetails) => {
+        if (isOpen) return;
+        if (isSubmitting) eventDetails.cancel();
+        else onClose();
+      }}
+      onOpenChangeComplete={(isOpen) => {
+        if (!isOpen) form.reset(initialValues);
+      }}
+    >
       <DrawerContent className="w-[calc(100%-1rem)] max-w-lg rounded-xl border border-popover shadow-xl dark:border-border [--drawer-inset:0.5rem] [--drawer-bleed-background:transparent]">
         <DrawerHeader className="border-b px-6 py-5">
-          <DrawerTitle className="leading-none font-normal">New department</DrawerTitle>
-          <DrawerDescription>Add a department to your organization.</DrawerDescription>
+          <DrawerTitle className="leading-none font-normal">{drawerLabels.title}</DrawerTitle>
+          <DrawerDescription>{drawerLabels.description}</DrawerDescription>
         </DrawerHeader>
         <form
-          id="new-department-form"
+          id="department-form"
           onSubmit={form.handleSubmit(handleSubmit)}
+          onChange={() => form.clearErrors("root.server")}
           className="min-h-0 flex-1 overflow-y-auto px-6 py-5"
           noValidate
         >
@@ -73,11 +102,11 @@ export function NewDepartmentDrawer() {
                   </FieldLabel>
                   <Input
                     {...field}
-                    onChange={handleFieldChange(field.onChange)}
                     id="department-name"
                     placeholder="e.g. Indian Railways"
                     aria-invalid={fieldState.invalid}
                     aria-describedby={fieldState.invalid ? "department-name-error" : undefined}
+                    readOnly={isSubmitting}
                     required
                   />
                   {fieldState.invalid && <FieldError id="department-name-error" errors={[fieldState.error]} />}
@@ -94,27 +123,26 @@ export function NewDepartmentDrawer() {
                   </FieldLabel>
                   <Input
                     {...field}
-                    onChange={handleFieldChange(field.onChange)}
+                    value={field.value ?? ""}
                     id="department-code"
                     placeholder="e.g. IR"
                     aria-invalid={fieldState.invalid}
                     aria-describedby={fieldState.invalid ? "department-code-error" : undefined}
+                    readOnly={isSubmitting}
                   />
                   {fieldState.invalid && <FieldError id="department-code-error" errors={[fieldState.error]} />}
                 </Field>
               )}
             />
-            {previewName && (
-              <FieldDescription role="status">
-                “{previewName}” validated. This preview does not save departments yet.
-              </FieldDescription>
-            )}
+            {errors.root?.server && <FieldError>{errors.root.server.message}</FieldError>}
           </FieldGroup>
         </form>
         <DrawerFooter className="flex-row justify-end gap-2 border-t px-6 py-4">
-          <DrawerClose render={<Button type="button" variant="outline" />}>Cancel</DrawerClose>
-          <Button type="submit" form="new-department-form" disabled={form.formState.isSubmitting}>
-            Create department
+          <DrawerClose render={<Button type="button" variant="outline" />} disabled={isSubmitting}>
+            Cancel
+          </DrawerClose>
+          <Button type="submit" form="department-form" disabled={isSubmitting}>
+            {drawerLabels.submit}
           </Button>
         </DrawerFooter>
       </DrawerContent>

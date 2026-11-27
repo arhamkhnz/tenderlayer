@@ -53,4 +53,4 @@ After packaging, run the smoke test from the repository root:
 node apps/desktop/scripts/smoke-test.mjs
 ```
 
-It launches a copy of the packaged app with temporary databases to check startup, renderer communication, database upgrades, and rollback. It does not use your development database.
+It launches a copy of the packaged app with temporary databases to check fresh schema creation and renderer communication. Once the journal includes a migration after the baseline, it also checks upgrades and rollback.

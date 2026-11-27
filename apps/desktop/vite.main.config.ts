@@ -24,6 +24,8 @@ function isExternal(id: string) {
 export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
+      "@core": fileURLToPath(new URL("./src/main/core", import.meta.url)),
+      "@db": fileURLToPath(new URL("./src/main/core/database", import.meta.url)),
       "@shared": fileURLToPath(new URL("./src/shared", import.meta.url)),
     },
   },

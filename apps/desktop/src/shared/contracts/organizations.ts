@@ -1,7 +1,5 @@
 import type { CreateOrganizationInput } from "../schemas/organizations.js";
 
-export type { CreateOrganizationInput } from "../schemas/organizations.js";
-
 export const organizationIpcChannels = {
   create: "organizations:create",
   list: "organizations:list",
@@ -10,27 +8,13 @@ export const organizationIpcChannels = {
 export interface OrganizationRecord {
   id: string;
   name: string;
-  slug: string;
-  createdAt: number;
-  updatedAt: number;
-  deletedAt: number | null;
-  revision: number;
 }
 
-export type OrganizationIpcContract = {
-  [organizationIpcChannels.create]: {
-    args: [input: CreateOrganizationInput];
-    result: OrganizationRecord;
-  };
-  [organizationIpcChannels.list]: {
-    args: [];
-    result: OrganizationRecord[];
-  };
-};
+export type CreateOrganizationResult =
+  | { ok: true; organizationId: string }
+  | { ok: false; fieldErrors: { field: "name"; message: string }[]; formError?: string };
 
 export interface OrganizationsApi {
-  create: (
-    input: CreateOrganizationInput,
-  ) => Promise<OrganizationIpcContract[typeof organizationIpcChannels.create]["result"]>;
-  list: () => Promise<OrganizationIpcContract[typeof organizationIpcChannels.list]["result"]>;
+  create: (input: CreateOrganizationInput) => Promise<CreateOrganizationResult>;
+  list: () => Promise<OrganizationRecord[]>;
 }

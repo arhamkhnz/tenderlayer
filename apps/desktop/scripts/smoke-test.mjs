@@ -11,43 +11,79 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const output = path.join(root, "out");
 const migrations = path.join(root, "drizzle");
 const journal = JSON.parse(readFileSync(path.join(migrations, "meta/_journal.json"), "utf8"));
-const tables = ["organizations", "users", "organization_memberships", "opportunities", "bids", "contracts"];
+const tables = ["organizations", "departments"];
 
-function snapshot(database) {
-  return Object.fromEntries(
-    tables.map((table) => [table, database.prepare(`SELECT * FROM ${table} ORDER BY id`).all()]),
-  );
+function workspaceRows(database) {
+  return {
+    organizations: database.prepare("SELECT id, name FROM organizations ORDER BY id").all(),
+    departments: database.prepare("SELECT id, organization_id, name, code FROM departments ORDER BY id").all(),
+  };
 }
 
-function seedDatabase(filename, count) {
-  const database = new DatabaseSync(filename);
+function schemaObjects(database) {
+  return database.prepare("SELECT type, name, sql FROM sqlite_schema ORDER BY type, name").all();
+}
+
+function migrationCount(database) {
+  return database.prepare("SELECT COUNT(*) AS count FROM __drizzle_migrations").get().count;
+}
+
+function seedBaseline(filename, invalid = false) {
+  const [baseline] = journal.entries;
+  const sql = readFileSync(path.join(migrations, `${baseline.tag}.sql`), "utf8");
+  const database = new DatabaseSync(filename, { enableForeignKeyConstraints: !invalid });
   try {
-    database.exec("PRAGMA foreign_keys=OFF");
-    database.exec("CREATE TABLE __drizzle_migrations (id SERIAL PRIMARY KEY, hash text NOT NULL, created_at numeric)");
-    for (const entry of journal.entries.slice(0, count)) {
-      let sql = readFileSync(path.join(migrations, `${entry.tag}.sql`), "utf8");
-      // Reproduce the already-released three-character constraint, too.
-      if (entry.idx === 2) sql = sql.replace("between 2 and 120", "between 3 and 120");
-      database.exec(sql.replaceAll("--> statement-breakpoint", ""));
-      database
-        .prepare("INSERT INTO __drizzle_migrations (hash, created_at) VALUES (?, ?)")
-        .run(createHash("sha256").update(sql).digest("hex"), entry.when);
-    }
-    database.exec("PRAGMA foreign_keys=ON");
-    database
-      .prepare("INSERT INTO organizations (id, name, slug) VALUES (?, ?, ?)")
-      .run("legacy-org", count < 3 ? "AB" : "Legacy organization", "legacy-org");
+    database.exec(sql.replaceAll("--> statement-breakpoint", ""));
     database.exec(`
-      INSERT INTO users (id, name, email) VALUES ('legacy-user', 'Legacy user', 'legacy@example.test');
-      INSERT INTO organization_memberships (id, organization_id, user_id) VALUES ('legacy-membership', 'legacy-org', 'legacy-user');
-      INSERT INTO opportunities (id, organization_id, title) VALUES ('legacy-opportunity', 'legacy-org', 'Legacy opportunity');
-      INSERT INTO bids (id, organization_id, opportunity_id) VALUES ('legacy-bid', 'legacy-org', 'legacy-opportunity');
-      INSERT INTO contracts (id, organization_id, bid_id, title) VALUES ('legacy-contract', 'legacy-org', 'legacy-bid', 'Legacy contract');
+      CREATE TABLE __drizzle_migrations (id SERIAL PRIMARY KEY, hash text NOT NULL, created_at numeric);
+      INSERT INTO organizations (id, name, slug) VALUES ('sample-org', 'Sample organization', 'sample-org');
     `);
-    return snapshot(database);
+    database
+      .prepare("INSERT INTO departments (id, organization_id, name, code) VALUES (?, ?, ?, ?)")
+      .run("sample-department", invalid ? "missing-org" : "sample-org", "Sample department", "SD");
+    database
+      .prepare("INSERT INTO __drizzle_migrations (hash, created_at) VALUES (?, ?)")
+      .run(createHash("sha256").update(sql).digest("hex"), baseline.when);
+    return { rows: workspaceRows(database), schema: schemaObjects(database) };
   } finally {
     database.close();
   }
+}
+
+async function checkMigration(executable, temporary, invalid = false) {
+  const directory = path.join(temporary, invalid ? "rollback" : "upgrade");
+  mkdirSync(directory);
+  const filename = path.join(directory, "tenderlayer.db");
+  const before = seedBaseline(filename, invalid);
+
+  if (invalid) {
+    await assert.rejects(launch(executable, directory), /foreign-key validation/);
+  } else {
+    await launch(executable, directory);
+  }
+
+  const database = new DatabaseSync(filename, { readOnly: true });
+  try {
+    assert.deepEqual(workspaceRows(database), before.rows);
+    assert.equal(migrationCount(database), invalid ? 1 : journal.entries.length);
+    if (invalid) assert.deepEqual(schemaObjects(database), before.schema);
+    else assert.deepEqual(database.prepare("PRAGMA foreign_key_check").all(), []);
+  } finally {
+    database.close();
+  }
+
+  const backup = readdirSync(directory).find((name) => name.includes(".before-migration-") && name.endsWith(".bak"));
+  assert.ok(backup, "Expected a backup of the baseline database");
+  const backupDatabase = new DatabaseSync(path.join(directory, backup), { readOnly: true });
+  try {
+    assert.deepEqual(workspaceRows(backupDatabase), before.rows);
+    assert.equal(migrationCount(backupDatabase), 1);
+  } finally {
+    backupDatabase.close();
+  }
+  console.log(
+    invalid ? "Packaged smoke test passed: migration rollback" : "Packaged smoke test passed: baseline upgrade",
+  );
 }
 
 function launch(executable, directory) {
@@ -116,61 +152,29 @@ try {
   }
 
   // Running outside the checkout prevents missing dependencies resolving from its node_modules.
-  for (const count of [0, 1, 2, 3]) {
-    const directory = path.join(temporary, count === 0 ? "fresh" : `upgrade-${count}`);
-    mkdirSync(directory);
-    const filename = path.join(directory, "tenderlayer.db");
-    const before = count === 0 ? undefined : seedDatabase(filename, count);
-    await launch(executable, directory);
-    const database = new DatabaseSync(filename, { readOnly: true });
-    try {
-      assert.deepEqual(database.prepare("PRAGMA foreign_key_check").all(), []);
-      assert.equal(
-        database.prepare("SELECT COUNT(*) AS count FROM __drizzle_migrations").get().count,
-        journal.entries.length,
-      );
-      if (before) {
-        assert.deepEqual(snapshot(database), before, "Upgrade must preserve all related records");
-        const backupName = readdirSync(directory).find(
-          (name) => name.includes(".before-migration-") && name.endsWith(".bak"),
-        );
-        assert.ok(backupName, "Existing databases must be backed up before migration");
-        const backup = new DatabaseSync(path.join(directory, backupName), { readOnly: true });
-        try {
-          assert.deepEqual(snapshot(backup), before);
-        } finally {
-          backup.close();
-        }
-      }
-    } finally {
-      database.close();
-    }
-    console.log(
-      `Packaged smoke test passed: ${count === 0 ? "fresh database" : `upgrade from migration ${count - 1}`}`,
-    );
-  }
-
-  const directory = path.join(temporary, "rollback");
+  const directory = path.join(temporary, "fresh");
   mkdirSync(directory);
-  const filename = path.join(directory, "tenderlayer.db");
-  seedDatabase(filename, 1);
-  const invalid = new DatabaseSync(filename);
-  let before;
+  await launch(executable, directory);
+
+  const database = new DatabaseSync(path.join(directory, "tenderlayer.db"), { readOnly: true });
   try {
-    invalid.exec("PRAGMA foreign_keys=OFF; UPDATE contracts SET organization_id='missing-org'");
-    before = snapshot(invalid);
+    assert.deepEqual(database.prepare("PRAGMA foreign_key_check").all(), []);
+    assert.equal(migrationCount(database), journal.entries.length);
+    const createdTables = new Set(
+      database
+        .prepare("SELECT name FROM sqlite_schema WHERE type = 'table'")
+        .all()
+        .map(({ name }) => name),
+    );
+    for (const table of tables) assert.ok(createdTables.has(table), `Missing table ${table}`);
   } finally {
-    invalid.close();
+    database.close();
   }
-  await assert.rejects(launch(executable, directory), /foreign-key validation/);
-  const rolledBack = new DatabaseSync(filename, { readOnly: true });
-  try {
-    assert.deepEqual(snapshot(rolledBack), before, "Failed migrations must preserve the original rows");
-    assert.equal(rolledBack.prepare("SELECT COUNT(*) AS count FROM __drizzle_migrations").get().count, 1);
-  } finally {
-    rolledBack.close();
+  console.log("Packaged smoke test passed: fresh database");
+  if (journal.entries.length > 1) {
+    await checkMigration(executable, temporary);
+    await checkMigration(executable, temporary, true);
   }
-  console.log("Packaged smoke test passed: invalid upgrade rolls back");
 } finally {
   rmSync(temporary, { recursive: true, force: true });
 }

@@ -1,3 +1,4 @@
+import type { DepartmentsApi } from "./contracts/departments.js";
 import type { OrganizationsApi } from "./contracts/organizations.js";
 import type { PreferencesApi } from "./contracts/preferences.js";
 import type { WindowStateApi } from "./contracts/window-state.js";
@@ -11,6 +12,7 @@ export interface ElectronApi {
     electron: string;
     node: string;
   }>;
+  departments: Readonly<DepartmentsApi>;
   organizations: Readonly<OrganizationsApi>;
   preferences: Readonly<PreferencesApi>;
   windowState: Readonly<WindowStateApi>;

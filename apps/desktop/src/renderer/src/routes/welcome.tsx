@@ -1,58 +1,46 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
 
 import { Button } from "@tenderlayer/ui/components/button";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@tenderlayer/ui/components/field";
 import { Input } from "@tenderlayer/ui/components/input";
 import { Spinner } from "@tenderlayer/ui/components/spinner";
 
-import { createOrganizationSchema } from "@shared/schemas/organizations";
+import { createOrganizationSchema, type CreateOrganizationInput } from "@shared/schemas/organizations";
 
 export const Route = createFileRoute("/welcome")({
   component: WelcomePage,
 });
 
-const organizationFormSchema = createOrganizationSchema.pick({ name: true });
-
-type OrganizationFormInput = z.input<typeof organizationFormSchema>;
-type OrganizationFormValues = z.output<typeof organizationFormSchema>;
-
 function WelcomePage() {
   const navigate = useNavigate();
-  const form = useForm<OrganizationFormInput, unknown, OrganizationFormValues>({
-    resolver: zodResolver(organizationFormSchema),
+  const form = useForm<CreateOrganizationInput>({
+    resolver: zodResolver(createOrganizationSchema),
     defaultValues: {
       name: "",
     },
   });
 
-  async function handleSubmit(values: OrganizationFormValues) {
-    const result = createOrganizationSchema.safeParse(values);
-
-    if (!result.success) {
-      form.setError("name", {
-        message: result.error.issues[0]?.message ?? "Enter a valid organization name",
-      });
-      return;
-    }
-
+  async function handleSubmit(values: CreateOrganizationInput) {
     try {
-      const organization = await window.electronAPI.organizations.create(result.data);
-      await navigate({ to: "/dashboard/$organizationId", params: { organizationId: organization.id } });
-    } catch (creationError) {
-      const message = creationError instanceof Error ? creationError.message : "";
-      form.setError(
-        "name",
-        {
-          type: "server",
-          message: message.includes("UNIQUE constraint failed")
-            ? "An organization with this name already exists"
-            : "Unable to create the organization. Please try again.",
-        },
-        { shouldFocus: true },
-      );
+      const result = await window.electronAPI.organizations.create(values);
+      if (!result.ok) {
+        for (const [index, { field, message }] of result.fieldErrors.entries()) {
+          form.setError(field, { type: "server", message }, { shouldFocus: index === 0 });
+        }
+        if (result.formError) {
+          form.setError("root.server", { type: "server", message: result.formError });
+        }
+        return;
+      }
+
+      await navigate({ to: "/dashboard/$organizationId", params: { organizationId: result.organizationId } });
+    } catch {
+      form.setError("root.server", {
+        type: "server",
+        message: "Unable to create the organization. Please try again.",
+      });
     }
   }
 
@@ -82,7 +70,7 @@ function WelcomePage() {
                 name="name"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} data-disabled={form.formState.isSubmitting}>
+                  <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="organization-name">Organization name</FieldLabel>
                     <Input
                       {...field}
@@ -94,7 +82,7 @@ function WelcomePage() {
                       aria-describedby={
                         fieldState.invalid ? "organization-name-error" : "organization-name-description"
                       }
-                      disabled={form.formState.isSubmitting}
+                      readOnly={form.formState.isSubmitting}
                       required
                     />
                     {fieldState.invalid ? (
@@ -108,6 +96,10 @@ function WelcomePage() {
                   </Field>
                 )}
               />
+
+              {form.formState.errors.root?.server && (
+                <FieldError>{form.formState.errors.root.server.message}</FieldError>
+              )}
 
               <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting && <Spinner data-icon="inline-start" />}

@@ -8,9 +8,11 @@ const rendererHost = "renderer";
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const rendererPath = path.join(currentDirectory, "../renderer/index.html");
 const rendererDirectory = path.dirname(rendererPath);
-const rendererUrl = `${rendererScheme}://${rendererHost}/index.html`;
+const rendererOrigin = `${rendererScheme}://${rendererHost}`;
+const rendererUrl = `${rendererOrigin}/index.html`;
 const rendererDevUrl = app.isPackaged ? undefined : process.env.VITE_DEV_SERVER_URL;
 
+export const trustedRendererOrigin = rendererDevUrl ? new URL(rendererDevUrl).origin : rendererOrigin;
 export const preloadPath = path.join(currentDirectory, "../preload/index.cjs");
 export const rendererPageUrl = new URL("#/dashboard", rendererDevUrl ?? rendererUrl).href;
 
@@ -64,7 +66,7 @@ export function isTrustedRendererUrl(url: string) {
   }
 
   if (rendererDevUrl) {
-    return parsedUrl.origin === new URL(rendererDevUrl).origin;
+    return parsedUrl.origin === trustedRendererOrigin;
   }
 
   parsedUrl.hash = "";

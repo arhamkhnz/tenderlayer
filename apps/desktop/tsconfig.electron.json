@@ -4,6 +4,8 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "paths": {
+      "@core/*": ["./src/main/core/*.ts"],
+      "@db/*": ["./src/main/core/database/*.ts"],
       "@shared/*": ["./src/shared/*.ts"]
     },
     "types": ["node", "electron"],

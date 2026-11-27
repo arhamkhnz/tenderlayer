@@ -1,6 +1,6 @@
 import type { IpcMainInvokeEvent } from "electron/main";
 
-import { isTrustedRendererUrl } from "./renderer-protocol.js";
+import { isTrustedRendererUrl, trustedRendererOrigin } from "./renderer-protocol.js";
 
 function isTrustedSender(event: IpcMainInvokeEvent) {
   const senderFrame = event.senderFrame;
@@ -9,7 +9,7 @@ function isTrustedSender(event: IpcMainInvokeEvent) {
     return false;
   }
 
-  return isTrustedRendererUrl(senderFrame.url);
+  return senderFrame.origin === trustedRendererOrigin && isTrustedRendererUrl(senderFrame.url);
 }
 
 export function assertTrustedSender(event: IpcMainInvokeEvent) {
