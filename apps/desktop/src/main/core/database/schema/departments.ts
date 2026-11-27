@@ -17,6 +17,7 @@ export const departments = sqliteTable(
   },
   (table) => [
     index("departments_organization_idx").on(table.organizationId),
+    uniqueIndex("departments_organization_department_unique").on(table.organizationId, table.id),
     uniqueIndex("departments_organization_name_unique")
       .on(table.organizationId, sql`lower(${sql.identifier(table.name.name)})`)
       .where(isNull(table.deletedAt)),

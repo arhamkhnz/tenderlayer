@@ -1,12 +1,10 @@
 import { useState, type Ref } from "react";
 
-import { CalendarIcon, Info } from "@keyline-icons/react";
+import { CalendarIcon } from "@keyline-icons/react";
 
 import { Button } from "@tenderlayer/ui/components/button";
 import { Calendar } from "@tenderlayer/ui/components/calendar";
-import { InputGroup, InputGroupAddon, InputGroupButton } from "@tenderlayer/ui/components/input-group";
 import { Popover, PopoverContent, PopoverTitle, PopoverTrigger } from "@tenderlayer/ui/components/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@tenderlayer/ui/components/tooltip";
 
 type ContractDatePickerProps = {
   id: string;
@@ -19,7 +17,6 @@ type ContractDatePickerProps = {
   min?: string;
   invalid?: boolean;
   describedBy?: string;
-  info?: string;
 };
 
 function toCalendarDate(value: string) {
@@ -39,54 +36,33 @@ export function ContractDatePicker({
   min,
   invalid,
   describedBy,
-  info,
 }: ContractDatePickerProps) {
   const [open, setOpen] = useState(false);
   const selected = toCalendarDate(value);
   const earliest = toCalendarDate(min ?? "");
 
-  const trigger = (
-    <PopoverTrigger
-      ref={triggerRef}
-      name={name}
-      onBlur={onBlur}
-      data-slot={info ? "input-group-control" : "popover-trigger"}
-      render={
-        <Button
-          id={id}
-          type="button"
-          variant="outline"
-          data-has-info={Boolean(info)}
-          data-placeholder={!selected}
-          className="w-full justify-start font-normal data-[placeholder=true]:text-muted-foreground data-[has-info=true]:min-w-0 data-[has-info=true]:flex-1 data-[has-info=true]:border-0 data-[has-info=true]:focus-visible:ring-0"
-        />
-      }
-      aria-label={label}
-      aria-invalid={invalid}
-      aria-describedby={describedBy}
-    >
-      <CalendarIcon data-icon="inline-start" />
-      {selected ? dateFormatter.format(selected) : "Pick a date"}
-    </PopoverTrigger>
-  );
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      {info ? (
-        <InputGroup>
-          {trigger}
-          <InputGroupAddon align="inline-end">
-            <Tooltip>
-              <TooltipTrigger render={<InputGroupButton size="icon-xs" aria-label="About the contract end date" />}>
-                <Info data-icon="inline-end" />
-              </TooltipTrigger>
-              <TooltipContent>{info}</TooltipContent>
-            </Tooltip>
-          </InputGroupAddon>
-        </InputGroup>
-      ) : (
-        trigger
-      )}
+      <PopoverTrigger
+        ref={triggerRef}
+        name={name}
+        onBlur={onBlur}
+        render={
+          <Button
+            id={id}
+            type="button"
+            variant="outline"
+            data-placeholder={!selected}
+            className="w-full justify-start font-normal data-[placeholder=true]:text-muted-foreground"
+          />
+        }
+        aria-label={label}
+        aria-invalid={invalid}
+        aria-describedby={describedBy}
+      >
+        <CalendarIcon data-icon="inline-start" />
+        {selected ? dateFormatter.format(selected) : "Pick a date"}
+      </PopoverTrigger>
       <PopoverContent align="start" className="w-auto p-0">
         <PopoverTitle className="sr-only">{label}</PopoverTitle>
         <Calendar

@@ -117,7 +117,7 @@ const contractFormSchema = z
     locationAddress: z.string().trim(),
     status: z.enum(["draft", "wo-received", "scheduled", "active", "on-hold", "completed", "terminated"]),
     value: optionalNumber(0),
-    includesGst: z.boolean(),
+    includesTax: z.boolean(),
     workOrderReceivedDate: optionalDate,
     startDate: optionalDate,
     duration: optionalNumber(1, true),
@@ -174,7 +174,7 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
       locationAddress: "",
       status: "draft",
       value: "",
-      includesGst: false,
+      includesTax: false,
       workOrderReceivedDate: "",
       startDate: "",
       duration: "",
@@ -452,7 +452,7 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                     </InputGroup>
                     {fieldState.invalid && <FieldError id="contract-value-error" errors={[fieldState.error]} />}
                     <Controller
-                      name="includesGst"
+                      name="includesTax"
                       control={form.control}
                       render={({ field: gstField }) => (
                         <Field orientation="horizontal">
@@ -608,11 +608,15 @@ export function NewContractDrawer({ defaultOpen = false }: { defaultOpen?: boole
                       onBlur={field.onBlur}
                       triggerRef={field.ref}
                       invalid={fieldState.invalid}
-                      describedBy={fieldState.invalid ? "contract-endDate-error" : undefined}
+                      describedBy={
+                        fieldState.invalid ? "contract-endDate-error contract-endDate-help" : "contract-endDate-help"
+                      }
                       min={startDate}
-                      info="Enter the actual date the contract ended, including any extension. Contracts may continue for another 1–2 months until a new tender is awarded. Leave this blank when creating the contract."
                     />
                     {fieldState.invalid && <FieldError id="contract-endDate-error" errors={[fieldState.error]} />}
+                    <FieldDescription id="contract-endDate-help">
+                      Leave blank until the contract ends. Include any extensions in the end date.
+                    </FieldDescription>
                     {endDate && !fieldState.invalid && (
                       <FieldDescription aria-live="polite">
                         Contract ended on {dateFormatter.format(new Date(`${endDate}T00:00:00Z`))}.
