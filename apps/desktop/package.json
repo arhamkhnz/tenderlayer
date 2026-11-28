@@ -4,7 +4,7 @@
   "description": "Manage tenders, contracts, employees, payroll, and invoices with TenderLayer. A desktop app that keeps your business data on your computer.",
   "author": "Arham Khan",
   "private": true,
-  "version": "0.1.0-alpha.7",
+  "version": "0.1.0-alpha.8",
   "type": "module",
   "main": "dist/main/index.js",
   "engines": {
