@@ -15,7 +15,14 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@tenderlayer/ui/components/drawer";
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldSet } from "@tenderlayer/ui/components/field";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from "@tenderlayer/ui/components/field";
 import { Input } from "@tenderlayer/ui/components/input";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@tenderlayer/ui/components/input-group";
 import {
@@ -358,14 +365,20 @@ export function EmployeeDrawer({
                     control={form.control}
                     rules={{ deps: ["workState", "workCity", "siteLocation"] }}
                     render={({ field }) => (
-                      <Field orientation="horizontal" className="w-auto" data-disabled={isSaving || !canUseContractLocation}>
+                      <Field
+                        orientation="horizontal"
+                        className="w-auto"
+                        data-disabled={isSaving || !canUseContractLocation}
+                      >
                         <Checkbox
                           id="employee-use-contract-location"
                           name={field.name}
                           ref={field.ref}
                           checked={useContractLocation}
                           disabled={isSaving || !canUseContractLocation}
-                          aria-describedby={canUseContractLocation ? undefined : "employee-contract-location-unavailable"}
+                          aria-describedby={
+                            canUseContractLocation ? undefined : "employee-contract-location-unavailable"
+                          }
                           onCheckedChange={field.onChange}
                           onBlur={field.onBlur}
                         />
