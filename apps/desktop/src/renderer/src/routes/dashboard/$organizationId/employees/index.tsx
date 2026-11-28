@@ -124,7 +124,7 @@ function EmployeesPage() {
           onClick={() => setDrawer({ open: true })}
         >
           <PlusIcon data-icon="inline-start" />
-          Add employee
+          New employee
         </Button>
       </header>
 

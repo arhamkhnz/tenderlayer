@@ -29,7 +29,7 @@ import {
 } from "@tenderlayer/ui/components/select";
 import { Textarea } from "@tenderlayer/ui/components/textarea";
 
-import { ContractDatePicker } from "../../contracts/-components/contract-date-picker";
+import { DatePicker } from "../../-components/shared/forms/date-picker";
 import { contracts } from "../../contracts/-components/data";
 import { departments } from "../../departments/-components/data";
 import { formatAmount, paymentStatuses, purchaseCategories } from "./data";
@@ -190,7 +190,7 @@ export function NewPurchaseDrawer() {
     <Drawer swipeDirection="right">
       <DrawerTrigger render={<Button size="sm" />}>
         <PlusIcon data-icon="inline-start" />
-        Add purchase
+        New purchase
       </DrawerTrigger>
       <DrawerContent className="w-[calc(100%-1rem)] max-w-xl rounded-xl border border-popover shadow-xl dark:border-border [--drawer-inset:0.5rem] [--drawer-bleed-background:transparent]">
         <DrawerHeader className="border-b px-6 py-5">
@@ -226,7 +226,7 @@ export function NewPurchaseDrawer() {
                     <FieldLabel className="font-normal" htmlFor="purchase-date">
                       Invoice date
                     </FieldLabel>
-                    <ContractDatePicker
+                    <DatePicker
                       id="purchase-date"
                       label="Invoice date"
                       value={field.value}

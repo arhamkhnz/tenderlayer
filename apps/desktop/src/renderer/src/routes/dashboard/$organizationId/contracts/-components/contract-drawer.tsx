@@ -32,8 +32,8 @@ import type { DepartmentRecord } from "@shared/contracts/departments";
 import { getCurrencyFractionDigits } from "@shared/money";
 import { contractFormSchema, type ContractFormValues } from "@shared/schemas/contracts";
 
-import { StatePicker } from "../../-components/forms/state-picker";
-import { ContractDatePicker } from "./contract-date-picker";
+import { DatePicker } from "../../-components/shared/forms/date-picker";
+import { StatePicker } from "../../-components/shared/forms/state-picker";
 import { contractStatusOptions } from "./contract-display";
 
 const dateFormatter = new Intl.DateTimeFormat("en-IN", { dateStyle: "medium", timeZone: "UTC" });
@@ -414,7 +414,7 @@ export function ContractDrawer({ open, contract, departments, onClose, onSave }:
                     <FieldLabel className="font-normal" htmlFor="contract-workOrderReceivedDate">
                       WO received date
                     </FieldLabel>
-                    <ContractDatePicker
+                    <DatePicker
                       id="contract-workOrderReceivedDate"
                       label="WO received date"
                       disabled={isSubmitting}
@@ -444,7 +444,7 @@ export function ContractDrawer({ open, contract, departments, onClose, onSave }:
                     <FieldLabel className="font-normal" htmlFor="contract-startDate">
                       Start date
                     </FieldLabel>
-                    <ContractDatePicker
+                    <DatePicker
                       id="contract-startDate"
                       label="Start date"
                       disabled={isSubmitting}
@@ -538,7 +538,7 @@ export function ContractDrawer({ open, contract, departments, onClose, onSave }:
                     <FieldLabel className="font-normal" htmlFor="contract-endDate">
                       Ended on
                     </FieldLabel>
-                    <ContractDatePicker
+                    <DatePicker
                       id="contract-endDate"
                       label="Ended on"
                       disabled={isSubmitting}

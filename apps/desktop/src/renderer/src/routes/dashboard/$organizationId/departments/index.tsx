@@ -78,7 +78,7 @@ function DepartmentsPage() {
         </div>
         <Button type="button" size="sm" aria-haspopup="dialog" onClick={() => setDrawer({ open: true })}>
           <PlusIcon data-icon="inline-start" />
-          Add department
+          New department
         </Button>
       </header>
       <DepartmentsTable

@@ -85,13 +85,13 @@ function DashboardPage() {
                   }
                 >
                   <UserPlusIcon />
-                  Add employee
+                  New employee
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   render={<Link from="/dashboard/$organizationId" to="/dashboard/$organizationId/payroll/new" />}
                 >
                   <BanknoteIcon />
-                  Run payroll
+                  New payroll run
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>

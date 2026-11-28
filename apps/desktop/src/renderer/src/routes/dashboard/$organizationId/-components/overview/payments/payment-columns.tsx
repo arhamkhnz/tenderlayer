@@ -1,24 +1,20 @@
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper, metaHelper } from "@tanstack/react-table";
 import { cn } from "cn";
 
 import { Badge } from "@tenderlayer/ui/components/badge";
 import { Checkbox } from "@tenderlayer/ui/components/checkbox";
 import { formatCompactNumber } from "@tenderlayer/ui/lib/utils";
 
-import type { DataTableFeatures } from "@/lib/data-table-features";
+import { dataTableFeatures } from "@/lib/data-table-features";
 
 import { paymentDateFormatter, type Payment } from "./payment-data";
 
-export const paymentColumnLabels: Record<string, string> = {
-  name: "Particulars",
-  id: "Reference",
-  category: "Category",
-  dueDate: "Due date",
-  status: "Status",
-  amount: "Amount due",
+export const paymentTableFeatures = {
+  ...dataTableFeatures,
+  columnMeta: metaHelper<{ label?: string }>(),
 };
 
-const columnHelper = createColumnHelper<DataTableFeatures, Payment>();
+const columnHelper = createColumnHelper<typeof paymentTableFeatures, Payment>();
 
 const categoryColors: Record<string, string> = {
   Invoice: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
@@ -94,6 +90,7 @@ export const paymentColumns = columnHelper.columns([
     },
   }),
   columnHelper.accessor("amount", {
+    meta: { label: "Amount due" },
     header: () => <div className="text-right">Amount due</div>,
     cell: ({ getValue }) => <div className="text-right font-450 tabular-nums">₹{formatCompactNumber(getValue())}</div>,
   }),

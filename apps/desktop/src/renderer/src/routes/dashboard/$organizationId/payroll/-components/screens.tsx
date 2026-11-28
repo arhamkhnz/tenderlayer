@@ -1,13 +1,4 @@
-import {
-  ArrowLeftIcon,
-  BanknoteIcon,
-  PlusIcon,
-  CalendarIcon,
-  BriefcaseIcon,
-  UsersIcon,
-  IndianRupeeIcon,
-  TagIcon,
-} from "@keyline-icons/react";
+import { ArrowLeftIcon, BanknoteIcon, PlusIcon } from "@keyline-icons/react";
 import { Link } from "@tanstack/react-router";
 
 import { Button, buttonVariants } from "@tenderlayer/ui/components/button";
@@ -23,78 +14,10 @@ import {
   SelectValue,
 } from "@tenderlayer/ui/components/select";
 
-import { FinanceStatusBadge } from "../../-components/records/finance-status-badge";
-import { RecordsTable, type RecordColumn } from "../../-components/records/records-table";
+import { FinanceStatusBadge } from "../../-components/shared/records/finance-status-badge";
+import { payrollRuns } from "./data";
 import { DataCard, KeyValueGrid, PageHeader, StaticTable } from "./payroll-screen-components";
-
-const payrollRuns = [
-  {
-    id: "PAY-AUG-2026",
-    period: "August 2026",
-    contracts: "6",
-    employees: "38",
-    gross: "₹14,82,000",
-    deductions: "₹1,24,600",
-    status: "Review",
-  },
-  {
-    id: "PAY-JUL-2026",
-    period: "July 2026",
-    contracts: "6",
-    employees: "38",
-    gross: "₹14,65,000",
-    deductions: "₹1,22,900",
-    status: "Paid",
-  },
-  {
-    id: "PAY-JUN-2026",
-    period: "June 2026",
-    contracts: "5",
-    employees: "36",
-    gross: "₹13,92,000",
-    deductions: "₹1,17,300",
-    status: "Paid",
-  },
-  {
-    id: "PAY-MAY-2026",
-    period: "May 2026",
-    contracts: "5",
-    employees: "35",
-    gross: "₹13,48,000",
-    deductions: "₹1,13,800",
-    status: "Paid",
-  },
-];
-
-const payrollColumns: RecordColumn<(typeof payrollRuns)[number]>[] = [
-  {
-    id: "period",
-    label: "Pay period",
-    icon: CalendarIcon,
-    numeric: false,
-    cell: (record) => (
-      <Link
-        from="/dashboard/$organizationId"
-        to="/dashboard/$organizationId/payroll/$payrollId"
-        params={{ payrollId: record.id }}
-        className="rounded-sm font-450 outline-none hover:text-primary focus-visible:ring-2 focus-visible:ring-ring"
-      >
-        {record.period}
-      </Link>
-    ),
-  },
-  { id: "contracts", label: "Contracts", icon: BriefcaseIcon, numeric: true, cell: (record) => record.contracts },
-  { id: "employees", label: "Employees", icon: UsersIcon, numeric: true, cell: (record) => record.employees },
-  { id: "gross", label: "Gross pay", icon: IndianRupeeIcon, numeric: true, cell: (record) => record.gross },
-  { id: "deductions", label: "Deductions", icon: IndianRupeeIcon, numeric: true, cell: (record) => record.deductions },
-  {
-    id: "status",
-    label: "Status",
-    icon: TagIcon,
-    numeric: false,
-    cell: (record) => <FinanceStatusBadge status={record.status} />,
-  },
-];
+import { PayrollTable } from "./table/payroll-table";
 
 export function PayrollScreen() {
   return (
@@ -118,12 +41,7 @@ export function PayrollScreen() {
           New payroll run
         </Link>
       </header>
-      <RecordsTable
-        records={payrollRuns}
-        columns={payrollColumns}
-        label="Payroll runs"
-        searchText={(record) => Object.values(record).join(" ")}
-      />
+      <PayrollTable records={payrollRuns} />
     </section>
   );
 }

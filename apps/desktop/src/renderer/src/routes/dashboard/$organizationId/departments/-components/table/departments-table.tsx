@@ -1,17 +1,8 @@
 import { useLayoutEffect, useRef } from "react";
 
-import { ChevronLeftIcon, ChevronRightIcon, Columns3Icon, SearchIcon, XIcon } from "@keyline-icons/react";
+import { ChevronLeftIcon, ChevronRightIcon, SearchIcon, XIcon } from "@keyline-icons/react";
 import { useTable } from "@tanstack/react-table";
 
-import { Button } from "@tenderlayer/ui/components/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@tenderlayer/ui/components/dropdown-menu";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@tenderlayer/ui/components/input-group";
 import {
   Pagination,
@@ -34,6 +25,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { pageSizeOptions } from "@/lib/data-table-constants";
 import type { DepartmentRecord } from "@shared/contracts/departments";
 
+import { DataTableViewOptions } from "../../../-components/shared/records/data-table-view-options";
 import { departmentColumns, departmentTableFeatures } from "./department-columns";
 
 export function DepartmentsTable({
@@ -115,29 +107,11 @@ export function DepartmentsTable({
             </InputGroupAddon>
           )}
         </InputGroup>
-        <DropdownMenu>
-          <DropdownMenuTrigger render={<Button variant="outline" size="sm" className="ml-auto" />}>
-            <Columns3Icon data-icon="inline-start" aria-hidden="true" />
-            View
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48 font-450">
-            <DropdownMenuGroup>
-              <DropdownMenuLabel>Columns</DropdownMenuLabel>
-              {table
-                .getAllLeafColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(checked) => column.toggleVisibility(checked)}
-                  >
-                    {column.columnDef.meta?.label ?? column.id}
-                  </DropdownMenuCheckboxItem>
-                ))}
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <DataTableViewOptions
+          columns={table.getAllLeafColumns()}
+          columnVisibility={table.state.columnVisibility}
+          className="ml-auto"
+        />
       </div>
       <Table className="min-w-200 table-fixed border-y border-border/60" aria-label="Departments">
         <colgroup>

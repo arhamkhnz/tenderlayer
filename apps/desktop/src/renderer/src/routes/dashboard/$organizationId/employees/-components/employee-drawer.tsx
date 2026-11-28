@@ -47,8 +47,8 @@ import {
   type EmployeeFormValues,
 } from "@shared/schemas/employees";
 
-import { StatePicker } from "../../-components/forms/state-picker";
-import { ContractDatePicker } from "../../contracts/-components/contract-date-picker";
+import { DatePicker } from "../../-components/shared/forms/date-picker";
+import { StatePicker } from "../../-components/shared/forms/state-picker";
 import { employeeStatusDisplay, employmentTypeLabels } from "./employee-display";
 
 const employmentTypes = employeeEmploymentTypes.map((value) => ({ value, label: employmentTypeLabels[value] }));
@@ -524,7 +524,7 @@ export function EmployeeDrawer({
                     <FieldLabel className="font-normal" htmlFor="employee-joining">
                       Company joining date
                     </FieldLabel>
-                    <ContractDatePicker
+                    <DatePicker
                       id="employee-joining"
                       label="Company joining date"
                       name={field.name}

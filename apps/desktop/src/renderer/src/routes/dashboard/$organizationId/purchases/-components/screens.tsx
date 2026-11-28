@@ -1,54 +1,6 @@
-import {
-  BriefcaseIcon,
-  Building,
-  CalendarIcon,
-  HashIcon,
-  IndianRupeeIcon,
-  ReceiptIcon,
-  TagIcon,
-} from "@keyline-icons/react";
-
-import { FinanceStatusBadge } from "../../-components/records/finance-status-badge";
-import { RecordsTable, type RecordColumn } from "../../-components/records/records-table";
-import { formatAmount, purchases } from "./data";
+import { purchases } from "./data";
 import { NewPurchaseDrawer } from "./new-purchase-drawer";
-
-const columns: RecordColumn<(typeof purchases)[number]>[] = [
-  {
-    id: "invoice",
-    label: "Invoice",
-    icon: HashIcon,
-    cell: (record) => <span className="font-mono">{record.invoice}</span>,
-  },
-  {
-    id: "vendor",
-    label: "Vendor",
-    icon: Building,
-    cell: (record) => <span className="font-450">{record.vendor}</span>,
-  },
-  { id: "category", label: "Category", icon: TagIcon, cell: (record) => record.category },
-  { id: "contract", label: "Contract", icon: BriefcaseIcon, cell: (record) => record.contract || "—" },
-  {
-    id: "date",
-    label: "Date",
-    icon: CalendarIcon,
-    cell: (record) => <span className="text-muted-foreground tabular-nums">{record.date}</span>,
-  },
-  { id: "gst", label: "GST", icon: IndianRupeeIcon, numeric: true, cell: (record) => formatAmount(record.gst) },
-  {
-    id: "total",
-    label: "Total",
-    icon: IndianRupeeIcon,
-    numeric: true,
-    cell: (record) => formatAmount(record.amount + record.gst),
-  },
-  {
-    id: "status",
-    label: "Payment",
-    icon: ReceiptIcon,
-    cell: (record) => <FinanceStatusBadge status={record.status} />,
-  },
-];
+import { PurchasesTable } from "./table/purchases-table";
 
 export function PurchasesScreen() {
   return (
@@ -68,12 +20,7 @@ export function PurchasesScreen() {
         </div>
         <NewPurchaseDrawer />
       </header>
-      <RecordsTable
-        records={purchases}
-        columns={columns}
-        label="Purchases"
-        searchText={(record) => Object.values(record).join(" ")}
-      />
+      <PurchasesTable records={purchases} />
     </section>
   );
 }

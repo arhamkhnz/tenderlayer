@@ -19,7 +19,7 @@ import {
 
 import { pageSizeOptions } from "@/lib/data-table-constants";
 
-export function ContractTableFooter({
+export function DataTablePagination({
   label,
   rowCount,
   pageIndex,

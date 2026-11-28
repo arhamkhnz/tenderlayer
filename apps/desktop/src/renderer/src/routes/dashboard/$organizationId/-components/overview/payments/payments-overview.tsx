@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { ChevronLeftIcon, ChevronRightIcon, Columns3Icon, DownloadIcon, SearchIcon } from "@keyline-icons/react";
+import { ChevronLeftIcon, ChevronRightIcon, DownloadIcon, SearchIcon } from "@keyline-icons/react";
 import {
   useTable,
   type ColumnVisibilityState,
@@ -18,14 +18,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@tenderlayer/ui/components/card";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@tenderlayer/ui/components/dropdown-menu";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@tenderlayer/ui/components/input-group";
 import {
   Select,
@@ -40,9 +32,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@tenderlayer/ui/compon
 import { formatCompactNumber } from "@tenderlayer/ui/lib/utils";
 
 import { pageSizeOptions } from "@/lib/data-table-constants";
-import { dataTableFeatures } from "@/lib/data-table-features";
 
-import { paymentColumns, paymentColumnLabels } from "./payment-columns";
+import { DataTableViewOptions } from "../../shared/records/data-table-view-options";
+import { paymentColumns, paymentTableFeatures } from "./payment-columns";
 import { getSamplePayments, paymentDateFormatter, paymentDirectionOptions, paymentStatusOptions } from "./payment-data";
 import { getPaymentMonthRange, type PaymentDateRange, type PaymentPeriod } from "./payment-date-range";
 import { PaymentPeriodFilter } from "./payment-period-filter";
@@ -60,7 +52,7 @@ export function PaymentsOverview({ today }: { today: Date }) {
   const data = useMemo(() => getSamplePayments(today), [today]);
 
   const table = useTable({
-    features: dataTableFeatures,
+    features: paymentTableFeatures,
     manualFiltering: true,
     manualSorting: true,
     enableSorting: false,
@@ -226,31 +218,11 @@ export function PaymentsOverview({ today }: { today: Date }) {
                   onChange={(event) => setSearch(event.target.value)}
                 />
               </InputGroup>
-              <DropdownMenu>
-                <DropdownMenuTrigger
-                  render={<Button variant="outline" size="icon-sm" />}
-                  aria-label="Choose payment columns"
-                >
-                  <Columns3Icon />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="font-450" align="end">
-                  <DropdownMenuGroup>
-                    <DropdownMenuLabel>Columns</DropdownMenuLabel>
-                    {table
-                      .getAllLeafColumns()
-                      .filter((column) => column.getCanHide())
-                      .map((column) => (
-                        <DropdownMenuCheckboxItem
-                          key={column.id}
-                          checked={column.getIsVisible()}
-                          onCheckedChange={(checked) => column.toggleVisibility(checked)}
-                        >
-                          {paymentColumnLabels[column.id] ?? column.id}
-                        </DropdownMenuCheckboxItem>
-                      ))}
-                  </DropdownMenuGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <DataTableViewOptions
+                columns={table.getAllLeafColumns()}
+                columnVisibility={table.state.columnVisibility}
+                iconLabel="Choose payment columns"
+              />
             </div>
           </div>
           <TabsContent value={direction}>

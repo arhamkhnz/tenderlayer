@@ -121,7 +121,7 @@ export function AppSidebar({ isFullscreen }: { isFullscreen: boolean }) {
                 <DropdownMenuGroup>
                   <DropdownMenuItem render={<Link to="/welcome" />}>
                     <PlusIcon aria-hidden="true" />
-                    Create organization
+                    New organization
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
               </DropdownMenuContent>

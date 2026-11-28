@@ -6,7 +6,7 @@ import { Button } from "@tenderlayer/ui/components/button";
 import { Calendar } from "@tenderlayer/ui/components/calendar";
 import { Popover, PopoverContent, PopoverTitle, PopoverTrigger } from "@tenderlayer/ui/components/popover";
 
-type ContractDatePickerProps = {
+type DatePickerProps = {
   id: string;
   label: string;
   value: string;
@@ -26,7 +26,7 @@ function toCalendarDate(value: string) {
 
 const dateFormatter = new Intl.DateTimeFormat("en-IN", { dateStyle: "medium" });
 
-export function ContractDatePicker({
+export function DatePicker({
   id,
   label,
   value,
@@ -38,7 +38,7 @@ export function ContractDatePicker({
   invalid,
   describedBy,
   disabled,
-}: ContractDatePickerProps) {
+}: DatePickerProps) {
   const [open, setOpen] = useState(false);
   const selected = toCalendarDate(value);
   const earliest = toCalendarDate(min ?? "");

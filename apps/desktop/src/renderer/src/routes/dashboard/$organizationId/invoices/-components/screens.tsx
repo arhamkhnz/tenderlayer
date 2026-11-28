@@ -1,13 +1,4 @@
-import {
-  ArrowLeftIcon,
-  PlusIcon,
-  ReceiptIcon,
-  HashIcon,
-  BriefcaseIcon,
-  CalendarIcon,
-  IndianRupeeIcon,
-  TagIcon,
-} from "@keyline-icons/react";
+import { ArrowLeftIcon, PlusIcon, ReceiptIcon } from "@keyline-icons/react";
 import { Link } from "@tanstack/react-router";
 
 import { Button, buttonVariants } from "@tenderlayer/ui/components/button";
@@ -25,99 +16,10 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@tenderlayer/ui/components/table";
 import { Textarea } from "@tenderlayer/ui/components/textarea";
 
-import { FinanceStatusBadge } from "../../-components/records/finance-status-badge";
-import { RecordsTable, type RecordColumn } from "../../-components/records/records-table";
+import { FinanceStatusBadge } from "../../-components/shared/records/finance-status-badge";
+import { invoices } from "./data";
 import { DataCard, KeyValueGrid, PageHeader } from "./invoice-screen-components";
-
-const invoices = [
-  {
-    id: "INV-2026-042",
-    invoice: "INV-2026-042",
-    contract: "Railway signaling maintenance",
-    issued: "21 Aug 2026",
-    due: "10 Sep 2026",
-    amount: "₹4,05,000",
-    status: "Draft",
-  },
-  {
-    id: "INV-2026-041",
-    invoice: "INV-2026-041",
-    contract: "Regional IT support services",
-    issued: "05 Aug 2026",
-    due: "20 Aug 2026",
-    amount: "₹2,60,000",
-    status: "Overdue",
-  },
-  {
-    id: "INV-2026-040",
-    invoice: "INV-2026-040",
-    contract: "Municipal fleet maintenance",
-    issued: "02 Aug 2026",
-    due: "17 Aug 2026",
-    amount: "₹1,56,250",
-    status: "Sent",
-  },
-  {
-    id: "INV-2026-039",
-    invoice: "INV-2026-039",
-    contract: "Railway signaling maintenance",
-    issued: "22 Jul 2026",
-    due: "10 Aug 2026",
-    amount: "₹4,05,000",
-    status: "Paid",
-  },
-  {
-    id: "INV-2026-038",
-    invoice: "INV-2026-038",
-    contract: "Regional IT support services",
-    issued: "05 Jul 2026",
-    due: "20 Jul 2026",
-    amount: "₹2,60,000",
-    status: "Paid",
-  },
-];
-
-const invoiceColumns: RecordColumn<(typeof invoices)[number]>[] = [
-  {
-    id: "invoice",
-    label: "Invoice",
-    icon: HashIcon,
-    numeric: false,
-    cell: (record) => (
-      <Link
-        from="/dashboard/$organizationId"
-        to="/dashboard/$organizationId/invoices/$invoiceId"
-        params={{ invoiceId: record.id }}
-        className="rounded-sm font-mono outline-none hover:text-primary focus-visible:ring-2 focus-visible:ring-ring"
-      >
-        {record.invoice}
-      </Link>
-    ),
-  },
-  { id: "contract", label: "Contract", icon: BriefcaseIcon, numeric: false, cell: (record) => record.contract },
-  {
-    id: "issued",
-    label: "Issued",
-    icon: CalendarIcon,
-    numeric: false,
-    cell: (record) => <span className="text-muted-foreground tabular-nums">{record.issued}</span>,
-  },
-  {
-    id: "due",
-    label: "Due",
-    icon: CalendarIcon,
-    numeric: false,
-    cell: (record) => <span className="text-muted-foreground tabular-nums">{record.due}</span>,
-  },
-  { id: "amount", label: "Amount", icon: IndianRupeeIcon, numeric: true, cell: (record) => record.amount },
-  {
-    id: "status",
-    label: "Status",
-    icon: TagIcon,
-    numeric: false,
-    cell: (record) => <FinanceStatusBadge status={record.status} />,
-  },
-];
+import { InvoicesTable } from "./table/invoices-table";
 
 export function InvoicesScreen() {
   return (
@@ -141,12 +43,7 @@ export function InvoicesScreen() {
           New invoice
         </Link>
       </header>
-      <RecordsTable
-        records={invoices}
-        columns={invoiceColumns}
-        label="Invoices"
-        searchText={(record) => Object.values(record).join(" ")}
-      />
+      <InvoicesTable records={invoices} />
     </section>
   );
 }

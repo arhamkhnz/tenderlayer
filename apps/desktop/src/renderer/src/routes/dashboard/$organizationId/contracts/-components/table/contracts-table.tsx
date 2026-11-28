@@ -1,18 +1,9 @@
 import { useLayoutEffect, useRef } from "react";
 
-import { Columns3Icon, SearchIcon, XIcon } from "@keyline-icons/react";
+import { SearchIcon, XIcon } from "@keyline-icons/react";
 import { useTable } from "@tanstack/react-table";
 import { cn } from "cn";
 
-import { Button } from "@tenderlayer/ui/components/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@tenderlayer/ui/components/dropdown-menu";
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "@tenderlayer/ui/components/input-group";
 import {
   Select,
@@ -26,9 +17,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 
 import type { ContractRecord } from "@shared/contracts/contracts";
 
+import { DataTablePagination } from "../../../-components/shared/records/data-table-pagination";
+import { DataTableViewOptions } from "../../../-components/shared/records/data-table-view-options";
 import { contractStatusOptions } from "../contract-display";
 import { contractColumns, contractTableFeatures } from "./contract-columns";
-import { ContractTableFooter } from "./contract-table-footer";
 
 const statusOptions = [{ value: "all", label: "All statuses" }, ...contractStatusOptions];
 const minimumTitleWidth = 160;
@@ -158,29 +150,7 @@ export function ContractsTable({
               </SelectContent>
             </Select>
           ))}
-          <DropdownMenu>
-            <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
-              <Columns3Icon data-icon="inline-start" aria-hidden="true" />
-              View
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48 font-450">
-              <DropdownMenuGroup>
-                <DropdownMenuLabel>Columns</DropdownMenuLabel>
-                {table
-                  .getAllLeafColumns()
-                  .filter((column) => column.getCanHide())
-                  .map((column) => (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(checked) => column.toggleVisibility(checked)}
-                    >
-                      {column.columnDef.meta?.label ?? column.id}
-                    </DropdownMenuCheckboxItem>
-                  ))}
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <DataTableViewOptions columns={table.getAllLeafColumns()} columnVisibility={table.state.columnVisibility} />
         </div>
       </div>
       <Table
@@ -230,7 +200,7 @@ export function ContractsTable({
           )}
         </TableBody>
       </Table>
-      <ContractTableFooter
+      <DataTablePagination
         label="contracts"
         rowCount={contractCount}
         pageIndex={pageIndex}

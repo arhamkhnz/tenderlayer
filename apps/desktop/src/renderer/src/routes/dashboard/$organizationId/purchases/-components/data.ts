@@ -55,3 +55,5 @@ export const purchases = [
     status: "Paid",
   },
 ];
+
+export type PurchaseRecord = (typeof purchases)[number];

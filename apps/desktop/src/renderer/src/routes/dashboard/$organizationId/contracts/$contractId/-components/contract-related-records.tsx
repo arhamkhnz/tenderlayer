@@ -1,7 +1,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@tenderlayer/ui/components/table";
 import { TabsContent, TabsTrigger } from "@tenderlayer/ui/components/tabs";
 
-import { ContractTableFooter } from "../../-components/table/contract-table-footer";
+import { DataTablePagination } from "../../../-components/shared/records/data-table-pagination";
 
 const sections = [
   {
@@ -47,7 +47,7 @@ export function ContractRecordPanels() {
     >
       <Table
         aria-label={title}
-        className="min-w-[32rem] table-fixed border-b border-border/60 [&_td]:border-r [&_td]:border-border/50 [&_td]:px-4.5 [&_td:last-child]:border-r-0"
+        className="min-w-lg table-fixed border-b border-border/60 [&_td]:border-r [&_td]:border-border/50 [&_td]:px-4.5 [&_td:last-child]:border-r-0"
       >
         <colgroup>
           <col />
@@ -74,7 +74,7 @@ export function ContractRecordPanels() {
           </TableRow>
         </TableBody>
       </Table>
-      <ContractTableFooter label={id === "payroll" ? "payroll runs" : id} rowCount={0} pageIndex={0} pageSize={10} />
+      <DataTablePagination label={id === "payroll" ? "payroll runs" : id} rowCount={0} pageIndex={0} pageSize={10} />
     </TabsContent>
   ));
 }
