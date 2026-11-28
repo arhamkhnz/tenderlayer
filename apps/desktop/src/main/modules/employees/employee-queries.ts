@@ -4,7 +4,12 @@ import type { DatabaseClient } from "@db/client";
 import { contracts } from "@db/schema/contracts";
 import { employees } from "@db/schema/employees";
 import { parseMoneyAmount } from "@shared/money";
-import type { EmployeeFormValues, EmployeeIdentity } from "@shared/schemas/employees";
+import {
+  hasContractWorkLocation,
+  type CreateEmployeeInput,
+  type EmployeeFormValues,
+  type EmployeeIdentity,
+} from "@shared/schemas/employees";
 
 export const employeeFormColumns = {
   name: employees.name,
@@ -34,20 +39,26 @@ export function employeeScope({ organizationId, employeeId }: EmployeeIdentity) 
   return and(eq(employees.id, employeeId), eq(employees.organizationId, organizationId), isNull(employees.deletedAt));
 }
 
-export function isContractAvailable(
+export function getEmployeeContractError(
   database: Pick<DatabaseClient, "select">,
-  organizationId: string,
-  contractId: string,
+  { organizationId, contractId, useContractLocation }: CreateEmployeeInput,
+  currentContractId?: string | null,
 ) {
-  return Boolean(
-    database
-      .select({ id: contracts.id })
-      .from(contracts)
-      .where(
-        and(eq(contracts.id, contractId), eq(contracts.organizationId, organizationId), isNull(contracts.deletedAt)),
-      )
-      .get(),
-  );
+  if (!contractId || (contractId === currentContractId && !useContractLocation)) return;
+
+  const contract = database
+    .select({ locationState: contracts.locationState, locationCity: contracts.locationCity })
+    .from(contracts)
+    .where(and(eq(contracts.id, contractId), eq(contracts.organizationId, organizationId), isNull(contracts.deletedAt)))
+    .get();
+  if (!contract) {
+    return contractId === currentContractId
+      ? "Enter a work location manually for this contract."
+      : "Select an available contract.";
+  }
+  if (useContractLocation && !hasContractWorkLocation(contract)) {
+    return "This contract has no work location yet. Enter a work location manually.";
+  }
 }
 
 export function employeeValues(input: EmployeeFormValues) {

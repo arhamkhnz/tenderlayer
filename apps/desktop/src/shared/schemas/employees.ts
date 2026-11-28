@@ -7,6 +7,10 @@ export const employeeEmploymentTypes = ["full-time", "contractual", "temporary",
 export const employeeStatuses = ["active", "on-leave", "inactive"] as const;
 export const employeeBankFields = ["accountHolder", "bankName", "accountNumber", "ifsc"] as const;
 
+export function hasContractWorkLocation(contract?: { locationState: string | null; locationCity: string | null }) {
+  return Boolean(contract?.locationState?.trim() && contract.locationCity?.trim());
+}
+
 const text = z
   .string()
   .trim()

@@ -6,18 +6,19 @@ import { employees } from "@db/schema/employees";
 import type { EmployeeSaveResult } from "@shared/contracts/employees";
 import type { CreateEmployeeInput } from "@shared/schemas/employees";
 
-import { employeeValues, isContractAvailable } from "./employee-queries.js";
+import { employeeValues, getEmployeeContractError } from "./employee-queries.js";
 
 export function createEmployee(input: CreateEmployeeInput): EmployeeSaveResult {
-  const { organizationId, contractId } = input;
+  const { organizationId } = input;
 
   return getDatabase().transaction<EmployeeSaveResult>(
     (transaction) => {
       if (!isOrganizationActive(transaction, organizationId)) {
         return { ok: false, fieldErrors: [], formError: "This organization is no longer available." };
       }
-      if (contractId && !isContractAvailable(transaction, organizationId, contractId)) {
-        return { ok: false, fieldErrors: [{ field: "contractId", message: "Select an available contract." }] };
+      const contractError = getEmployeeContractError(transaction, input);
+      if (contractError) {
+        return { ok: false, fieldErrors: [{ field: "contractId", message: contractError }] };
       }
 
       const last = transaction

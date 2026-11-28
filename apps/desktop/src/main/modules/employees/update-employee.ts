@@ -6,7 +6,7 @@ import { employees } from "@db/schema/employees";
 import type { EmployeeSaveResult } from "@shared/contracts/employees";
 import type { UpdateEmployeeInput } from "@shared/schemas/employees";
 
-import { employeeFormColumns, employeeScope, employeeValues, isContractAvailable } from "./employee-queries.js";
+import { employeeFormColumns, employeeScope, employeeValues, getEmployeeContractError } from "./employee-queries.js";
 
 export function updateEmployee(input: UpdateEmployeeInput): EmployeeSaveResult {
   return getDatabase().transaction<EmployeeSaveResult>(
@@ -32,14 +32,11 @@ export function updateEmployee(input: UpdateEmployeeInput): EmployeeSaveResult {
         };
       }
 
-      const values = employeeValues(input);
-      if (
-        values.contractId &&
-        values.contractId !== existing.contractId &&
-        !isContractAvailable(transaction, input.organizationId, values.contractId)
-      ) {
-        return { ok: false, fieldErrors: [{ field: "contractId", message: "Select an available contract." }] };
+      const contractError = getEmployeeContractError(transaction, input, existing.contractId);
+      if (contractError) {
+        return { ok: false, fieldErrors: [{ field: "contractId", message: contractError }] };
       }
+      const values = employeeValues(input);
       if (Object.entries(values).every(([field, value]) => existing[field as keyof typeof values] === value)) {
         return { ok: true };
       }

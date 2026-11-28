@@ -15,7 +15,7 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@tenderlayer/ui/components/drawer";
-import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "@tenderlayer/ui/components/field";
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldSet } from "@tenderlayer/ui/components/field";
 import { Input } from "@tenderlayer/ui/components/input";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@tenderlayer/ui/components/input-group";
 import {
@@ -36,6 +36,7 @@ import {
   employeeEmploymentTypes,
   employeeFormSchema,
   employeeStatuses,
+  hasContractWorkLocation,
   type EmployeeFormValues,
 } from "@shared/schemas/employees";
 
@@ -45,6 +46,7 @@ import { employeeStatusDisplay, employmentTypeLabels } from "./employee-display"
 
 const employmentTypes = employeeEmploymentTypes.map((value) => ({ value, label: employmentTypeLabels[value] }));
 const statuses = employeeStatuses.map((value) => ({ value, label: employeeStatusDisplay[value].label }));
+const resolveEmployeeForm = zodResolver(employeeFormSchema);
 
 type TextFieldName = Exclude<
   keyof EmployeeFormValues,
@@ -164,7 +166,16 @@ export function EmployeeDrawer({
 }) {
   const initialValues = employee?.values ?? newEmployeeValues;
   const form = useForm<EmployeeFormValues>({
-    resolver: zodResolver(employeeFormSchema),
+    resolver: (values, context, options) =>
+      resolveEmployeeForm(
+        {
+          ...values,
+          useContractLocation:
+            values.useContractLocation && hasContractWorkLocation(contracts.find(({ id }) => id === values.contractId)),
+        },
+        context,
+        options,
+      ),
     values: initialValues,
   });
   const { errors, isSubmitting } = form.formState;
@@ -175,8 +186,9 @@ export function EmployeeDrawer({
     control: form.control,
     name: ["contractId", "useContractLocation"],
   });
-  const useContractLocation = Boolean(contractId && inheritLocation);
   const selectedContract = contracts.find((contract) => contract.id === contractId);
+  const canUseContractLocation = hasContractWorkLocation(selectedContract);
+  const useContractLocation = canUseContractLocation && inheritLocation;
   const contractOptions = [
     { value: "", title: "No contract", location: null },
     ...contracts.map(({ id, title, locationCity, locationState, locationAddress }) => ({
@@ -346,13 +358,14 @@ export function EmployeeDrawer({
                     control={form.control}
                     rules={{ deps: ["workState", "workCity", "siteLocation"] }}
                     render={({ field }) => (
-                      <Field orientation="horizontal" className="w-auto">
+                      <Field orientation="horizontal" className="w-auto" data-disabled={isSaving || !canUseContractLocation}>
                         <Checkbox
                           id="employee-use-contract-location"
                           name={field.name}
                           ref={field.ref}
-                          checked={field.value}
-                          disabled={isSaving}
+                          checked={useContractLocation}
+                          disabled={isSaving || !canUseContractLocation}
+                          aria-describedby={canUseContractLocation ? undefined : "employee-contract-location-unavailable"}
                           onCheckedChange={field.onChange}
                           onBlur={field.onBlur}
                         />
@@ -364,6 +377,13 @@ export function EmployeeDrawer({
                   />
                 )}
               </div>
+              {contractId && !canUseContractLocation && (
+                <FieldDescription id="employee-contract-location-unavailable" className="@sm/field-group:col-span-2">
+                  {selectedContract
+                    ? "This contract has no work location yet."
+                    : "This contract is unavailable. Enter a work location manually."}
+                </FieldDescription>
+              )}
               <Controller
                 name="workState"
                 control={form.control}
