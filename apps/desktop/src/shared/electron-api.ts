@@ -1,5 +1,6 @@
 import type { ContractsApi } from "./contracts/contracts.js";
 import type { DepartmentsApi } from "./contracts/departments.js";
+import type { EmployeesApi } from "./contracts/employees.js";
 import type { OrganizationsApi } from "./contracts/organizations.js";
 import type { PreferencesApi } from "./contracts/preferences.js";
 import type { WindowStateApi } from "./contracts/window-state.js";
@@ -15,6 +16,7 @@ export interface ElectronApi {
   }>;
   contracts: Readonly<ContractsApi>;
   departments: Readonly<DepartmentsApi>;
+  employees: Readonly<EmployeesApi>;
   organizations: Readonly<OrganizationsApi>;
   preferences: Readonly<PreferencesApi>;
   windowState: Readonly<WindowStateApi>;

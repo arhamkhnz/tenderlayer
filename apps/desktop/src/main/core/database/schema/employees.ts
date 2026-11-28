@@ -1,14 +1,14 @@
 import { sql } from "drizzle-orm";
 import { check, foreignKey, index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
+import { employeeEmploymentTypes, employeeStatuses } from "@shared/schemas/employees";
+
 import { id, syncColumns } from "./common.js";
 import { contracts } from "./contracts.js";
 import { organizations } from "./organizations.js";
 
-const employmentTypes = ["full-time", "contractual", "temporary", "part-time"] as const;
-const employeeStatuses = ["active", "on-leave", "inactive"] as const;
 const employmentTypeValues = sql.join(
-  employmentTypes.map((type) => sql`${type}`),
+  employeeEmploymentTypes.map((type) => sql`${type}`),
   sql`, `,
 );
 const employeeStatusValues = sql.join(
@@ -30,7 +30,7 @@ export const employees = sqliteTable(
     email: text("email"),
     address: text("address"),
     jobTitle: text("job_title").notNull(),
-    employmentType: text("employment_type", { enum: employmentTypes }).notNull().default("full-time"),
+    employmentType: text("employment_type", { enum: employeeEmploymentTypes }).notNull().default("full-time"),
     joiningDate: text("joining_date").notNull(),
     status: text("status", { enum: employeeStatuses }).notNull().default("active"),
     workState: text("work_state"),
@@ -69,10 +69,7 @@ export const employees = sqliteTable(
       "employees_job_title_check",
       sql`length(trim(${table.jobTitle})) > 0 and instr(${table.jobTitle}, char(0)) = 0`,
     ),
-    check(
-      "employees_employment_type_check",
-      sql`${table.employmentType} in (${employmentTypeValues})`.inlineParams(),
-    ),
+    check("employees_employment_type_check", sql`${table.employmentType} in (${employmentTypeValues})`.inlineParams()),
     check("employees_status_check", sql`${table.status} in (${employeeStatusValues})`.inlineParams()),
     check("employees_joining_date_check", sql`date(${table.joiningDate}, '+0 days') is ${table.joiningDate}`),
     check("employees_monthly_pay_check", sql`typeof(${table.monthlyPay}) = 'integer' and ${table.monthlyPay} > 0`),

@@ -76,7 +76,13 @@ function DashboardPage() {
                   New invoice
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  render={<Link from="/dashboard/$organizationId" to="/dashboard/$organizationId/employees/new" />}
+                  render={
+                    <Link
+                      from="/dashboard/$organizationId"
+                      to="/dashboard/$organizationId/employees"
+                      search={{ new: true }}
+                    />
+                  }
                 >
                   <UserPlusIcon />
                   Add employee
