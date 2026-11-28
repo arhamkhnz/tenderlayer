@@ -4,6 +4,7 @@ import type { ElectronApi, ElectronPlatform } from "@shared/electron-api";
 
 import { contractsApi } from "./contracts.js";
 import { departmentsApi } from "./departments.js";
+import { employeesApi } from "./employees.js";
 import { organizationsApi } from "./organizations.js";
 import { preferencesApi } from "./preferences.js";
 import { windowStateApi } from "./window-state.js";
@@ -17,6 +18,7 @@ const electronApi = {
   },
   contracts: contractsApi,
   departments: departmentsApi,
+  employees: employeesApi,
   organizations: organizationsApi,
   preferences: preferencesApi,
   windowState: windowStateApi,

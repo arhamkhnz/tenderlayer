@@ -1,11 +1,8 @@
-import { useState, type ComponentProps, type ChangeEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent, type ComponentProps } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PlusIcon } from "@keyline-icons/react";
-import { useNavigate } from "@tanstack/react-router";
 import { cn } from "cn";
 import { Controller, useForm, useWatch, type Control } from "react-hook-form";
-import { z } from "zod";
 
 import { Button } from "@tenderlayer/ui/components/button";
 import { Checkbox } from "@tenderlayer/ui/components/checkbox";
@@ -17,9 +14,15 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
 } from "@tenderlayer/ui/components/drawer";
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@tenderlayer/ui/components/field";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from "@tenderlayer/ui/components/field";
 import { Input } from "@tenderlayer/ui/components/input";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@tenderlayer/ui/components/input-group";
 import {
@@ -33,153 +36,33 @@ import {
 import { Separator } from "@tenderlayer/ui/components/separator";
 import { Textarea } from "@tenderlayer/ui/components/textarea";
 
-import { indianStatesAndUTs } from "@shared/reference-data";
+import type { ContractRecord } from "@shared/contracts/contracts";
+import type { EmployeeEditorRecord, EmployeeSaveResult } from "@shared/contracts/employees";
+import {
+  employeeBankFields,
+  employeeEmploymentTypes,
+  employeeFormSchema,
+  employeeStatuses,
+  hasContractWorkLocation,
+  type EmployeeFormValues,
+} from "@shared/schemas/employees";
 
 import { StatePicker } from "../../-components/state-picker";
 import { ContractDatePicker } from "../../contracts/-components/contract-date-picker";
-import { contracts } from "../../contracts/-components/data";
-import { departments } from "../../departments/-components/data";
-import { employees } from "./data";
+import { employeeStatusDisplay, employmentTypeLabels } from "./employee-display";
 
-const departmentOptions = [
-  { value: "", label: "Select department" },
-  ...departments.map((department) => ({ value: department.id, label: department.name })),
-];
-const employmentTypes = [
-  { value: "full-time", label: "Full-time" },
-  { value: "contractual", label: "Contractual" },
-  { value: "temporary", label: "Temporary" },
-  { value: "part-time", label: "Part-time" },
-];
-const statuses = [
-  { value: "active", label: "Active" },
-  { value: "on-leave", label: "On leave" },
-  { value: "inactive", label: "Inactive" },
-];
-const bankFields = ["accountHolder", "bankName", "accountNumber", "ifsc"] as const;
+const employmentTypes = employeeEmploymentTypes.map((value) => ({ value, label: employmentTypeLabels[value] }));
+const statuses = employeeStatuses.map((value) => ({ value, label: employeeStatusDisplay[value].label }));
+const resolveEmployeeForm = zodResolver(employeeFormSchema);
 
-const nextSequence =
-  Math.max(0, ...employees.map((employee) => Number(/^EMP-(\d+)$/.exec(employee.code)?.[1] ?? 0))) + 1;
-// The backend must reserve the final sequence atomically when persistence is added.
-const nextEmployeeCode = `EMP-${String(nextSequence).padStart(3, "0")}`;
-const optionalPattern = (pattern: RegExp, message: string) =>
-  z
-    .string()
-    .trim()
-    .refine((value) => !value || pattern.test(value), message);
-const phonePattern = /^\+?\d{10,15}$/;
-const phoneNumber = z
-  .string()
-  .trim()
-  .refine(
-    (value) => phonePattern.test(value.replace(/[\s()-]/g, "")),
-    "Enter a valid contact number, including the country code if needed.",
-  );
-
-const employeeFormSchema = z
-  .object({
-    name: z.string().trim().min(1, "Enter the employee's name."),
-    code: z.string().regex(/^EMP-\d+$/, "Enter a valid employee code."),
-    phone: phoneNumber,
-    email: z
-      .string()
-      .trim()
-      .pipe(z.union([z.literal(""), z.email("Enter a valid email address.")])),
-    address: z.string().trim(),
-    departmentId: z
-      .string()
-      .refine(
-        (value) => !value || departments.some((department) => department.id === value),
-        "Select a valid department.",
-      ),
-    contractId: z.string(),
-    jobTitle: z.string().trim().min(1, "Enter a job title."),
-    employmentType: z.enum(["full-time", "contractual", "temporary", "part-time"]),
-    joiningDate: z.iso.date("Choose the company joining date."),
-    monthlyPay: z
-      .string()
-      .trim()
-      .min(1, "Enter the monthly wage.")
-      .refine(
-        (value) => /^\d+(\.\d{1,2})?$/.test(value) && Number.isFinite(Number(value)) && Number(value) > 0,
-        "Enter a monthly wage greater than zero, with up to two decimal places.",
-      ),
-    workState: z.string().refine((value) => !value || indianStatesAndUTs.includes(value), "Select a valid state / UT."),
-    workCity: z.string().trim(),
-    siteLocation: z.string().trim(),
-    useContractLocation: z.boolean(),
-    status: z.enum(["active", "on-leave", "inactive"]),
-    pan: optionalPattern(/^[A-Z]{5}\d{4}[A-Z]$/, "Enter a PAN in the format ABCDE1234F."),
-    uan: optionalPattern(/^\d{12}$/, "UAN must contain 12 digits."),
-    accountHolder: z.string().trim(),
-    bankName: z.string().trim(),
-    accountNumber: optionalPattern(/^\d+$/, "Use digits only for the account number."),
-    ifsc: optionalPattern(/^[A-Z]{4}0[A-Z0-9]{6}$/, "Enter an IFSC in the format SBIN0001234."),
-    notes: z.string().trim(),
-  })
-  .superRefine((values, context) => {
-    if (values.contractId) {
-      const contract = contracts.find((item) => item.id === values.contractId);
-      if (!contract || contract.departmentId !== values.departmentId) {
-        context.addIssue({
-          code: "custom",
-          path: ["contractId"],
-          message: "Choose a contract under the selected department.",
-        });
-      }
-    }
-    const location = values.useContractLocation
-      ? contracts.find((contract) => contract.id === values.contractId)?.location
-      : { state: values.workState, city: values.workCity, address: values.siteLocation };
-    if (
-      values.contractId ||
-      (!values.useContractLocation && (values.workState || values.workCity || values.siteLocation))
-    ) {
-      if (!location?.state)
-        context.addIssue({
-          code: "custom",
-          path: ["workState"],
-          message: "Select a work state / UT, or enter a different work location.",
-        });
-      if (!location?.city?.trim())
-        context.addIssue({
-          code: "custom",
-          path: ["workCity"],
-          message: "Enter the work city / town, or enter a different work location.",
-        });
-    }
-    if (bankFields.some((name) => Boolean(values[name]))) {
-      for (const [name, message] of [
-        ["accountHolder", "Enter the account holder's name."],
-        ["accountNumber", "Enter the bank account number."],
-        ["ifsc", "Enter the bank's IFSC."],
-      ] as const) {
-        if (!values[name]) context.addIssue({ code: "custom", path: [name], message });
-      }
-    }
-  })
-  .transform((values) => ({
-    ...values,
-    workState: values.useContractLocation
-      ? (contracts.find((contract) => contract.id === values.contractId)?.location.state ?? "")
-      : values.workState,
-    workCity: values.useContractLocation
-      ? (contracts.find((contract) => contract.id === values.contractId)?.location.city ?? "")
-      : values.workCity,
-    siteLocation: values.useContractLocation
-      ? (contracts.find((contract) => contract.id === values.contractId)?.location.address ?? "")
-      : values.siteLocation,
-  }));
-
-type EmployeeFormValues = z.infer<typeof employeeFormSchema>;
 type TextFieldName = Exclude<
   keyof EmployeeFormValues,
-  | "departmentId"
   | "contractId"
   | "employmentType"
   | "joiningDate"
   | "status"
   | "monthlyPay"
+  | "currency"
   | "useContractLocation"
   | "workState"
   | "workCity"
@@ -194,11 +77,9 @@ function EmployeeTextField({
   inputMode,
   autoComplete,
   fullWidth = false,
-  readOnly = false,
   uppercase = false,
   multiline = false,
   required = false,
-  onEdited,
 }: {
   control: Control<EmployeeFormValues>;
   name: TextFieldName;
@@ -208,19 +89,17 @@ function EmployeeTextField({
   inputMode?: ComponentProps<typeof Input>["inputMode"];
   autoComplete?: string;
   fullWidth?: boolean;
-  readOnly?: boolean;
   uppercase?: boolean;
   multiline?: boolean;
   required?: boolean;
-  onEdited: () => void;
 }) {
   return (
     <Controller
       name={name}
       control={control}
       rules={{
-        deps: bankFields.includes(name as (typeof bankFields)[number])
-          ? bankFields.filter((item) => item !== name)
+        deps: employeeBankFields.includes(name as (typeof employeeBankFields)[number])
+          ? employeeBankFields.filter((item) => item !== name)
           : undefined,
       }}
       render={({ field, fieldState }) => {
@@ -233,7 +112,6 @@ function EmployeeTextField({
           "aria-invalid": fieldState.invalid,
           "aria-describedby": fieldState.invalid ? `employee-${name}-error` : undefined,
           onChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-            onEdited();
             field.onChange(uppercase ? event.target.value.toUpperCase() : event);
           },
         };
@@ -245,13 +123,7 @@ function EmployeeTextField({
             {multiline ? (
               <Textarea {...props} className="min-h-20" />
             ) : (
-              <Input
-                {...props}
-                type={type}
-                inputMode={inputMode}
-                readOnly={readOnly}
-                className={cn(readOnly && "font-mono")}
-              />
+              <Input {...props} type={type} inputMode={inputMode} />
             )}
             {fieldState.invalid && <FieldError id={`employee-${name}-error`} errors={[fieldState.error]} />}
           </Field>
@@ -261,85 +133,141 @@ function EmployeeTextField({
   );
 }
 
-export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boolean }) {
-  const navigate = useNavigate({ from: "/dashboard/$organizationId" });
-  const [previewName, setPreviewName] = useState<string | null>(null);
+const newEmployeeValues: EmployeeFormValues = {
+  name: "",
+  phone: "",
+  email: "",
+  address: "",
+  contractId: "",
+  jobTitle: "",
+  employmentType: "full-time",
+  joiningDate: "",
+  workState: "",
+  workCity: "",
+  siteLocation: "",
+  useContractLocation: true,
+  status: "active",
+  monthlyPay: "",
+  currency: "INR",
+  pan: "",
+  uan: "",
+  accountHolder: "",
+  bankName: "",
+  accountNumber: "",
+  ifsc: "",
+  notes: "",
+};
+
+export function EmployeeDrawer({
+  open,
+  employee,
+  contracts,
+  onClose,
+  onSave,
+}: {
+  open: boolean;
+  employee?: EmployeeEditorRecord;
+  contracts: ContractRecord[];
+  onClose: () => void;
+  onSave: (values: EmployeeFormValues) => Promise<EmployeeSaveResult>;
+}) {
+  const initialValues = employee?.values ?? newEmployeeValues;
   const form = useForm<EmployeeFormValues>({
-    resolver: zodResolver(employeeFormSchema),
-    defaultValues: {
-      name: "",
-      code: nextEmployeeCode,
-      phone: "",
-      email: "",
-      address: "",
-      departmentId: "",
-      contractId: "",
-      jobTitle: "",
-      employmentType: "full-time",
-      joiningDate: "",
-      workState: "",
-      workCity: "",
-      siteLocation: "",
-      useContractLocation: true,
-      status: "active",
-      monthlyPay: "",
-      pan: "",
-      uan: "",
-      accountHolder: "",
-      bankName: "",
-      accountNumber: "",
-      ifsc: "",
-      notes: "",
-    },
+    resolver: (values, context, options) =>
+      resolveEmployeeForm(
+        {
+          ...values,
+          useContractLocation:
+            values.useContractLocation && hasContractWorkLocation(contracts.find(({ id }) => id === values.contractId)),
+        },
+        context,
+        options,
+      ),
+    values: initialValues,
   });
-  const departmentId = useWatch({ control: form.control, name: "departmentId" });
-  const [contractId, useContractLocation] = useWatch({
+  const { errors, isSubmitting } = form.formState;
+  const { setFocus } = form;
+  const [isSaving, setIsSaving] = useState(false);
+  const fieldToFocus = useRef<keyof EmployeeFormValues>(undefined);
+  const [contractId, inheritLocation] = useWatch({
     control: form.control,
     name: ["contractId", "useContractLocation"],
   });
   const selectedContract = contracts.find((contract) => contract.id === contractId);
+  const canUseContractLocation = hasContractWorkLocation(selectedContract);
+  const useContractLocation = canUseContractLocation && inheritLocation;
   const contractOptions = [
-    { value: "", label: departmentId ? "Select contract" : "Select a department first" },
-    ...contracts
-      .filter((contract) => contract.departmentId === departmentId)
-      .map((contract) => ({ value: contract.id, label: contract.name })),
+    { value: "", title: "No contract", location: null },
+    ...contracts.map(({ id, title, locationCity, locationState, locationAddress }) => ({
+      value: id,
+      title,
+      location: [locationCity, locationState].filter(Boolean).join(", ") || locationAddress,
+    })),
   ];
-  const textProps = { control: form.control, onEdited: () => setPreviewName(null) };
+  const savedContractId = employee?.values.contractId;
+  if (savedContractId && !contracts.some(({ id }) => id === savedContractId)) {
+    contractOptions.push({ value: savedContractId, title: "Unavailable contract", location: null });
+  }
+  const contractItems = contractOptions.map(({ value, title, location }) => ({
+    value,
+    label: location ? `${title} · ${location}` : title,
+  }));
 
-  function changeValue(onChange: (value: unknown) => void) {
-    return (value: unknown) => {
-      setPreviewName(null);
-      onChange(value);
-    };
+  useEffect(() => {
+    if (isSaving || !fieldToFocus.current) return;
+    setFocus(fieldToFocus.current);
+    fieldToFocus.current = undefined;
+  }, [isSaving, setFocus]);
+
+  async function handleSubmit(values: EmployeeFormValues) {
+    setIsSaving(true);
+    try {
+      const result = await onSave(values);
+      if (result.ok) return;
+
+      fieldToFocus.current = result.fieldErrors[0]?.field;
+      for (const { field, message } of result.fieldErrors) {
+        form.setError(field, { type: "server", message });
+      }
+      if (result.formError) form.setError("root.server", { message: result.formError });
+    } catch {
+      form.setError("root.server", { message: "Couldn’t save the employee. Please try again." });
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   return (
     <Drawer
       swipeDirection="right"
-      defaultOpen={defaultOpen}
-      onOpenChangeComplete={(open) => {
-        if (!open && defaultOpen) void navigate({ to: "/dashboard/$organizationId/employees", replace: true });
+      open={open}
+      onOpenChange={(isOpen, eventDetails) => {
+        if (isOpen) return;
+        if (isSubmitting) eventDetails.cancel();
+        else onClose();
+      }}
+      onOpenChangeComplete={(isOpen) => {
+        if (!isOpen) form.reset(initialValues);
       }}
     >
-      <DrawerTrigger render={<Button size="sm" />}>
-        <PlusIcon data-icon="inline-start" />
-        Add employee
-      </DrawerTrigger>
       <DrawerContent className="w-[calc(100%-1rem)] max-w-lg rounded-xl border border-popover shadow-xl dark:border-border [--drawer-inset:0.5rem] [--drawer-bleed-background:transparent]">
         <DrawerHeader className="border-b px-6 py-5">
-          <DrawerTitle className="leading-none font-normal">New employee</DrawerTitle>
-          <DrawerDescription>Add personal, assignment, and payroll details.</DrawerDescription>
+          <DrawerTitle className="leading-none font-normal">{employee ? "Edit employee" : "New employee"}</DrawerTitle>
+          <DrawerDescription>
+            {employee ? `Update employee ${employee.code}.` : "Add personal, assignment, and payroll details."}
+          </DrawerDescription>
         </DrawerHeader>
         <form
-          id="new-employee-form"
+          id="employee-form"
           className="min-h-0 flex-1 overflow-y-auto px-6 py-5"
           noValidate
-          onSubmit={form.handleSubmit((values) => setPreviewName(values.name))}
+          onSubmit={form.handleSubmit(handleSubmit)}
+          onChange={() => form.clearErrors("root.server")}
         >
-          <FieldGroup className="gap-4">
+          <FieldSet disabled={isSaving} className="@container/field-group min-w-0">
             <FieldGroup className="grid grid-cols-1 gap-4 @sm/field-group:grid-cols-2">
               <EmployeeTextField
-                {...textProps}
+                control={form.control}
                 name="name"
                 label="Full name"
                 placeholder="e.g. Ananya Sharma"
@@ -348,7 +276,7 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
                 required
               />
               <EmployeeTextField
-                {...textProps}
+                control={form.control}
                 name="phone"
                 label="Contact number"
                 placeholder="e.g. +91 98765 43210"
@@ -356,9 +284,8 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
                 autoComplete="tel"
                 required
               />
-              <EmployeeTextField {...textProps} name="code" label="Employee code" readOnly />
               <EmployeeTextField
-                {...textProps}
+                control={form.control}
                 name="email"
                 label="Email"
                 placeholder="name@example.com"
@@ -367,7 +294,7 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
                 fullWidth
               />
               <EmployeeTextField
-                {...textProps}
+                control={form.control}
                 name="address"
                 label="Residential address"
                 placeholder="House, street, city, state, and PIN code"
@@ -379,70 +306,20 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
             <Separator />
             <FieldGroup className="grid grid-cols-1 gap-4 @sm/field-group:grid-cols-2">
               <Controller
-                name="departmentId"
-                control={form.control}
-                rules={{ deps: ["contractId"] }}
-                render={({ field, fieldState }) => (
-                  <Field className="gap-1 @sm/field-group:col-span-2" data-invalid={fieldState.invalid}>
-                    <FieldLabel className="font-normal" htmlFor="employee-department">
-                      Department
-                    </FieldLabel>
-                    <Select
-                      name={field.name}
-                      value={field.value}
-                      items={departmentOptions}
-                      onValueChange={(value) => {
-                        setPreviewName(null);
-                        field.onChange(value ?? "");
-                        form.setValue("contractId", "", {
-                          shouldDirty: true,
-                          shouldValidate: form.formState.isSubmitted,
-                        });
-                      }}
-                    >
-                      <SelectTrigger
-                        ref={field.ref}
-                        onBlur={field.onBlur}
-                        id="employee-department"
-                        className="w-full"
-                        aria-invalid={fieldState.invalid}
-                        aria-describedby={fieldState.invalid ? "employee-department-error" : undefined}
-                      >
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {departmentOptions.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                    {fieldState.invalid && <FieldError id="employee-department-error" errors={[fieldState.error]} />}
-                  </Field>
-                )}
-              />
-              <Controller
                 name="contractId"
                 control={form.control}
                 rules={{ deps: ["workState", "workCity", "siteLocation"] }}
                 render={({ field, fieldState }) => (
-                  <Field
-                    className="gap-1 @sm/field-group:col-span-2"
-                    data-invalid={fieldState.invalid}
-                    data-disabled={!departmentId}
-                  >
+                  <Field className="gap-1 @sm/field-group:col-span-2" data-invalid={fieldState.invalid}>
                     <FieldLabel className="font-normal" htmlFor="employee-contract">
-                      Contract
+                      Contract <span className="text-muted-foreground">Optional</span>
                     </FieldLabel>
                     <Select
                       name={field.name}
                       value={field.value}
-                      items={contractOptions}
-                      disabled={!departmentId}
-                      onValueChange={changeValue(field.onChange)}
+                      items={contractItems}
+                      disabled={isSaving}
+                      onValueChange={(value) => field.onChange(value ?? "")}
                     >
                       <SelectTrigger
                         ref={field.ref}
@@ -452,13 +329,25 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
                         aria-invalid={fieldState.invalid}
                         aria-describedby={fieldState.invalid ? "employee-contract-error" : undefined}
                       >
-                        <SelectValue />
+                        <SelectValue className="min-w-0">
+                          <span className="truncate">
+                            {contractItems.find(({ value }) => value === field.value)?.label}
+                          </span>
+                        </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {contractOptions.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
+                          {contractOptions.map(({ value, title, location }) => (
+                            <SelectItem
+                              key={value}
+                              value={value}
+                              label={title}
+                              className="[&>span:first-child]:min-w-0"
+                            >
+                              <span className="flex min-w-0 flex-col gap-0.5">
+                                <span className="truncate">{title}</span>
+                                {location && <span className="truncate text-xs text-muted-foreground">{location}</span>}
+                              </span>
                             </SelectItem>
                           ))}
                         </SelectGroup>
@@ -468,26 +357,46 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
                   </Field>
                 )}
               />
-              <Controller
-                name="useContractLocation"
-                control={form.control}
-                rules={{ deps: ["workState", "workCity", "siteLocation"] }}
-                render={({ field }) => (
-                  <Field orientation="horizontal" className="@sm/field-group:col-span-2">
-                    <Checkbox
-                      id="employee-use-contract-location"
-                      name={field.name}
-                      ref={field.ref}
-                      checked={field.value}
-                      onCheckedChange={changeValue(field.onChange)}
-                      onBlur={field.onBlur}
-                    />
-                    <FieldLabel className="font-normal" htmlFor="employee-use-contract-location">
-                      Same as contract location
-                    </FieldLabel>
-                  </Field>
+              <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 @sm/field-group:col-span-2">
+                <h3 className="text-sm font-medium">Work location</h3>
+                {contractId && (
+                  <Controller
+                    name="useContractLocation"
+                    control={form.control}
+                    rules={{ deps: ["workState", "workCity", "siteLocation"] }}
+                    render={({ field }) => (
+                      <Field
+                        orientation="horizontal"
+                        className="w-auto"
+                        data-disabled={isSaving || !canUseContractLocation}
+                      >
+                        <Checkbox
+                          id="employee-use-contract-location"
+                          name={field.name}
+                          ref={field.ref}
+                          checked={useContractLocation}
+                          disabled={isSaving || !canUseContractLocation}
+                          aria-describedby={
+                            canUseContractLocation ? undefined : "employee-contract-location-unavailable"
+                          }
+                          onCheckedChange={field.onChange}
+                          onBlur={field.onBlur}
+                        />
+                        <FieldLabel className="font-normal" htmlFor="employee-use-contract-location">
+                          Use contract location
+                        </FieldLabel>
+                      </Field>
+                    )}
+                  />
                 )}
-              />
+              </div>
+              {contractId && !canUseContractLocation && (
+                <FieldDescription id="employee-contract-location-unavailable" className="@sm/field-group:col-span-2">
+                  {selectedContract
+                    ? "This contract has no work location yet."
+                    : "This contract is unavailable. Enter a work location manually."}
+                </FieldDescription>
+              )}
               <Controller
                 name="workState"
                 control={form.control}
@@ -500,9 +409,11 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
                     <StatePicker
                       id="employee-work-state"
                       name={field.name}
-                      value={useContractLocation ? (selectedContract?.location.state ?? "") : field.value}
+                      value={useContractLocation ? (selectedContract?.locationState ?? "") : field.value}
                       readOnly={useContractLocation}
-                      onChange={changeValue(field.onChange)}
+                      onChange={(value) => {
+                        if (!isSaving) field.onChange(value);
+                      }}
                       onBlur={field.onBlur}
                       inputRef={field.ref}
                       invalid={fieldState.invalid}
@@ -524,10 +435,10 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
                     <Input
                       {...field}
                       id="employee-work-city"
-                      value={useContractLocation ? (selectedContract?.location.city ?? "") : field.value}
+                      value={useContractLocation ? (selectedContract?.locationCity ?? "") : field.value}
                       readOnly={useContractLocation}
-                      onChange={changeValue(field.onChange)}
-                      placeholder={useContractLocation ? "Select a contract first" : "e.g. Pune"}
+                      onChange={field.onChange}
+                      placeholder={useContractLocation ? "From contract" : "e.g. Pune"}
                       autoComplete="address-level2"
                       aria-invalid={fieldState.invalid}
                       aria-describedby={fieldState.invalid ? "employee-work-city-error" : undefined}
@@ -548,9 +459,9 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
                     <Input
                       {...field}
                       id="employee-site-location"
-                      value={useContractLocation ? (selectedContract?.location.address ?? "") : field.value}
+                      value={useContractLocation ? (selectedContract?.locationAddress ?? "") : field.value}
                       readOnly={useContractLocation}
-                      onChange={changeValue(field.onChange)}
+                      onChange={field.onChange}
                       placeholder={useContractLocation ? "Contract site / address" : "Office, site, or street address"}
                       aria-invalid={fieldState.invalid}
                       aria-describedby={fieldState.invalid ? "employee-site-location-error" : undefined}
@@ -560,7 +471,7 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
                 )}
               />
               <EmployeeTextField
-                {...textProps}
+                control={form.control}
                 name="jobTitle"
                 label="Job title"
                 placeholder="e.g. Site supervisor"
@@ -579,7 +490,8 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
                       name={field.name}
                       value={field.value}
                       items={employmentTypes}
-                      onValueChange={changeValue(field.onChange)}
+                      disabled={isSaving}
+                      onValueChange={field.onChange}
                     >
                       <SelectTrigger
                         ref={field.ref}
@@ -617,7 +529,10 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
                       label="Company joining date"
                       name={field.name}
                       value={field.value}
-                      onChange={changeValue(field.onChange)}
+                      onChange={(value) => {
+                        if (!isSaving) field.onChange(value);
+                      }}
+                      disabled={isSaving}
                       onBlur={field.onBlur}
                       triggerRef={field.ref}
                       invalid={fieldState.invalid}
@@ -639,7 +554,8 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
                       name={field.name}
                       value={field.value}
                       items={statuses}
-                      onValueChange={changeValue(field.onChange)}
+                      disabled={isSaving}
+                      onValueChange={field.onChange}
                     >
                       <SelectTrigger
                         ref={field.ref}
@@ -674,15 +590,15 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
                     </FieldLabel>
                     <InputGroup>
                       <InputGroupAddon>
-                        <InputGroupText>₹</InputGroupText>
+                        <InputGroupText>
+                          {initialValues.currency === "INR" ? "₹" : initialValues.currency}
+                        </InputGroupText>
                       </InputGroupAddon>
                       <InputGroupInput
                         {...field}
-                        onChange={changeValue(field.onChange)}
+                        onChange={field.onChange}
                         id="employee-monthly-pay"
-                        type="number"
-                        min="0.01"
-                        step="0.01"
+                        inputMode="decimal"
                         placeholder="0.00"
                         required
                         aria-invalid={fieldState.invalid}
@@ -697,7 +613,7 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
             <Separator />
             <FieldGroup className="grid grid-cols-1 gap-4 @sm/field-group:grid-cols-2">
               <EmployeeTextField
-                {...textProps}
+                control={form.control}
                 name="pan"
                 label="PAN"
                 placeholder="ABCDE1234F"
@@ -705,7 +621,7 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
                 uppercase
               />
               <EmployeeTextField
-                {...textProps}
+                control={form.control}
                 name="uan"
                 label="UAN"
                 placeholder="12-digit UAN"
@@ -716,20 +632,20 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
             <Separator />
             <FieldGroup className="grid grid-cols-1 gap-4 @sm/field-group:grid-cols-2">
               <EmployeeTextField
-                {...textProps}
+                control={form.control}
                 name="accountHolder"
                 label="Account holder name"
                 placeholder="Name as per bank records"
                 fullWidth
               />
               <EmployeeTextField
-                {...textProps}
+                control={form.control}
                 name="bankName"
                 label="Bank name"
                 placeholder="e.g. State Bank of India"
               />
               <EmployeeTextField
-                {...textProps}
+                control={form.control}
                 name="ifsc"
                 label="IFSC"
                 placeholder="e.g. SBIN0001234"
@@ -737,7 +653,7 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
                 uppercase
               />
               <EmployeeTextField
-                {...textProps}
+                control={form.control}
                 name="accountNumber"
                 label="Account number"
                 placeholder="Bank account number"
@@ -747,23 +663,21 @@ export function NewEmployeeDrawer({ defaultOpen = false }: { defaultOpen?: boole
               />
             </FieldGroup>
             <EmployeeTextField
-              {...textProps}
+              control={form.control}
               name="notes"
               label="Notes"
               placeholder="Additional employee details…"
               multiline
             />
-            {previewName && (
-              <FieldDescription role="status">
-                “{previewName}” validated. This preview does not save employees yet.
-              </FieldDescription>
-            )}
-          </FieldGroup>
+            {errors.root?.server && <FieldError>{errors.root.server.message}</FieldError>}
+          </FieldSet>
         </form>
         <DrawerFooter className="flex-row justify-end gap-2 border-t px-6 py-4">
-          <DrawerClose render={<Button type="button" variant="outline" />}>Cancel</DrawerClose>
-          <Button type="submit" form="new-employee-form" disabled={form.formState.isSubmitting}>
-            Create employee
+          <DrawerClose render={<Button type="button" variant="outline" />} disabled={isSubmitting}>
+            Cancel
+          </DrawerClose>
+          <Button type="submit" form="employee-form" disabled={isSubmitting}>
+            {employee ? "Save changes" : "Create employee"}
           </Button>
         </DrawerFooter>
       </DrawerContent>
