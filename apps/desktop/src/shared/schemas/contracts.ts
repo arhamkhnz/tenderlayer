@@ -24,25 +24,56 @@ const text = z
   .refine((value) => !value.includes("\0"), "Remove null characters.");
 const currencySchema = z.string().regex(/^[A-Z]{3}$/, "Enter a valid currency code.");
 
+const requiredOutsideDraft = [
+  ["department", "Select a department."],
+  ["gemReference", "Enter the GeM reference number."],
+  ["locationState", "Select the contract state / UT."],
+  ["locationCity", "Enter the contract city / town."],
+  ["value", "Enter the contract value."],
+  ["startDate", "Choose the start date."],
+  ["duration", "Enter the contract duration."],
+  ["required", "Enter the number of employees required."],
+] as const;
+
+const contractSchema = z.object({
+  title: text.min(1, "Enter a contract title."),
+  department: z.string().min(1, "Select a valid department.").nullable(),
+  gemReference: text,
+  status: z.enum(contractStatuses),
+});
+
+const locationSchema = z.object({
+  locationState: text.refine((value) => !value || indianStatesAndUTs.includes(value), "Select a valid state / UT."),
+  locationCity: text,
+  locationAddress: text,
+});
+
+const valueSchema = z.object({
+  value: text,
+  currency: currencySchema,
+  includesTax: z.boolean(),
+});
+
+const scheduleSchema = z.object({
+  workOrderReceivedDate: optionalDate,
+  startDate: optionalDate,
+  duration: optionalInteger(1),
+  durationUnit: z.enum(contractDurationUnits),
+  endDate: optionalDate,
+});
+
+const staffingSchema = z.object({
+  required: optionalInteger(0),
+  deployed: optionalInteger(0),
+});
+
 export const contractFormSchema = z
   .object({
-    title: text.min(1, "Enter a contract title."),
-    department: z.string().min(1, "Select a valid department.").nullable(),
-    gemReference: text,
-    locationState: text.refine((value) => !value || indianStatesAndUTs.includes(value), "Select a valid state / UT."),
-    locationCity: text,
-    locationAddress: text,
-    status: z.enum(contractStatuses),
-    value: text,
-    currency: currencySchema,
-    includesTax: z.boolean(),
-    workOrderReceivedDate: optionalDate,
-    startDate: optionalDate,
-    duration: optionalInteger(1),
-    durationUnit: z.enum(contractDurationUnits),
-    endDate: optionalDate,
-    required: optionalInteger(0),
-    deployed: optionalInteger(0),
+    ...contractSchema.shape,
+    ...locationSchema.shape,
+    ...valueSchema.shape,
+    ...scheduleSchema.shape,
+    ...staffingSchema.shape,
     notes: text,
   })
   .superRefine((values, context) => {
@@ -67,19 +98,10 @@ export const contractFormSchema = z
     ) {
       context.addIssue({ code: "custom", path: ["value"], message: "Enter a valid contract value." });
     }
-    if (values.status !== "draft") {
-      for (const [field, message] of [
-        ["department", "Select a department."],
-        ["gemReference", "Enter the GeM reference number."],
-        ["locationState", "Select the contract state / UT."],
-        ["locationCity", "Enter the contract city / town."],
-        ["value", "Enter the contract value."],
-        ["startDate", "Choose the start date."],
-        ["duration", "Enter the contract duration."],
-        ["required", "Enter the number of employees required."],
-      ] as const) {
-        if (!values[field]) context.addIssue({ code: "custom", path: [field], message });
-      }
+    if (values.status === "draft") return;
+
+    for (const [field, message] of requiredOutsideDraft) {
+      if (!values[field]) context.addIssue({ code: "custom", path: [field], message });
     }
   });
 

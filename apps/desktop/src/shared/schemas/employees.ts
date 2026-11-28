@@ -19,32 +19,52 @@ const currency = z.string().regex(/^[A-Z]{3}$/, "Enter a valid currency code.");
 const optionalPattern = (pattern: RegExp, message: string) =>
   text.refine((value) => !value || pattern.test(value), message);
 
+const personalSchema = z.object({
+  name: text.min(1, "Enter the employee's name."),
+  phone: text.refine(
+    (value) => /^\+?\d{10,15}$/.test(value.replace(/[\s()-]/g, "")),
+    "Enter a valid contact number, including the country code if needed.",
+  ),
+  email: text.pipe(z.union([z.literal(""), z.email("Enter a valid email address.")])),
+  address: text,
+});
+
+const assignmentSchema = z.object({
+  contractId: text,
+  useContractLocation: z.boolean(),
+  workState: text.refine((value) => !value || indianStatesAndUTs.includes(value), "Select a valid state / UT."),
+  workCity: text,
+  siteLocation: text,
+});
+
+const employmentSchema = z.object({
+  jobTitle: text.min(1, "Enter a job title."),
+  employmentType: z.enum(employeeEmploymentTypes),
+  joiningDate: z.iso.date("Choose the company joining date."),
+  status: z.enum(employeeStatuses),
+  monthlyPay: text,
+  currency,
+});
+
+const statutoryIdSchema = z.object({
+  pan: optionalPattern(/^[A-Z]{5}\d{4}[A-Z]$/, "Enter a PAN in the format ABCDE1234F."),
+  uan: optionalPattern(/^\d{12}$/, "UAN must contain 12 digits."),
+});
+
+const bankSchema = z.object({
+  accountHolder: text,
+  bankName: text,
+  ifsc: optionalPattern(/^[A-Z]{4}0[A-Z0-9]{6}$/, "Enter an IFSC in the format SBIN0001234."),
+  accountNumber: optionalPattern(/^\d+$/, "Use digits only for the account number."),
+});
+
 export const employeeFormSchema = z
   .object({
-    name: text.min(1, "Enter the employee's name."),
-    phone: text.refine(
-      (value) => /^\+?\d{10,15}$/.test(value.replace(/[\s()-]/g, "")),
-      "Enter a valid contact number, including the country code if needed.",
-    ),
-    email: text.pipe(z.union([z.literal(""), z.email("Enter a valid email address.")])),
-    address: text,
-    contractId: text,
-    jobTitle: text.min(1, "Enter a job title."),
-    employmentType: z.enum(employeeEmploymentTypes),
-    joiningDate: z.iso.date("Choose the company joining date."),
-    monthlyPay: text,
-    currency,
-    workState: text.refine((value) => !value || indianStatesAndUTs.includes(value), "Select a valid state / UT."),
-    workCity: text,
-    siteLocation: text,
-    useContractLocation: z.boolean(),
-    status: z.enum(employeeStatuses),
-    pan: optionalPattern(/^[A-Z]{5}\d{4}[A-Z]$/, "Enter a PAN in the format ABCDE1234F."),
-    uan: optionalPattern(/^\d{12}$/, "UAN must contain 12 digits."),
-    accountHolder: text,
-    bankName: text,
-    accountNumber: optionalPattern(/^\d+$/, "Use digits only for the account number."),
-    ifsc: optionalPattern(/^[A-Z]{4}0[A-Z0-9]{6}$/, "Enter an IFSC in the format SBIN0001234."),
+    ...personalSchema.shape,
+    ...assignmentSchema.shape,
+    ...employmentSchema.shape,
+    ...statutoryIdSchema.shape,
+    ...bankSchema.shape,
     notes: text,
   })
   .superRefine((values, context) => {
