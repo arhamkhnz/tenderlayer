@@ -42,15 +42,10 @@ import { formatCompactNumber } from "@tenderlayer/ui/lib/utils";
 import { pageSizeOptions } from "@/lib/data-table-constants";
 import { dataTableFeatures } from "@/lib/data-table-features";
 
-import { paymentColumns, paymentColumnLabels } from "./payments/payment-columns";
-import {
-  getSamplePayments,
-  paymentDateFormatter,
-  paymentDirectionOptions,
-  paymentStatusOptions,
-} from "./payments/payment-data";
-import { getPaymentMonthRange, type PaymentDateRange, type PaymentPeriod } from "./payments/payment-date-range";
-import { PaymentPeriodFilter } from "./payments/payment-period-filter";
+import { paymentColumns, paymentColumnLabels } from "./payment-columns";
+import { getSamplePayments, paymentDateFormatter, paymentDirectionOptions, paymentStatusOptions } from "./payment-data";
+import { getPaymentMonthRange, type PaymentDateRange, type PaymentPeriod } from "./payment-date-range";
+import { PaymentPeriodFilter } from "./payment-period-filter";
 
 export function PaymentsOverview({ today }: { today: Date }) {
   const [period, setPeriod] = useState<PaymentPeriod>("this-month");

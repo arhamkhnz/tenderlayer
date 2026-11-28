@@ -8,8 +8,8 @@ import {
   TagIcon,
 } from "@keyline-icons/react";
 
-import { FinanceStatusBadge } from "../../-components/finance-status-badge";
-import { RecordsTable, type RecordColumn } from "../../-components/records-table";
+import { FinanceStatusBadge } from "../../-components/records/finance-status-badge";
+import { RecordsTable, type RecordColumn } from "../../-components/records/records-table";
 import { formatAmount, purchases } from "./data";
 import { NewPurchaseDrawer } from "./new-purchase-drawer";
 

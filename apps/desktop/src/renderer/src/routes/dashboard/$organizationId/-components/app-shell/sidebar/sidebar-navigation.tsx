@@ -9,7 +9,7 @@ import {
   SidebarMenuItem,
 } from "@tenderlayer/ui/components/sidebar";
 
-import type { NavGroup, NavItem } from "@/navigation/sidebar/sidebar-items";
+import type { NavGroup, NavItem } from "./sidebar-items";
 
 function isItemActive(pathname: string, item: NavItem, organizationId: string) {
   const url = item.url.replace("$organizationId", encodeURIComponent(organizationId));

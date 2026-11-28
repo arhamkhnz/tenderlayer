@@ -21,13 +21,13 @@ import {
   DropdownMenuTrigger,
 } from "@tenderlayer/ui/components/dropdown-menu";
 
-import { BidsWonChart } from "./-components/bids-won-chart";
-import { ContractValueByDepartmentChart } from "./-components/contract-value-by-department-chart";
-import { FinancialYearChart } from "./-components/financial-year-chart";
-import { KpiCards } from "./-components/kpi-cards";
-import { PaymentsOverview } from "./-components/payments-overview";
-import { PeriodFilter } from "./-components/period-filter";
-import type { ReportingPeriod } from "./-components/reporting-period";
+import { BidsWonChart } from "./-components/overview/charts/bids-won-chart";
+import { ContractValueByDepartmentChart } from "./-components/overview/charts/contract-value-by-department-chart";
+import { FinancialYearChart } from "./-components/overview/charts/financial-year-chart";
+import { KpiCards } from "./-components/overview/kpi-cards";
+import { PaymentsOverview } from "./-components/overview/payments/payments-overview";
+import { PeriodFilter } from "./-components/overview/period-filter";
+import type { ReportingPeriod } from "./-components/overview/reporting-period";
 
 export const Route = createFileRoute("/dashboard/$organizationId/")({
   component: DashboardPage,

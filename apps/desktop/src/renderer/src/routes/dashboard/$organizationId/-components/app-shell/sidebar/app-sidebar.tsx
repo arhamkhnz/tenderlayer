@@ -28,9 +28,9 @@ import {
 import { getAvatarColors } from "@tenderlayer/ui/lib/avatar-colors";
 import { getInitials } from "@tenderlayer/ui/lib/utils";
 
-import { sidebarFooterItems, sidebarItems } from "@/navigation/sidebar/sidebar-items";
 import { isMacOS } from "@shared/platform";
 
+import { sidebarFooterItems, sidebarItems } from "./sidebar-items";
 import { SidebarFooterNavigation, SidebarNavigation } from "./sidebar-navigation";
 
 function OrganizationAvatar({ name }: { name: string }) {

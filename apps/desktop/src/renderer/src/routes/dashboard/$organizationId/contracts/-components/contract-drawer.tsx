@@ -32,7 +32,7 @@ import type { DepartmentRecord } from "@shared/contracts/departments";
 import { getCurrencyFractionDigits } from "@shared/money";
 import { contractFormSchema, type ContractFormValues } from "@shared/schemas/contracts";
 
-import { StatePicker } from "../../-components/state-picker";
+import { StatePicker } from "../../-components/forms/state-picker";
 import { ContractDatePicker } from "./contract-date-picker";
 import { contractStatusOptions } from "./contract-display";
 

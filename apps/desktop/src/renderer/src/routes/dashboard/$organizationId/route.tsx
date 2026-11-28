@@ -4,7 +4,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 
 import { usePreferences } from "@/app/preferences";
 
-import { DashboardLayout } from "./-components/layout";
+import { DashboardLayout } from "./-components/app-shell/dashboard-layout";
 import { OrganizationPicker } from "./-components/organization-picker";
 
 export const Route = createFileRoute("/dashboard/$organizationId")({

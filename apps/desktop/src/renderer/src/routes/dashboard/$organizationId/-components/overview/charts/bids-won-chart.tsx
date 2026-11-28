@@ -13,8 +13,8 @@ import {
 } from "@tenderlayer/ui/components/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@tenderlayer/ui/components/chart";
 
-import { PeriodFilter } from "./period-filter";
-import { getReportingStart, reportingPeriods, type ReportingPeriod } from "./reporting-period";
+import { PeriodFilter } from "../period-filter";
+import { getReportingStart, reportingPeriods, type ReportingPeriod } from "../reporting-period";
 
 const chartConfig = {
   count: { label: "Bids won", color: "var(--chart-1)" },

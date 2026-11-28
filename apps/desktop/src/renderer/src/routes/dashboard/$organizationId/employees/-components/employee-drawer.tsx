@@ -47,7 +47,7 @@ import {
   type EmployeeFormValues,
 } from "@shared/schemas/employees";
 
-import { StatePicker } from "../../-components/state-picker";
+import { StatePicker } from "../../-components/forms/state-picker";
 import { ContractDatePicker } from "../../contracts/-components/contract-date-picker";
 import { employeeStatusDisplay, employmentTypeLabels } from "./employee-display";
 
