@@ -5,6 +5,7 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
+  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@tenderlayer/ui/components/sidebar";
@@ -37,6 +38,7 @@ function SidebarNavigationItem({ item, isActive }: { item: NavItem; isActive: bo
         <Icon strokeWidth={1.75} />
         <span className="text-sm font-450">{item.title}</span>
       </SidebarMenuButton>
+      {item.badge && <SidebarMenuBadge className="font-mono">{item.badge}</SidebarMenuBadge>}
     </SidebarMenuItem>
   );
 }

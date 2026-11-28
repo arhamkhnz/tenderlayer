@@ -15,6 +15,8 @@ import {
 
 import type { FileRouteTypes } from "@/routeTree.gen";
 
+import { version } from "../../../../../../../../../package.json";
+
 export interface NavItem {
   id: string;
   title: string;
@@ -24,6 +26,7 @@ export interface NavItem {
   >;
   icon: ComponentType<IconProps>;
   exact?: boolean;
+  badge?: string;
 }
 
 export interface NavGroup {
@@ -62,8 +65,9 @@ export const sidebarItems = [
 export const sidebarFooterItems = [
   {
     id: "organization",
-    title: "Organization",
+    title: "Settings",
     url: "/dashboard/$organizationId/settings/organization",
     icon: SettingsIcon,
+    badge: `v${version}`,
   },
 ] as const satisfies readonly NavItem[];
